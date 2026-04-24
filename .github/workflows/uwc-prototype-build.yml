@@ -1,0 +1,138 @@
+name: UWC Prototype Build
+
+# Admin dispatches this workflow from agency-admin via the GitHub REST API.
+# Inputs carry the project_id + Claude-Code prompt + job_id. The workflow:
+#   1. Checks out a per-project branch (prototype/<project_id>)
+#   2. Runs Claude Code with the prompt (max 30 turns)
+#   3. Commits any file changes
+#   4. Builds the Astro site
+#   5. Deploys to CF Pages under branch prototype-<project_id>
+#   6. Reports the deployed URL back to admin via HMAC webhook
+#
+# Rule 72. See agency-admin CLAUDE.md for the full contract.
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: 'UWC project_id this prototype is for'
+        required: true
+      job_id:
+        description: 'Short correlation id (matches phase_build_jobs.id)'
+        required: true
+      prompt:
+        description: 'Claude Code prompt to execute'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout or create prototype branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create / checkout prototype branch
+        run: |
+          set -euo pipefail
+          BRANCH="prototype/${{ inputs.project_id }}"
+          git fetch origin "$BRANCH" 2>/dev/null || true
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            git checkout "$BRANCH"
+          else
+            git checkout -b "$BRANCH"
+          fi
+          git config user.name "UWC Prototype Bot"
+          git config user.email "bot@upstate-web.com"
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: ${{ inputs.prompt }}
+          claude_args: --max-turns 30 --dangerously-skip-permissions
+
+      - name: Commit Claude's changes
+        run: |
+          set -euo pipefail
+          git add -A
+          if git diff --cached --quiet; then
+            echo "::notice::No changes from Claude Code — skipping commit"
+          else
+            git commit -m "UWC prototype build — project ${{ inputs.project_id }} (job ${{ inputs.job_id }})"
+            git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            git push origin "prototype/${{ inputs.project_id }}"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build Astro
+        run: npm run build
+
+      - name: Deploy to CF Pages
+        id: deploy
+        run: |
+          set -euo pipefail
+          BRANCH="prototype-${{ inputs.project_id }}"
+          npx wrangler pages deploy dist \
+            --project-name=uwc-prototypes \
+            --branch="$BRANCH" \
+            --commit-dirty=true
+          # wrangler prints a .pages.dev URL — extract it from its output via a
+          # second deploy in --json mode
+          URL=$(npx wrangler pages deploy dist \
+            --project-name=uwc-prototypes \
+            --branch="$BRANCH" \
+            --commit-dirty=true 2>&1 | grep -oE 'https://[a-z0-9-]+\.uwc-prototypes\.pages\.dev' | head -1)
+          echo "deployed_url=$URL" >> "$GITHUB_OUTPUT"
+          echo "::notice::Deployed to $URL"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Take screenshot
+        run: |
+          set -euo pipefail
+          URL="${{ steps.deploy.outputs.deployed_url }}"
+          if [ -z "$URL" ]; then
+            echo "::warning::No deployed URL — skipping screenshot"
+            exit 0
+          fi
+          npx --yes playwright install chromium --with-deps
+          # Wait a beat for CF edge to propagate
+          sleep 15
+          npx playwright screenshot --viewport-size=1440,900 "$URL" ./preview.png || echo "::warning::screenshot failed, continuing"
+
+      - name: Report back to admin
+        if: always()
+        run: |
+          set -euo pipefail
+          URL="${{ steps.deploy.outputs.deployed_url }}"
+          STATUS="${{ job.status }}"
+          PAYLOAD=$(jq -cn \
+            --arg project_id "${{ inputs.project_id }}" \
+            --arg job_id "${{ inputs.job_id }}" \
+            --arg deployed_url "$URL" \
+            --arg status "$STATUS" \
+            '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status}')
+          # HMAC-SHA256 over body using shared secret
+          SIG=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.PORTAL_TO_ADMIN_HMAC_SECRET }}" | awk '{print $2}')
+          curl -sS -X POST \
+            -H "content-type: application/json" \
+            -H "x-uwc-prototype-sig: $SIG" \
+            -d "$PAYLOAD" \
+            https://agency.upstate-web.com/api/webhooks/prototype-build

@@ -1,0 +1,18 @@
+# wrangler.toml — Client Project
+# IMPORTANT: Update project name and database_id before first deploy
+
+name = "client-PROJECT_SLUG"
+compatibility_date = "2024-09-23"
+
+# D1 Database — shared agency-db instance
+# All client sites bind to the same D1 for portal integration
+[[d1_databases]]
+binding = "DB"                          # NEVER rename — used everywhere
+database_name = "agency-db"
+database_id = "REPLACE_WITH_D1_ID"      # Get from: wrangler d1 list
+
+# R2 Storage — shared agency-files bucket
+# File uploads scoped by client ID in key prefix
+[[r2_buckets]]
+binding = "FILES"                       # NEVER rename — used everywhere
+bucket_name = "agency-files"

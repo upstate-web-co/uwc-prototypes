@@ -1,0 +1,28 @@
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# Wrangler local state
+.wrangler/
+
+# Environment secrets
+.env
+.dev.vars
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Astro
+.astro/
+
+# Vite cache
+node_modules/.vite/
+
+# Test coverage
+coverage/
