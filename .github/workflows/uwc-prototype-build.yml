@@ -130,7 +130,7 @@ jobs:
             --arg status "$STATUS" \
             '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status}')
           # HMAC-SHA256 over body using shared secret
-          SIG=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.PORTAL_TO_ADMIN_HMAC_SECRET }}" | awk '{print $2}')
+          SIG=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.PROTOTYPE_BUILD_WEBHOOK_SECRET }}" | awk '{print $2}')
           curl -sS -X POST \
             -H "content-type: application/json" \
             -H "x-uwc-prototype-sig: $SIG" \
