@@ -7,7 +7,8 @@ name: UWC Prototype Build
 #   3. Commits any file changes
 #   4. Builds the Astro site
 #   5. Deploys to CF Pages under branch prototype-<project_id>
-#   6. Reports the deployed URL back to admin via HMAC webhook
+#   6. Captures desktop + mobile screenshots of the deployed URL
+#   7. Reports the deployed URL + screenshots back to admin via HMAC webhook
 #
 # Rule 72. See agency-admin CLAUDE.md for the full contract.
 
@@ -104,18 +105,31 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      - name: Take screenshot
+      - name: Capture screenshots (desktop + mobile)
+        id: screenshots
         run: |
           set -euo pipefail
           URL="${{ steps.deploy.outputs.deployed_url }}"
           if [ -z "$URL" ]; then
-            echo "::warning::No deployed URL — skipping screenshot"
+            echo "::warning::No deployed URL — skipping screenshots"
+            echo "have_screenshots=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           npx --yes playwright install chromium --with-deps
           # Wait a beat for CF edge to propagate
           sleep 15
-          npx playwright screenshot --viewport-size=1440,900 "$URL" ./preview.png || echo "::warning::screenshot failed, continuing"
+          # Desktop (1440x900) + mobile (375x812). JPEG q72 keeps each
+          # screenshot under ~300KB so two-in-one webhook body fits well
+          # under CF's 100MB limit.
+          npx playwright screenshot --viewport-size=1440,900 "$URL" home-desktop.jpg --quality=72 --type=jpeg || echo "::warning::desktop screenshot failed"
+          npx playwright screenshot --viewport-size=375,812 "$URL" home-mobile.jpg --quality=72 --type=jpeg || echo "::warning::mobile screenshot failed"
+          if [ -f home-desktop.jpg ] && [ -f home-mobile.jpg ]; then
+            echo "have_screenshots=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Captured both screenshots"
+          else
+            echo "have_screenshots=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::One or both screenshots missing — webhook will skip the screenshot fields"
+          fi
 
       - name: Report back to admin
         if: always()
@@ -123,12 +137,30 @@ jobs:
           set -euo pipefail
           URL="${{ steps.deploy.outputs.deployed_url }}"
           STATUS="${{ job.status }}"
-          PAYLOAD=$(jq -cn \
-            --arg project_id "${{ inputs.project_id }}" \
-            --arg job_id "${{ inputs.job_id }}" \
-            --arg deployed_url "$URL" \
-            --arg status "$STATUS" \
-            '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status}')
+          HAVE_SCREENSHOTS="${{ steps.screenshots.outputs.have_screenshots || 'false' }}"
+
+          # Build payload — include base64'd screenshots when available.
+          # Admin webhook tolerates their absence (failure path or pre-bump
+          # workflow files) and only writes files rows when present.
+          if [ "$HAVE_SCREENSHOTS" = "true" ] && [ -f home-desktop.jpg ] && [ -f home-mobile.jpg ]; then
+            DESKTOP_B64=$(base64 -w0 home-desktop.jpg)
+            MOBILE_B64=$(base64 -w0 home-mobile.jpg)
+            PAYLOAD=$(jq -cn \
+              --arg project_id "${{ inputs.project_id }}" \
+              --arg job_id "${{ inputs.job_id }}" \
+              --arg deployed_url "$URL" \
+              --arg status "$STATUS" \
+              --arg desktop "$DESKTOP_B64" \
+              --arg mobile "$MOBILE_B64" \
+              '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status, home_desktop_b64: $desktop, home_mobile_b64: $mobile}')
+          else
+            PAYLOAD=$(jq -cn \
+              --arg project_id "${{ inputs.project_id }}" \
+              --arg job_id "${{ inputs.job_id }}" \
+              --arg deployed_url "$URL" \
+              --arg status "$STATUS" \
+              '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status}')
+          fi
           # HMAC-SHA256 over body using shared secret
           SIG=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.PROTOTYPE_BUILD_WEBHOOK_SECRET }}" | awk '{print $2}')
           curl -sS -X POST \
