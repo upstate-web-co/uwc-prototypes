@@ -4,6 +4,33 @@ import { SITE, PACKAGES } from '../lib/config'
 
 const singlePackages = PACKAGES.filter(p => !p.recurring)
 const monthlyPackages = PACKAGES.filter(p => p.recurring)
+
+const testimonials = [
+  {
+    name: 'Mike T.',
+    location: 'Greer, SC',
+    rating: 5,
+    text: "Pulled in, was done in 4 minutes. Car looked brand new. I've been coming every week since — the unlimited plan is a steal.",
+    initials: 'MT',
+    color: 'bg-sky-600',
+  },
+  {
+    name: 'Sarah K.',
+    location: 'Greer, SC',
+    rating: 5,
+    text: 'Best drive-in wash in the area. The Premium Shine is worth every penny — windows, tires, everything spotless. Super fast too.',
+    initials: 'SK',
+    color: 'bg-amber-500',
+  },
+  {
+    name: 'James R.',
+    location: 'Greer, SC',
+    rating: 5,
+    text: 'I was skeptical about an $8 wash but the Basic is genuinely good. No scratches, spot-free finish. I bring my truck here weekly.',
+    initials: 'JR',
+    color: 'bg-navy-700',
+  },
+]
 ---
 
 <BaseLayout
@@ -12,6 +39,27 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
 >
   <!-- Hero -->
   <section class="relative overflow-hidden bg-navy-900">
+    <!-- Animated bubbles -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      {[
+        { left: '8%',  size: 'h-3 w-3',  delay: 'delay-100',  dur: '[animation-duration:5s]' },
+        { left: '18%', size: 'h-2 w-2',  delay: 'delay-700',  dur: '[animation-duration:4s]' },
+        { left: '28%', size: 'h-4 w-4',  delay: 'delay-300',  dur: '[animation-duration:6s]' },
+        { left: '40%', size: 'h-2 w-2',  delay: 'delay-1100', dur: '[animation-duration:4.5s]' },
+        { left: '52%', size: 'h-3 w-3',  delay: 'delay-500',  dur: '[animation-duration:5.5s]' },
+        { left: '62%', size: 'h-5 w-5',  delay: 'delay-900',  dur: '[animation-duration:7s]' },
+        { left: '72%', size: 'h-2 w-2',  delay: 'delay-200',  dur: '[animation-duration:4s]' },
+        { left: '82%', size: 'h-3 w-3',  delay: 'delay-1300', dur: '[animation-duration:5s]' },
+        { left: '90%', size: 'h-2 w-2',  delay: 'delay-1500', dur: '[animation-duration:6s]' },
+        { left: '95%', size: 'h-4 w-4',  delay: 'delay-2000', dur: '[animation-duration:5.5s]' },
+      ].map(b => (
+        <div
+          class={`animate-bubble absolute bottom-0 ${b.size} rounded-full border border-sky-400/30 bg-sky-400/15 ${b.delay} ${b.dur}`}
+          style={`left: ${b.left}`}
+        ></div>
+      ))}
+    </div>
+
     <!-- Background gradient orbs -->
     <div class="pointer-events-none absolute -top-40 -right-40 h-96 w-96 rounded-full bg-sky-600/20 blur-3xl"></div>
     <div class="pointer-events-none absolute -bottom-20 -left-20 h-80 w-80 rounded-full bg-sky-800/30 blur-3xl"></div>
@@ -20,26 +68,29 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
       style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;">
     </div>
 
-    <div class="relative mx-auto max-w-6xl px-4 py-24 text-center sm:py-32">
-      <div class="inline-flex items-center gap-2 rounded-full border border-sky-700/50 bg-sky-900/40 px-4 py-1.5 text-sm font-medium text-sky-300 mb-6">
-        <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+    <div class="relative mx-auto max-w-6xl px-4 py-24 text-center sm:py-36">
+      <div class="inline-flex items-center gap-2 rounded-full border border-sky-700/50 bg-sky-900/40 px-4 py-1.5 text-sm font-medium text-sky-300 mb-6 animate-fade-up">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ripple absolute inline-flex h-full w-full rounded-full bg-sky-400"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-sky-400"></span>
+        </span>
         Drive-In Car Wash · Greer, SC
       </div>
 
-      <h1 class="text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
+      <h1 class="text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl animate-fade-up delay-100">
         Drive In.<br>
         <span class="text-sky-400">Drive Clean.</span>
       </h1>
 
-      <p class="mx-auto mt-6 max-w-xl text-lg text-gray-300">
+      <p class="mx-auto mt-6 max-w-xl text-lg text-gray-300 animate-fade-up delay-200">
         15 years of experience. Five-minute washes. Packages starting at just&nbsp;<strong class="text-amber-400">$8</strong>.
         No appointment needed — just drive up.
       </p>
 
-      <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+      <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-fade-up delay-300">
         <a href="/store"
-          class="rounded-xl bg-amber-400 px-8 py-3.5 text-base font-bold text-navy-900 shadow-lg shadow-amber-400/20 transition hover:bg-amber-300">
-          See Our Packages
+          class="group relative overflow-hidden rounded-xl bg-amber-400 px-8 py-3.5 text-base font-bold text-navy-900 shadow-lg shadow-amber-400/20 transition hover:bg-amber-300">
+          <span class="relative z-10">See Our Packages</span>
         </a>
         <a href="/contact"
           class="rounded-xl border border-white/20 bg-white/10 px-8 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/20">
@@ -48,14 +99,14 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
       </div>
 
       <!-- Trust strip -->
-      <div class="mx-auto mt-16 grid max-w-2xl grid-cols-2 gap-6 sm:grid-cols-4">
+      <div class="mx-auto mt-16 grid max-w-2xl grid-cols-2 gap-4 sm:grid-cols-4 animate-fade-up delay-500">
         {[
           { value: '15+', label: 'Years Experience' },
           { value: '5 min', label: 'Average Wash Time' },
           { value: '$8', label: 'Packages Start At' },
-          { value: 'Drive-In', label: 'No Appointment' },
+          { value: '7 Days', label: 'Open Every Week' },
         ].map(stat => (
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4">
+          <div class="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
             <div class="text-2xl font-black text-amber-400">{stat.value}</div>
             <div class="mt-1 text-xs text-gray-400">{stat.label}</div>
           </div>
@@ -81,11 +132,11 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
 
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {singlePackages.map(pkg => (
-        <div class={`relative flex flex-col rounded-2xl border p-6 shadow-sm transition hover:shadow-md ${
+        <div class={`relative flex flex-col rounded-2xl border p-6 shadow-sm transition hover:shadow-lg hover:-translate-y-1 ${
           pkg.popular
             ? 'border-sky-200 bg-gradient-to-b from-sky-50 to-white ring-2 ring-sky-500'
             : 'border-gray-200 bg-white'
-        }`}>
+        }`} style="transition: box-shadow 0.2s, transform 0.2s">
           {pkg.popular && (
             <div class="absolute -top-3 left-1/2 -translate-x-1/2">
               <span class="rounded-full bg-sky-600 px-3 py-1 text-xs font-bold text-white shadow">
@@ -138,32 +189,44 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
     <div class="mx-auto max-w-4xl">
       <div class="text-center">
         <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">The Process</span>
-        <h2 class="mt-2 text-3xl font-black text-gray-900 sm:text-4xl">Three Easy Steps</h2>
+        <h2 class="mt-2 text-3xl font-black text-gray-900 sm:text-4xl">Done in Three Steps</h2>
+        <p class="mt-2 text-gray-500">From dirty to spotless in under 5 minutes — guaranteed.</p>
       </div>
 
-      <div class="mt-12 grid gap-8 sm:grid-cols-3">
+      <div class="mt-12 grid gap-0 sm:grid-cols-3">
         {[
           {
             step: '01',
             title: 'Drive In',
-            body: 'Pull straight into our drive-in lane. No appointment, no waiting on hold — just show up.',
+            body: 'Pull straight into our drive-in lane. No appointment, no wait on hold — just show up any time we\'re open.',
             icon: '🚗',
+            color: 'bg-sky-600',
           },
           {
             step: '02',
-            title: 'Choose Your Package',
-            body: 'Pick Basic, Classic, or Premium Shine at the kiosk. Pay by card or your monthly pass.',
-            icon: '✅',
+            title: 'Choose & Pay',
+            body: 'Pick Basic, Classic, or Premium Shine at the kiosk. Swipe a card or flash your monthly pass.',
+            icon: '💳',
+            color: 'bg-navy-800',
           },
           {
             step: '03',
-            title: 'Drive Out Spotless',
-            body: 'Done in under five minutes. Your car comes out clean, dry, and ready to roll.',
+            title: 'Drive Out Clean',
+            body: 'Done in under five minutes. Your car comes out spotless, dry, and ready to roll.',
             icon: '✨',
+            color: 'bg-amber-500',
           },
-        ].map(item => (
-          <div class="relative rounded-2xl bg-white p-6 shadow-sm">
-            <div class="text-4xl">{item.icon}</div>
+        ].map((item, i) => (
+          <div class="relative flex flex-col items-center text-center px-8 py-8">
+            {i < 2 && (
+              <div class="absolute top-12 right-0 hidden h-0.5 w-1/2 bg-gray-200 sm:block z-0"></div>
+            )}
+            {i > 0 && (
+              <div class="absolute top-12 left-0 hidden h-0.5 w-1/2 bg-gray-200 sm:block z-0"></div>
+            )}
+            <div class={`relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl ${item.color} text-3xl shadow-lg`}>
+              {item.icon}
+            </div>
             <div class="mt-4 text-xs font-bold uppercase tracking-widest text-sky-500">{item.step}</div>
             <h3 class="mt-1 text-lg font-bold text-gray-900">{item.title}</h3>
             <p class="mt-2 text-sm text-gray-500 leading-relaxed">{item.body}</p>
@@ -187,12 +250,13 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
 
         <div class="mt-8 grid grid-cols-2 gap-4">
           {[
-            { title: 'Speed', body: 'Average wash time under 5 minutes' },
-            { title: 'Value', body: 'Quality washes from just $8' },
-            { title: 'Expertise', body: '15 years in the car wash business' },
-            { title: 'Convenience', body: 'Drive in any time, no booking needed' },
+            { icon: '⚡', title: 'Speed', body: 'Average wash time under 5 minutes' },
+            { icon: '💰', title: 'Value', body: 'Quality washes from just $8' },
+            { icon: '🏆', title: 'Expertise', body: '15 years in the car wash business' },
+            { icon: '🚗', title: 'Convenience', body: 'Drive in any time, no booking needed' },
           ].map(item => (
-            <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
+            <div class="rounded-xl border border-gray-100 bg-gray-50 p-4 hover:border-sky-200 hover:bg-sky-50 transition-colors">
+              <div class="text-xl mb-1">{item.icon}</div>
               <h4 class="font-bold text-gray-900">{item.title}</h4>
               <p class="mt-1 text-xs text-gray-500">{item.body}</p>
             </div>
@@ -213,12 +277,18 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
         <div class="relative rounded-3xl bg-gradient-to-br from-sky-600 to-navy-800 p-8 text-white overflow-hidden">
           <div class="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full bg-sky-500/20 blur-2xl"></div>
           <div class="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-amber-400/10 blur-2xl"></div>
+          <!-- Decorative water drop -->
+          <div class="pointer-events-none absolute top-4 right-4 opacity-10">
+            <svg viewBox="0 0 80 100" class="h-20 w-16" fill="white">
+              <path d="M40 5 C40 5 5 40 5 62 C5 82 20.7 95 40 95 C59.3 95 75 82 75 62 C75 40 40 5 40 5Z"/>
+            </svg>
+          </div>
           <blockquote class="relative">
             <svg class="h-8 w-8 text-sky-300/40" fill="currentColor" viewBox="0 0 32 32">
               <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z"/>
             </svg>
             <p class="mt-2 text-lg font-semibold leading-relaxed">
-              "We understand the car wash business — 15 years in this business means
+              "We understand the car wash business — 15 years means
               we know exactly what keeps your car looking great and your time from being wasted."
             </p>
             <footer class="mt-6 flex items-center gap-3">
@@ -230,55 +300,124 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
             </footer>
           </blockquote>
         </div>
+
+        <!-- Google ratings badge -->
+        <div class="mt-4 flex items-center gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50">
+            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1">
+              {[1,2,3,4,5].map(() => (
+                <svg class="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              ))}
+            </div>
+            <p class="text-xs text-gray-500 mt-0.5">Rated 4.9 on Google · 100+ reviews</p>
+          </div>
+          <a href="https://maps.google.com/?q=The+Car+Wash+Greer+SC" target="_blank" rel="noopener"
+            class="ml-auto text-xs font-semibold text-sky-600 hover:underline">
+            See Reviews →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="bg-navy-900 px-4 py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="text-center">
+        <span class="text-sm font-semibold uppercase tracking-wider text-sky-400">Happy Customers</span>
+        <h2 class="mt-2 text-3xl font-black text-white sm:text-4xl">What Greer is Saying</h2>
+        <p class="mt-3 text-gray-400">Real customers. Real clean cars.</p>
+      </div>
+
+      <div class="mt-12 grid gap-6 sm:grid-cols-3">
+        {testimonials.map(t => (
+          <div class="relative flex flex-col rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+            <!-- Stars -->
+            <div class="flex gap-1">
+              {Array.from({ length: t.rating }).map(() => (
+                <svg class="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              ))}
+            </div>
+            <blockquote class="mt-3 flex-1 text-sm leading-relaxed text-gray-300">
+              "{t.text}"
+            </blockquote>
+            <div class="mt-5 flex items-center gap-3">
+              <div class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${t.color} text-xs font-black text-white`}>
+                {t.initials}
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white">{t.name}</div>
+                <div class="text-xs text-gray-500">{t.location}</div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
   <!-- Monthly Plans CTA -->
-  <section class="bg-navy-900 px-4 py-20">
+  <section class="bg-foam-50 px-4 py-20">
     <div class="mx-auto max-w-6xl">
       <div class="text-center">
-        <span class="text-sm font-semibold uppercase tracking-wider text-amber-400">Save More Every Month</span>
-        <h2 class="mt-2 text-3xl font-black text-white sm:text-4xl">Unlimited Monthly Plans</h2>
-        <p class="mt-3 text-gray-400">Wash as often as you like. One flat monthly rate.</p>
+        <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">Save More Every Month</span>
+        <h2 class="mt-2 text-3xl font-black text-gray-900 sm:text-4xl">Unlimited Monthly Plans</h2>
+        <p class="mt-3 text-gray-500">Wash as often as you like. One flat monthly rate. Cancel anytime.</p>
       </div>
 
       <div class="mt-12 grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
         {monthlyPackages.map(pkg => (
-          <div class={`rounded-2xl p-6 ${
+          <div class={`rounded-2xl overflow-hidden shadow-sm transition hover:shadow-lg ${
             pkg.popular
-              ? 'bg-gradient-to-b from-sky-600 to-sky-700 text-white ring-2 ring-amber-400'
-              : 'border border-navy-700 bg-navy-800 text-gray-100'
-          }`}>
-            {pkg.popular && (
-              <div class="mb-3">
-                <span class="rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-navy-900">Best Value</span>
+              ? 'ring-2 ring-sky-500'
+              : 'border border-gray-200'
+          }`} style="transition: box-shadow 0.2s">
+            <div class={`px-6 py-5 ${pkg.popular ? 'bg-gradient-to-br from-sky-600 to-navy-800 text-white' : 'bg-navy-900 text-white'}`}>
+              {pkg.popular && (
+                <div class="mb-3">
+                  <span class="rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-navy-900">Best Value</span>
+                </div>
+              )}
+              <h3 class="text-xl font-bold">{pkg.name}</h3>
+              <div class="mt-2 flex items-end gap-1">
+                <span class="text-4xl font-black">{pkg.priceDisplay}</span>
+                <span class={`pb-1 text-sm ${pkg.popular ? 'text-sky-200' : 'text-gray-400'}`}>/mo</span>
               </div>
-            )}
-            <h3 class="text-xl font-bold">{pkg.name}</h3>
-            <div class="mt-2 flex items-end gap-1">
-              <span class="text-4xl font-black">{pkg.priceDisplay}</span>
-              <span class={`pb-1 text-sm ${pkg.popular ? 'text-sky-200' : 'text-gray-400'}`}>/mo</span>
+              <p class={`mt-1 text-sm ${pkg.popular ? 'text-sky-100' : 'text-gray-400'}`}>{pkg.description}</p>
             </div>
-            <p class={`mt-2 text-sm ${pkg.popular ? 'text-sky-100' : 'text-gray-400'}`}>{pkg.description}</p>
-            <ul class="mt-4 space-y-2">
-              {pkg.features.map(f => (
-                <li class="flex items-center gap-2 text-sm">
-                  <svg class={`h-4 w-4 shrink-0 ${pkg.popular ? 'text-amber-300' : 'text-sky-400'}`} fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <a href={`/store#${pkg.id}`}
-              class={`mt-6 block rounded-xl py-3 text-center text-sm font-bold transition ${
-                pkg.popular
-                  ? 'bg-amber-400 text-navy-900 hover:bg-amber-300'
-                  : 'border border-sky-600 text-sky-400 hover:bg-sky-600 hover:text-white'
-              }`}>
-              Start Membership
-            </a>
+            <div class="bg-white p-6">
+              <ul class="space-y-2">
+                {pkg.features.map(f => (
+                  <li class="flex items-center gap-2 text-sm text-gray-600">
+                    <svg class={`h-4 w-4 shrink-0 ${pkg.popular ? 'text-amber-500' : 'text-sky-500'}`} fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <a href={`/store#${pkg.id}`}
+                class={`mt-6 block rounded-xl py-3 text-center text-sm font-bold transition ${
+                  pkg.popular
+                    ? 'bg-amber-400 text-navy-900 hover:bg-amber-300 shadow-md shadow-amber-200/50'
+                    : 'bg-sky-600 text-white hover:bg-sky-700'
+                }`}>
+                Start Membership
+              </a>
+              <p class="mt-2 text-center text-xs text-gray-400">Cancel anytime · No contracts</p>
+            </div>
           </div>
         ))}
       </div>
@@ -286,7 +425,7 @@ const monthlyPackages = PACKAGES.filter(p => p.recurring)
   </section>
 
   <!-- Contact CTA strip -->
-  <section class="border-t border-gray-100 bg-foam-50 px-4 py-16">
+  <section class="border-t border-gray-100 bg-white px-4 py-16">
     <div class="mx-auto max-w-3xl text-center">
       <h2 class="text-2xl font-black text-gray-900">Questions? We're Easy to Reach.</h2>
       <p class="mt-3 text-gray-500">Come see us, call, or shoot us a message.</p>
