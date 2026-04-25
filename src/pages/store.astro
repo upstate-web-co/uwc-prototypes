@@ -1,0 +1,275 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE, PACKAGES } from '../lib/config'
+
+const singlePackages = PACKAGES.filter(p => !p.recurring)
+const monthlyPackages = PACKAGES.filter(p => p.recurring)
+---
+
+<BaseLayout
+  title={`Packages & Pricing — ${SITE.name}`}
+  description="Car wash packages in Greer, SC. Basic $8, Classic $15, Premium $25. Unlimited monthly plans from $35/mo. Pay online with Stripe."
+>
+  <!-- Header -->
+  <section class="bg-gradient-to-b from-navy-900 to-navy-800 px-4 py-16 text-center text-white">
+    <div class="mx-auto max-w-3xl">
+      <span class="text-sm font-semibold uppercase tracking-wider text-amber-400">Packages & Pricing</span>
+      <h1 class="mt-2 text-4xl font-black sm:text-5xl">Choose Your Clean</h1>
+      <p class="mt-4 text-gray-300">
+        Pay once for a single wash or subscribe for unlimited monthly access.
+        No contracts, no hidden fees.
+      </p>
+    </div>
+  </section>
+
+  <div class="bg-navy-800">
+    <svg viewBox="0 0 1440 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+      <path d="M0 32h1440V16C1200 0 960 32 720 32S240 0 0 16v16z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- Single wash packages -->
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <div class="text-center">
+      <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">One-Time Washes</span>
+      <h2 class="mt-2 text-3xl font-black text-gray-900 sm:text-4xl">Single Wash Packages</h2>
+      <p class="mt-3 text-gray-500">Pay once. Drive away spotless.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {singlePackages.map(pkg => (
+        <div id={pkg.id} class={`scroll-mt-20 relative flex flex-col rounded-2xl border shadow-sm transition hover:shadow-md ${
+          pkg.popular
+            ? 'border-sky-200 bg-gradient-to-b from-sky-50 to-white ring-2 ring-sky-500'
+            : 'border-gray-200 bg-white'
+        }`}>
+          {pkg.popular && (
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
+              <span class="rounded-full bg-sky-600 px-4 py-1 text-xs font-bold text-white shadow-md">
+                Most Popular
+              </span>
+            </div>
+          )}
+
+          <div class={`rounded-t-2xl px-6 py-6 ${pkg.popular ? 'bg-sky-600 text-white' : 'bg-gray-50'}`}>
+            <h3 class={`text-xl font-black ${pkg.popular ? 'text-white' : 'text-gray-900'}`}>{pkg.name}</h3>
+            <div class="mt-2 flex items-end gap-1">
+              <span class={`text-4xl font-black ${pkg.popular ? 'text-white' : 'text-navy-900'}`}>
+                {pkg.priceDisplay}
+              </span>
+              <span class={`pb-1 text-sm ${pkg.popular ? 'text-sky-200' : 'text-gray-400'}`}>per wash</span>
+            </div>
+          </div>
+
+          <div class="flex flex-1 flex-col p-6">
+            <p class="text-sm text-gray-500">{pkg.description}</p>
+            <ul class="mt-4 flex-1 space-y-2">
+              {pkg.features.map(f => (
+                <li class="flex items-center gap-2 text-sm text-gray-600">
+                  <svg class="h-4 w-4 shrink-0 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+
+            <!-- Checkout form -->
+            <form action="/api/checkout" method="POST" class="mt-6">
+              <input type="hidden" name="packageId" value={pkg.id} />
+              <button
+                type="submit"
+                class={`checkout-btn w-full rounded-xl py-3 text-sm font-bold transition ${
+                  pkg.popular
+                    ? 'bg-sky-600 text-white shadow-md shadow-sky-200/50 hover:bg-sky-700'
+                    : 'border border-gray-200 bg-white text-gray-700 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
+                }`}
+              >
+                Buy Now — {pkg.priceDisplay}
+              </button>
+            </form>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="mx-auto max-w-6xl px-4">
+    <div class="flex items-center gap-4">
+      <div class="h-px flex-1 bg-gray-200"></div>
+      <span class="rounded-full border border-gray-200 bg-white px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
+        Or Save More Monthly
+      </span>
+      <div class="h-px flex-1 bg-gray-200"></div>
+    </div>
+  </div>
+
+  <!-- Monthly plans -->
+  <section id="monthly" class="scroll-mt-20 mx-auto max-w-6xl px-4 py-16">
+    <div class="text-center">
+      <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">Memberships</span>
+      <h2 class="mt-2 text-3xl font-black text-gray-900 sm:text-4xl">Unlimited Monthly Plans</h2>
+      <p class="mt-3 text-gray-500">
+        Wash as often as you want. One flat monthly rate — cancel any time.
+      </p>
+    </div>
+
+    <!-- Savings calculator note -->
+    <div class="mx-auto mt-6 max-w-lg rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-center text-sm text-amber-800">
+      <strong>Quick math:</strong> 3 Basic washes/month = $24. Unlimited Basic membership = $35.
+      Wash 5+ times and you're saving money every month.
+    </div>
+
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
+      {monthlyPackages.map(pkg => (
+        <div id={pkg.id} class={`scroll-mt-20 relative flex flex-col overflow-hidden rounded-2xl shadow-sm ${
+          pkg.popular
+            ? 'ring-2 ring-amber-400'
+            : 'border border-gray-200'
+        }`}>
+          {pkg.popular && (
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
+              <span class="rounded-full bg-amber-400 px-4 py-1 text-xs font-bold text-navy-900 shadow-md">
+                Best Value
+              </span>
+            </div>
+          )}
+
+          <!-- Header -->
+          <div class={`px-6 py-6 ${pkg.popular ? 'bg-gradient-to-br from-sky-600 to-navy-800 text-white' : 'bg-navy-900 text-white'}`}>
+            <h3 class="text-xl font-black">{pkg.name}</h3>
+            <div class="mt-2 flex items-end gap-1">
+              <span class="text-4xl font-black">{pkg.priceDisplay}</span>
+              <span class={`pb-1 text-sm ${pkg.popular ? 'text-sky-200' : 'text-gray-400'}`}>/month</span>
+            </div>
+            <p class={`mt-2 text-sm ${pkg.popular ? 'text-sky-100' : 'text-gray-400'}`}>{pkg.description}</p>
+          </div>
+
+          <!-- Features -->
+          <div class="flex flex-1 flex-col bg-white p-6">
+            <ul class="flex-1 space-y-2">
+              {pkg.features.map(f => (
+                <li class="flex items-center gap-2 text-sm text-gray-600">
+                  <svg class={`h-4 w-4 shrink-0 ${pkg.popular ? 'text-amber-500' : 'text-sky-500'}`} fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+
+            <!-- Checkout form -->
+            <form action="/api/checkout" method="POST" class="mt-6">
+              <input type="hidden" name="packageId" value={pkg.id} />
+              <button
+                type="submit"
+                class={`checkout-btn w-full rounded-xl py-3.5 text-sm font-bold transition ${
+                  pkg.popular
+                    ? 'bg-amber-400 text-navy-900 hover:bg-amber-300 shadow-md shadow-amber-200/50'
+                    : 'bg-sky-600 text-white hover:bg-sky-700'
+                }`}
+              >
+                Start Membership — {pkg.priceDisplay}/mo
+              </button>
+            </form>
+
+            <p class="mt-3 text-center text-xs text-gray-400">
+              Billed monthly. Cancel anytime — no contracts.
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-gray-100 bg-foam-50 px-4 py-16">
+    <div class="mx-auto max-w-3xl">
+      <div class="text-center">
+        <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">FAQs</span>
+        <h2 class="mt-2 text-3xl font-black text-gray-900">Common Questions</h2>
+      </div>
+      <div class="mt-10 space-y-4" id="faq">
+        {[
+          {
+            q: 'How do I use my monthly membership?',
+            a: "After subscribing, you'll receive a digital membership pass via email. Just show it at the kiosk or wave to the attendant when you drive in.",
+          },
+          {
+            q: 'Can I cancel my monthly plan anytime?',
+            a: 'Yes — cancel anytime with no penalty. Your membership stays active through the end of your billing period.',
+          },
+          {
+            q: 'Is there a limit on how many times I can wash with a monthly plan?',
+            a: 'No limit! Wash as often as you like — once a day if you want.',
+          },
+          {
+            q: 'Can I add on extras with my monthly plan?',
+            a: "Yes — add-on services like interior vacuum and tire shine are available at the kiosk for your usual low add-on prices.",
+          },
+          {
+            q: 'Do you offer fleet or business accounts?',
+            a: 'We do! Contact us for custom fleet pricing for businesses with multiple vehicles.',
+          },
+        ].map((item, i) => (
+          <div class="rounded-2xl border border-gray-200 bg-white overflow-hidden">
+            <button
+              class="faq-btn flex w-full items-center justify-between px-6 py-4 text-left text-sm font-semibold text-gray-900 hover:bg-gray-50"
+              data-index={i}
+            >
+              <span>{item.q}</span>
+              <svg class="faq-icon h-5 w-5 shrink-0 text-gray-400 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="faq-answer hidden px-6 pb-4 text-sm text-gray-500 leading-relaxed">
+              {item.a}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="border-t border-gray-100 px-4 py-16 text-center">
+    <h2 class="text-2xl font-black text-gray-900">Still Have Questions?</h2>
+    <p class="mt-2 text-gray-500">Give us a call or send a message — we're happy to help.</p>
+    <div class="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+      <a href={`tel:${SITE.phone}`}
+        class="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 hover:border-sky-200 hover:text-sky-700 transition">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+        </svg>
+        {SITE.phone}
+      </a>
+      <a href="/contact"
+        class="rounded-xl bg-sky-600 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-700 transition">
+        Send a Message
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll<HTMLButtonElement>('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const answer = btn.nextElementSibling as HTMLElement
+      const icon = btn.querySelector('.faq-icon') as SVGElement
+      const isOpen = !answer.classList.contains('hidden')
+
+      answer.classList.toggle('hidden', isOpen)
+      icon.style.transform = isOpen ? '' : 'rotate(180deg)'
+    })
+  })
+
+  // Checkout buttons — show loading state
+  document.querySelectorAll<HTMLButtonElement>('.checkout-btn').forEach(btn => {
+    btn.closest('form')?.addEventListener('submit', () => {
+      btn.disabled = true
+      btn.textContent = 'Redirecting to checkout...'
+    })
+  })
+</script>

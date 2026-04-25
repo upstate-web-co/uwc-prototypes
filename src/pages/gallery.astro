@@ -1,0 +1,199 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE } from '../lib/config'
+
+const galleryItems = [
+  {
+    title: 'Premium Shine Result',
+    caption: 'Deep-gloss finish after our Premium Shine package',
+    gradient: 'from-sky-600 to-sky-800',
+    icon: '✨',
+    tag: 'Premium Shine',
+  },
+  {
+    title: 'Drive-In Lane',
+    caption: 'Our wide, easy-to-navigate drive-in lane',
+    gradient: 'from-navy-800 to-navy-900',
+    icon: '🚗',
+    tag: 'Facility',
+  },
+  {
+    title: 'Wheel & Tire Detail',
+    caption: 'Rim scrub and tire shine on a fresh Classic Clean',
+    gradient: 'from-gray-700 to-gray-900',
+    icon: '🔵',
+    tag: 'Classic Clean',
+  },
+  {
+    title: 'Foam Pre-Soak',
+    caption: 'Thick foam blanket on every Classic and Premium wash',
+    gradient: 'from-blue-300 to-sky-500',
+    icon: '🫧',
+    tag: 'Process',
+  },
+  {
+    title: 'Spotless Windows',
+    caption: 'Interior window clean included in Premium Shine',
+    gradient: 'from-sky-400 to-blue-600',
+    icon: '🪟',
+    tag: 'Premium Shine',
+  },
+  {
+    title: 'Quick & Easy Kiosk',
+    caption: 'Pay in seconds — card, tap, or monthly pass',
+    gradient: 'from-amber-400 to-amber-600',
+    icon: '💳',
+    tag: 'Facility',
+  },
+  {
+    title: 'Interior Vacuum',
+    caption: 'Full interior vacuum on our Premium Shine package',
+    gradient: 'from-sky-700 to-navy-800',
+    icon: '🧹',
+    tag: 'Premium Shine',
+  },
+  {
+    title: 'Fresh Air Freshener',
+    caption: 'Choose from 6 scents — included with Premium Shine',
+    gradient: 'from-green-500 to-teal-600',
+    icon: '🌿',
+    tag: 'Add-On',
+  },
+  {
+    title: 'High-Pressure Rinse',
+    caption: 'Powerful spray that blasts dirt off every surface',
+    gradient: 'from-sky-500 to-sky-700',
+    icon: '💦',
+    tag: 'Process',
+  },
+]
+
+const tags = ['All', 'Facility', 'Process', 'Premium Shine', 'Classic Clean', 'Add-On']
+---
+
+<BaseLayout
+  title={`Gallery — ${SITE.name}`}
+  description="See The Car Wash in action — drive-in lane, foam pre-soaks, premium shine results, and more from our Greer, SC car wash."
+>
+  <!-- Header -->
+  <section class="bg-gradient-to-b from-navy-900 to-navy-800 px-4 py-16 text-center text-white">
+    <div class="mx-auto max-w-3xl">
+      <span class="text-sm font-semibold uppercase tracking-wider text-sky-400">See the Results</span>
+      <h1 class="mt-2 text-4xl font-black sm:text-5xl">Gallery</h1>
+      <p class="mt-4 text-gray-300">
+        A look inside The Car Wash — our facility, process, and the results we deliver
+        every single day.
+      </p>
+    </div>
+  </section>
+
+  <div class="bg-navy-800">
+    <svg viewBox="0 0 1440 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+      <path d="M0 32h1440V16C1200 0 960 32 720 32S240 0 0 16v16z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- Photos coming soon notice -->
+  <div class="mx-auto max-w-6xl px-4 pt-10">
+    <div class="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">
+      <svg class="h-5 w-5 shrink-0 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+      <span>
+        <strong>Photos coming soon!</strong> This page is ready for real photos of your facility.
+        Share images and we'll swap these placeholders right in.
+      </span>
+    </div>
+  </div>
+
+  <!-- Filter tags -->
+  <section class="mx-auto max-w-6xl px-4 pt-8 pb-4">
+    <div class="flex flex-wrap gap-2" id="filter-btns">
+      {tags.map(tag => (
+        <button
+          data-tag={tag}
+          class={`filter-btn rounded-full px-4 py-1.5 text-sm font-medium transition ${
+            tag === 'All'
+              ? 'bg-sky-600 text-white'
+              : 'border border-gray-200 bg-white text-gray-600 hover:border-sky-300 hover:text-sky-700'
+          }`}
+        >
+          {tag}
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- Gallery grid -->
+  <section class="mx-auto max-w-6xl px-4 pb-20">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="gallery-grid">
+      {galleryItems.map(item => (
+        <div
+          data-tag={item.tag}
+          class="gallery-card group relative overflow-hidden rounded-2xl shadow-sm transition hover:shadow-lg"
+        >
+          <!-- Placeholder image -->
+          <div class={`flex aspect-[4/3] items-center justify-center bg-gradient-to-br ${item.gradient}`}>
+            <div class="text-center">
+              <div class="text-6xl">{item.icon}</div>
+              <div class="mt-3 text-sm font-semibold text-white/80">{item.title}</div>
+            </div>
+          </div>
+
+          <!-- Overlay caption -->
+          <div class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <span class="mb-1 self-start rounded-full bg-sky-500/90 px-2 py-0.5 text-xs font-semibold text-white">
+              {item.tag}
+            </span>
+            <p class="text-sm text-white">{item.caption}</p>
+          </div>
+
+          <!-- Static tag label (always visible) -->
+          <div class="absolute left-3 top-3">
+            <span class="rounded-full bg-black/40 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+              {item.tag}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-t border-gray-100 bg-foam-50 px-4 py-16 text-center">
+    <h2 class="text-2xl font-black text-gray-900">Ready for Your Car to Look Like This?</h2>
+    <p class="mt-3 text-gray-500">Drive in any time — no appointment, no wait.</p>
+    <a href="/store"
+      class="mt-6 inline-block rounded-xl bg-sky-600 px-8 py-3.5 font-bold text-white shadow-sm hover:bg-sky-700 transition">
+      See Packages & Pricing
+    </a>
+  </section>
+</BaseLayout>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn')
+  const cards = document.querySelectorAll<HTMLElement>('.gallery-card')
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag ?? 'All'
+
+      // Update active state
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-sky-600', 'text-white')
+        b.classList.add('border', 'border-gray-200', 'bg-white', 'text-gray-600')
+      })
+      btn.classList.add('bg-sky-600', 'text-white')
+      btn.classList.remove('border', 'border-gray-200', 'bg-white', 'text-gray-600')
+
+      // Filter cards
+      cards.forEach(card => {
+        if (tag === 'All' || card.dataset.tag === tag) {
+          card.style.display = ''
+        } else {
+          card.style.display = 'none'
+        }
+      })
+    })
+  })
+</script>

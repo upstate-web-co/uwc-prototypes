@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE, PACKAGES } from '../lib/config'
+
+const singlePackages = PACKAGES.filter(p => !p.recurring)
+
+const addOns = [
+  { name: 'Tire Shine', price: '$3', description: 'Deep-black gloss on all four tires.' },
+  { name: 'Air Freshener', price: '$2', description: 'Choose from 6 scents — new car, citrus, and more.' },
+  { name: 'Dashboard Wipe', price: '$4', description: 'Quick wipe-down of dash, console, and door panels.' },
+  { name: 'Window Interior', price: '$5', description: 'Streak-free clean on all interior glass surfaces.' },
+]
+---
+
+<BaseLayout
+  title={`Services — ${SITE.name}`}
+  description="Drive-in car wash services in Greer, SC. Basic Wash, Classic Clean, and Premium Shine packages. Fast 5-minute washes."
+>
+  <!-- Page header -->
+  <section class="bg-gradient-to-b from-navy-900 to-navy-800 px-4 py-16 text-center text-white">
+    <div class="mx-auto max-w-3xl">
+      <span class="text-sm font-semibold uppercase tracking-wider text-sky-400">What We Offer</span>
+      <h1 class="mt-2 text-4xl font-black sm:text-5xl">Our Services</h1>
+      <p class="mt-4 text-gray-300">
+        Every wash is fast, thorough, and built around what drives-in car wash customers actually need.
+        No fluff — just clean.
+      </p>
+    </div>
+  </section>
+
+  <!-- Wave -->
+  <div class="bg-navy-800">
+    <svg viewBox="0 0 1440 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+      <path d="M0 32h1440V16C1200 0 960 32 720 32S240 0 0 16v16z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- Wash packages detail -->
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <div class="text-center">
+      <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">Wash Packages</span>
+      <h2 class="mt-2 text-3xl font-black text-gray-900">Choose Your Clean</h2>
+    </div>
+
+    <div class="mt-12 space-y-6">
+      {singlePackages.map((pkg, i) => (
+        <div id={pkg.id} class={`scroll-mt-20 flex flex-col overflow-hidden rounded-2xl border shadow-sm lg:flex-row ${
+          pkg.popular ? 'border-sky-200 ring-2 ring-sky-500' : 'border-gray-200'
+        }`}>
+          <!-- Color strip -->
+          <div class={`flex shrink-0 items-center justify-center px-8 py-8 lg:w-48 ${
+            i === 0 ? 'bg-gray-100' : i === 1 ? 'bg-sky-50' : 'bg-gradient-to-br from-sky-600 to-navy-800'
+          }`}>
+            <div class="text-center">
+              <div class={`text-4xl font-black ${i === 2 ? 'text-white' : 'text-navy-900'}`}>
+                {pkg.priceDisplay}
+              </div>
+              {pkg.popular && (
+                <div class="mt-2">
+                  <span class="rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-navy-900">Popular</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="flex flex-1 flex-col justify-between bg-white p-6 lg:flex-row lg:items-center lg:gap-8">
+            <div class="flex-1">
+              <h3 class="text-xl font-black text-gray-900">{pkg.name}</h3>
+              <p class="mt-1 text-gray-500">{pkg.description}</p>
+              <ul class="mt-4 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-3">
+                {pkg.features.map(f => (
+                  <li class="flex items-center gap-1.5 text-sm text-gray-600">
+                    <svg class="h-4 w-4 shrink-0 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="mt-6 shrink-0 lg:mt-0">
+              <a href={`/store#${pkg.id}`}
+                class={`block rounded-xl px-6 py-3 text-center text-sm font-bold transition ${
+                  pkg.popular
+                    ? 'bg-sky-600 text-white hover:bg-sky-700 shadow-md shadow-sky-200'
+                    : 'border border-gray-200 bg-white text-gray-700 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
+                }`}>
+                Get This Wash →
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Add-ons -->
+  <section class="bg-foam-50 px-4 py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="text-center">
+        <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">Extras</span>
+        <h2 class="mt-2 text-3xl font-black text-gray-900">Add-On Services</h2>
+        <p class="mt-2 text-gray-500">Customize any wash with these add-ons at the kiosk.</p>
+      </div>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2">
+        {addOns.map(item => (
+          <div class="flex items-start gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-gray-900">{item.name}</h3>
+                <span class="text-sm font-bold text-sky-600">{item.price}</span>
+              </div>
+              <p class="mt-1 text-sm text-gray-500">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Monthly plans teaser -->
+  <section class="border-t border-gray-100 px-4 py-16">
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="text-sm font-semibold uppercase tracking-wider text-sky-600">Save Big</span>
+      <h2 class="mt-2 text-3xl font-black text-gray-900">Wash More, Pay Less</h2>
+      <p class="mt-3 text-gray-500">
+        If you wash more than twice a month, our unlimited monthly plans pay for themselves.
+        Starting at just <strong class="text-sky-600">$35/month</strong>.
+      </p>
+      <a href="/store#monthly"
+        class="mt-8 inline-flex items-center gap-2 rounded-xl bg-amber-400 px-8 py-3.5 font-bold text-navy-900 shadow-sm hover:bg-amber-300 transition">
+        See Monthly Plans
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

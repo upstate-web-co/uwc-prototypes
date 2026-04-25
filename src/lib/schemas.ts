@@ -16,4 +16,15 @@ export const ContactFormSchema = z.object({
 
 export type ContactFormData = z.infer<typeof ContactFormSchema>
 
-// Add project-specific schemas below as the build progresses
+// Stripe checkout session request
+export const CheckoutSchema = z.object({
+  packageId: z.enum([
+    'basic',
+    'classic',
+    'premium',
+    'unlimited-basic',
+    'unlimited-premium',
+  ]),
+})
+
+export type CheckoutData = z.infer<typeof CheckoutSchema>
