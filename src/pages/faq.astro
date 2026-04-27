@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+const faqs = [
+  {
+    q: 'Do you work with clients outside Canada?',
+    a: "Absolutely. We're a fully online operation — every meeting is virtual, every deliverable is digital. We work with clients across North America, the UK, Europe, and beyond. Canadian timezone availability, global execution.",
+  },
+  {
+    q: 'What social platforms do you manage?',
+    a: "Our core platforms are TikTok, Instagram, and Facebook — which is where most of our clients see the highest ROI. We also cover YouTube Shorts and LinkedIn for clients where those channels fit their audience. Platform coverage is agreed upfront.",
+  },
+  {
+    q: 'How does the 30-minute strategy call work?',
+    a: "You book a time through our scheduling page, then fill in a short pre-call form with your challenge or question. Joshua reviews it before the call so you're not spending time on context. On the day, you join the Zoom link — 30 minutes of focused strategy, recorded on request.",
+  },
+  {
+    q: 'Do I need to have a logo before working with you?',
+    a: "No. Our Brand Identity Package starts from scratch. We handle logo creation, color systems, typography, and full brand guidelines. If you have a logo but want a refresh, we do that too — just let us know in your discovery call.",
+  },
+  {
+    q: 'How long does a brand identity project take?',
+    a: "Typically 2–3 weeks from kickoff to final delivery, including revision rounds. Rush turnarounds are available for an additional fee. Timeline is confirmed in your project proposal.",
+  },
+  {
+    q: 'What does "campaign management" actually include?',
+    a: "Everything your social media needs to run without you doing it yourself: monthly strategy, content calendar, post creation, copywriting, scheduling, publishing, and a monthly performance report. We handle TikTok, Instagram, and Facebook as the core three.",
+  },
+  {
+    q: "What if I already have social media content — do you just post it?",
+    a: "We can work with existing content as part of your campaign, but our packages include content creation. If you're producing raw content (video clips, photos, copy drafts), we can work with that. If you want full creation off your plate, we handle it end to end.",
+  },
+  {
+    q: 'How do payments work?',
+    a: "We invoice through secure online payment links (Stripe). One-time projects: 50% upfront, 50% on delivery. Monthly retainers: invoiced at the start of each period. All prices listed are in CAD.",
+  },
+  {
+    q: 'Do you offer ongoing support after a project ends?',
+    a: "Yes — you can move into our Campaign Management retainer after a brand project, or book additional strategy calls as needed. Many clients start with a one-time package and add a retainer once they've seen results.",
+  },
+  {
+    q: "What makes Growfar different from other agencies?",
+    a: "We're small, intentional, and we actually care. Joshua is hands-on with every account — you're not being passed to a junior team. We're digital-first ourselves, which means our advice comes from doing, not just consulting. And we move fast.",
+  },
+]
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Common questions about Growfar's services, process, pricing, and how we work with clients globally."
+>
+
+  <!-- ====================================================
+       PAGE HEADER
+  ===================================================== -->
+  <section class="bg-plum-900 pt-32 pb-16 px-6 md:px-10 lg:px-16">
+    <div class="max-w-[1400px] mx-auto">
+      <span class="text-coral font-bold text-xs uppercase tracking-[0.35em] block mb-6">FAQs</span>
+      <h1 class="font-black text-white uppercase leading-[0.88]" style="font-size: clamp(3rem, 9vw, 8rem)">
+        Straight<br/><em class="font-serif not-italic text-coral">Answers.</em>
+      </h1>
+      <p class="mt-8 text-white/50 font-serif text-xl leading-relaxed max-w-xl">
+        Everything you need to know before reaching out. Still have a question? Book a call.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       FAQ ACCORDION
+  ===================================================== -->
+  <section class="bg-plum-950 py-20 md:py-28">
+    <div class="max-w-[900px] mx-auto px-6 md:px-10">
+
+      <div class="space-y-0">
+        {faqs.map((faq, i) => (
+          <div class="border-b border-plum-800 scroll-reveal" style={`transition-delay: ${Math.min(i * 0.05, 0.4)}s`}>
+            <button
+              data-faq-trigger
+              class="w-full text-left flex items-start justify-between gap-6 py-6 group cursor-pointer"
+              aria-expanded="false"
+            >
+              <span class="font-bold text-white group-hover:text-coral transition-colors text-base md:text-lg leading-snug pr-4 flex-1">
+                {faq.q}
+              </span>
+              <span class="shrink-0 w-6 h-6 border border-plum-700 group-hover:border-coral flex items-center justify-center transition-colors mt-0.5">
+                <svg class="faq-icon-plus" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <line x1="6" y1="1" x2="6" y2="11" stroke="#FF5C35" stroke-width="1.5"/>
+                  <line x1="1" y1="6" x2="11" y2="6" stroke="#FF5C35" stroke-width="1.5"/>
+                </svg>
+                <svg class="faq-icon-minus hidden" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <line x1="1" y1="6" x2="11" y2="6" stroke="#FF5C35" stroke-width="1.5"/>
+                </svg>
+              </span>
+            </button>
+            <div data-faq-answer style="max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1)">
+              <p class="pb-6 text-white/55 font-serif text-base leading-relaxed">
+                {faq.a}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       STILL HAVE A QUESTION
+  ===================================================== -->
+  <section class="bg-plum-800 py-16">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 scroll-reveal">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div>
+          <h3 class="font-black text-white uppercase text-2xl md:text-3xl">Still have a question?</h3>
+          <p class="mt-2 text-white/45 font-serif">Drop us a line or book a free 15-minute discovery call.</p>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <a href="mailto:hello@growfar.co"
+             class="inline-flex items-center border border-white/20 hover:border-white text-white font-bold uppercase tracking-[0.2em] text-xs px-6 py-3.5 rounded-full transition-all duration-200">
+            Email Us
+          </a>
+          <a href="/booking"
+             class="inline-flex items-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.2em] text-xs px-6 py-3.5 rounded-full transition-all duration-200">
+            Book a Call &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script>
+  document.querySelectorAll('[data-faq-trigger]').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const answer   = trigger.nextElementSibling as HTMLElement
+      const iconPlus = trigger.querySelector('.faq-icon-plus')  as HTMLElement
+      const iconMinus = trigger.querySelector('.faq-icon-minus') as HTMLElement
+      const isOpen   = trigger.getAttribute('aria-expanded') === 'true'
+
+      // Close all others
+      document.querySelectorAll('[data-faq-trigger]').forEach(t => {
+        if (t !== trigger) {
+          t.setAttribute('aria-expanded', 'false')
+          const a = t.nextElementSibling as HTMLElement
+          if (a) a.style.maxHeight = '0'
+          const p = t.querySelector('.faq-icon-plus')  as HTMLElement
+          const m = t.querySelector('.faq-icon-minus') as HTMLElement
+          if (p) p.classList.remove('hidden')
+          if (m) m.classList.add('hidden')
+        }
+      })
+
+      if (isOpen) {
+        trigger.setAttribute('aria-expanded', 'false')
+        answer.style.maxHeight = '0'
+        iconPlus.classList.remove('hidden')
+        iconMinus.classList.add('hidden')
+      } else {
+        trigger.setAttribute('aria-expanded', 'true')
+        answer.style.maxHeight = answer.scrollHeight + 'px'
+        iconPlus.classList.add('hidden')
+        iconMinus.classList.remove('hidden')
+      }
+    })
+  })
+</script>

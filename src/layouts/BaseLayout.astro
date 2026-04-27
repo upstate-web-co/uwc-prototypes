@@ -14,49 +14,178 @@ const { title, description, ogImage, schema } = Astro.props
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
     <SEOHead title={title} description={description} ogImage={ogImage} schema={schema} />
   </head>
-  <body class="min-h-screen bg-white text-gray-900 antialiased">
-    <!-- Navigation -->
-    <header class="border-b border-gray-200 bg-white">
-      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <a href="/" class="text-xl font-bold text-gray-900">
-          {SITE.name}
+  <body class="bg-plum-900 text-white antialiased font-sans min-h-screen">
+
+    <!-- ====== NAVIGATION ====== -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-plum-900/95 backdrop-blur-md border-b border-plum-800/60">
+      <nav class="flex items-center justify-between px-6 md:px-10 py-4 max-w-[1400px] mx-auto">
+
+        <!-- Logo -->
+        <a href="/" class="font-black text-2xl tracking-tight text-white hover:text-coral transition-colors duration-200">
+          GROW<span class="text-coral">FAR</span>
         </a>
-        <div class="flex items-center gap-6">
-          <!-- Add nav links per client -->
-          <a href="/#services" class="text-sm text-gray-600 hover:text-gray-900">Services</a>
-          <a href="/#about" class="text-sm text-gray-600 hover:text-gray-900">About</a>
-          <a href="/#contact" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-            Contact
+
+        <!-- Desktop links -->
+        <div class="hidden md:flex items-center gap-10">
+          <a href="/about"    class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-[0.2em] transition-colors">About</a>
+          <a href="/services" class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-[0.2em] transition-colors">Services</a>
+          <a href="/blog"     class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-[0.2em] transition-colors">Blog</a>
+          <a href="/faq"      class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-[0.2em] transition-colors">FAQ</a>
+        </div>
+
+        <!-- CTA pill + hamburger -->
+        <div class="flex items-center gap-4">
+          <a href="/booking"
+             class="hidden md:inline-flex items-center bg-coral hover:bg-coral-600 text-white text-xs font-bold uppercase tracking-[0.2em] px-6 py-2.5 rounded-full transition-all duration-200 hover:scale-105">
+            Book a Call
           </a>
+          <button id="menu-btn" class="md:hidden text-white p-2 -mr-2" aria-label="Open menu" aria-expanded="false">
+            <svg id="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="3" y1="6"  x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+            <svg id="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="hidden">
+              <line x1="18" y1="6"  x2="6"  y2="18"/>
+              <line x1="6"  y1="6"  x2="18" y2="18"/>
+            </svg>
+          </button>
         </div>
       </nav>
     </header>
 
-    <!-- Main content -->
+    <!-- ====== MOBILE MENU ====== -->
+    <div id="mobile-menu" aria-hidden="true"
+         class="fixed inset-0 bg-plum-950 z-40 flex flex-col pt-20 px-8 pb-12 overflow-y-auto">
+      <nav class="flex flex-col gap-6 mt-8">
+        <a href="/"         class="text-white font-black text-5xl uppercase tracking-tight hover:text-coral transition-colors py-2 border-b border-plum-800">Home</a>
+        <a href="/about"    class="text-white font-black text-5xl uppercase tracking-tight hover:text-coral transition-colors py-2 border-b border-plum-800">About</a>
+        <a href="/services" class="text-white font-black text-5xl uppercase tracking-tight hover:text-coral transition-colors py-2 border-b border-plum-800">Services</a>
+        <a href="/blog"     class="text-white font-black text-5xl uppercase tracking-tight hover:text-coral transition-colors py-2 border-b border-plum-800">Blog</a>
+        <a href="/faq"      class="text-white font-black text-5xl uppercase tracking-tight hover:text-coral transition-colors py-2 border-b border-plum-800">FAQ</a>
+      </nav>
+      <div class="mt-auto pt-12">
+        <a href="/booking"
+           class="inline-flex items-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.2em] text-sm px-8 py-4 rounded-full transition-colors">
+          Book a Strategy Call →
+        </a>
+        <p class="mt-6 text-white/40 text-sm font-serif">hello@growfar.co</p>
+      </div>
+    </div>
+
+    <!-- ====== MAIN ====== -->
     <main>
       <slot />
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-gray-200 bg-gray-50">
-      <div class="mx-auto max-w-6xl px-4 py-8">
-        <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p class="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
-          </p>
-          <div class="flex gap-4 text-sm text-gray-500">
-            {SITE.phone && <span>{SITE.phone}</span>}
-            <a href={`mailto:${SITE.email}`} class="hover:text-gray-700">{SITE.email}</a>
+    <!-- ====== FOOTER ====== -->
+    <footer class="bg-plum-950 border-t border-plum-800/60">
+      <div class="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+
+          <!-- Brand column -->
+          <div class="md:col-span-2">
+            <a href="/" class="font-black text-3xl text-white">GROW<span class="text-coral">FAR</span></a>
+            <p class="mt-4 text-white/40 font-serif text-sm leading-relaxed max-w-xs">
+              Building brands that demand attention. Campaigns that convert. Digital products that sell globally — from Canada to the world.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-4">
+              <a href="https://www.tiktok.com/@growfar" target="_blank" rel="noopener noreferrer"
+                 class="text-white/30 hover:text-coral text-xs font-bold uppercase tracking-wider transition-colors">TikTok</a>
+              <a href="https://www.instagram.com/growfar" target="_blank" rel="noopener noreferrer"
+                 class="text-white/30 hover:text-coral text-xs font-bold uppercase tracking-wider transition-colors">Instagram</a>
+              <a href="https://www.facebook.com/growfar" target="_blank" rel="noopener noreferrer"
+                 class="text-white/30 hover:text-coral text-xs font-bold uppercase tracking-wider transition-colors">Facebook</a>
+            </div>
           </div>
+
+          <!-- Services -->
+          <div>
+            <h4 class="text-coral text-xs font-bold uppercase tracking-[0.25em] mb-5">Services</h4>
+            <ul class="space-y-3">
+              <li><a href="/services#brand-identity"  class="text-white/50 hover:text-white text-sm font-serif transition-colors">Brand Identity</a></li>
+              <li><a href="/services#campaign"         class="text-white/50 hover:text-white text-sm font-serif transition-colors">Campaign Management</a></li>
+              <li><a href="/services#launch"           class="text-white/50 hover:text-white text-sm font-serif transition-colors">Product Launch</a></li>
+              <li><a href="/services#consultation"     class="text-white/50 hover:text-white text-sm font-serif transition-colors">Strategy Consultation</a></li>
+            </ul>
+          </div>
+
+          <!-- Company -->
+          <div>
+            <h4 class="text-coral text-xs font-bold uppercase tracking-[0.25em] mb-5">Company</h4>
+            <ul class="space-y-3">
+              <li><a href="/about"   class="text-white/50 hover:text-white text-sm font-serif transition-colors">About Us</a></li>
+              <li><a href="/blog"    class="text-white/50 hover:text-white text-sm font-serif transition-colors">Blog</a></li>
+              <li><a href="/faq"     class="text-white/50 hover:text-white text-sm font-serif transition-colors">FAQ</a></li>
+              <li><a href="/booking" class="text-white/50 hover:text-white text-sm font-serif transition-colors">Book a Call</a></li>
+              <li><a href="mailto:hello@growfar.co" class="text-white/50 hover:text-white text-sm font-serif transition-colors">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-16 pt-8 border-t border-plum-800/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <p class="text-white/25 text-xs">&copy; {new Date().getFullYear()} Growfar. All rights reserved.</p>
+          <p class="text-white/25 text-xs">Canada-based &middot; Global reach &middot; Online-first</p>
         </div>
       </div>
     </footer>
+
+    <!-- Mobile menu toggle -->
+    <script>
+      const menuBtn    = document.getElementById('menu-btn')!
+      const mobileMenu = document.getElementById('mobile-menu')!
+      const iconOpen   = document.getElementById('icon-open')!
+      const iconClose  = document.getElementById('icon-close')!
+
+      function openMenu() {
+        mobileMenu.setAttribute('aria-hidden', 'false')
+        menuBtn.setAttribute('aria-expanded', 'true')
+        iconOpen.classList.add('hidden')
+        iconClose.classList.remove('hidden')
+        document.body.style.overflow = 'hidden'
+      }
+
+      function closeMenu() {
+        mobileMenu.setAttribute('aria-hidden', 'true')
+        menuBtn.setAttribute('aria-expanded', 'false')
+        iconOpen.classList.remove('hidden')
+        iconClose.classList.add('hidden')
+        document.body.style.overflow = ''
+      }
+
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.getAttribute('aria-hidden') === 'true' ? openMenu() : closeMenu()
+      })
+
+      mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu))
+    </script>
+
+    <!-- Scroll-reveal observer -->
+    <script>
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible')
+            observer.unobserve(e.target)
+          }
+        }),
+        { threshold: 0.1 }
+      )
+      document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el))
+    </script>
+
   </body>
 </html>

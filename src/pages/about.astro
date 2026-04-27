@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="About"
+  description="Growfar is Joshua Mukui's brand management and digital strategy team — passionate, precise, and built to help creators grow online."
+>
+
+  <!-- ====================================================
+       PAGE HEADER
+  ===================================================== -->
+  <section class="bg-plum-900 pt-32 pb-16 md:pb-20 px-6 md:px-10 lg:px-16">
+    <div class="max-w-[1400px] mx-auto">
+      <span class="text-coral font-bold text-xs uppercase tracking-[0.35em] block mb-6">About Growfar</span>
+      <h1 class="font-black text-white uppercase leading-[0.88]" style="font-size: clamp(3rem, 9vw, 8rem)">
+        We Live<br/><em class="font-serif not-italic text-coral">For This.</em>
+      </h1>
+      <p class="mt-8 text-white/50 font-serif text-xl leading-relaxed max-w-2xl">
+        We're not a typical agency. Growfar is a tight, passionate team that treats every client's brand like our own — because we know what's at stake when you're building something online.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       JOSHUA'S STORY
+  ===================================================== -->
+  <section class="bg-plum-950 py-20 md:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start">
+
+        <!-- Photo placeholder -->
+        <div class="lg:col-span-2 scroll-reveal">
+          <div class="aspect-[3/4] bg-plum-800 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-t from-plum-950/80 to-transparent z-10"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="font-black text-plum-700 select-none" style="font-size: 15rem; line-height: 1">J</span>
+            </div>
+            <div class="absolute bottom-6 left-6 z-20">
+              <p class="text-white font-bold text-lg">Joshua Mukui</p>
+              <p class="text-coral text-sm font-serif mt-1">Founder & Creative Director</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story -->
+        <div class="lg:col-span-3 scroll-reveal" style="transition-delay: 0.1s">
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-6">The Founder</span>
+          <h2 class="font-black text-white uppercase leading-tight mb-8" style="font-size: clamp(1.75rem, 3.5vw, 3rem)">
+            From Canada to the World
+          </h2>
+
+          <div class="space-y-5 text-white/60 font-serif text-base leading-relaxed">
+            <p>
+              Joshua started Growfar online in 2024, but the work goes back years. Growing up in Canada and building a presence across social media taught him one thing early: the brands that win are the ones that know exactly who they are.
+            </p>
+            <p>
+              He launched Growfar to bring that same clarity to other creators and business owners — the ones who are great at what they do but need help making their brand match their ambition.
+            </p>
+            <p>
+              Today, Joshua works with a close-knit team of creatives and strategists to deliver everything from brand identity refreshes to full-scale product launch campaigns. Every client gets the same thing: attention, intention, and results.
+            </p>
+            <p>
+              When he's not deep in a brand project, he's creating content on TikTok, testing new digital products, and studying what makes brands not just survive — but <em>dominate</em>.
+            </p>
+          </div>
+
+          <blockquote class="mt-10 border-l-4 border-coral pl-6">
+            <p class="text-white font-serif text-xl italic leading-relaxed">
+              "My team and I — we live for this. There's nothing more satisfying than watching a brand we built start turning heads."
+            </p>
+            <cite class="mt-3 text-white/40 font-sans text-xs uppercase tracking-wider not-italic block">— Joshua Mukui, Founder</cite>
+          </blockquote>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       VALUES
+  ===================================================== -->
+  <section class="bg-plum-800 py-20 md:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+
+      <div class="scroll-reveal mb-14">
+        <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">What Drives Us</span>
+        <h2 class="font-black text-white uppercase leading-tight" style="font-size: clamp(2rem, 4vw, 3.5rem)">
+          Our Values
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-plum-700/40">
+        {[
+          { num: '01', title: 'Trust',      body: 'We do what we say. Timelines, deliverables, and communication — no surprises, no excuses.' },
+          { num: '02', title: 'Creativity', body: 'Every brief gets a genuinely original approach. We don\'t pull from templates — we build from insight.' },
+          { num: '03', title: 'Experience', body: 'Every recommendation we make is grounded in what actually works online — not theory, but tested practice.' },
+          { num: '04', title: 'Results',    body: 'Strategy is nothing without execution. We measure what matters and optimize until we see it move.' },
+        ].map((v, i) => (
+          <div class="bg-plum-800 p-8 md:p-10 scroll-reveal" style={`transition-delay: ${i * 0.1}s`}>
+            <span class="text-coral font-bold text-xs tracking-[0.3em]">{v.num}</span>
+            <h3 class="mt-4 text-white font-black text-2xl uppercase">{v.title}</h3>
+            <p class="mt-4 text-white/50 font-serif text-sm leading-relaxed">{v.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       TEAM
+  ===================================================== -->
+  <section class="bg-plum-900 py-20 md:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+
+      <div class="scroll-reveal mb-14">
+        <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">The Team</span>
+        <h2 class="font-black text-white uppercase leading-tight" style="font-size: clamp(2rem, 4vw, 3.5rem)">
+          The people behind<br/><em class="font-serif not-italic text-coral">the results.</em>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        {[
+          { initial: 'J', name: 'Joshua M.', role: 'Founder & Strategy' },
+          { initial: 'A', name: 'Alex T.',   role: 'Creative Direction'  },
+          { initial: 'M', name: 'Maya K.',   role: 'Content & Social'    },
+          { initial: 'D', name: 'Dev R.',    role: 'Campaign Management' },
+        ].map((member, i) => (
+          <div class="scroll-reveal" style={`transition-delay: ${i * 0.1}s`}>
+            <div class="aspect-square bg-plum-800 relative overflow-hidden group hover:bg-coral transition-colors duration-300">
+              <span class="absolute inset-0 flex items-center justify-center font-black text-plum-700 group-hover:text-plum-900/20 select-none transition-colors" style="font-size: 6rem">{member.initial}</span>
+            </div>
+            <div class="mt-3">
+              <p class="text-white font-bold text-sm">{member.name}</p>
+              <p class="text-white/40 font-serif text-xs mt-0.5">{member.role}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-10 text-white/30 font-serif text-sm scroll-reveal">
+        Our team grows with our clients. We bring in specialized talent when projects demand it — always the right people, never deadweight.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       CTA
+  ===================================================== -->
+  <section class="bg-coral py-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 text-center scroll-reveal">
+      <h2 class="font-black text-plum-900 uppercase leading-tight" style="font-size: clamp(2rem, 5vw, 5rem)">
+        Ready to work<br/>with us?
+      </h2>
+      <p class="mt-6 text-plum-900/60 font-serif text-lg max-w-md mx-auto">
+        Book a 30-minute strategy call. Let's find out if we're the right fit.
+      </p>
+      <a href="/booking"
+         class="mt-8 inline-flex items-center bg-plum-900 hover:bg-plum-800 text-white font-bold uppercase tracking-[0.2em] text-sm px-8 py-4 rounded-full transition-all duration-200 hover:scale-105">
+        Book a Call &rarr;
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>

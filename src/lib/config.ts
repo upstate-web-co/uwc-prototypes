@@ -1,29 +1,17 @@
-/**
- * Project constants and branding.
- * Single source of truth for values used across pages and routes.
- * Update these for each client project.
- */
-
 export const SITE = {
-  name: 'PROJECT_NAME',
-  tagline: 'PROJECT_TAGLINE',
-  url: 'https://PROJECT_DOMAIN',
-  email: 'hello@PROJECT_DOMAIN',
+  name: 'Growfar',
+  tagline: 'Build Bold. Grow Far. — Brand management & digital strategy for creators who mean business.',
+  url: 'https://growfar.co',
+  email: 'hello@growfar.co',
   phone: '',
-  /**
-   * Set to true when the site is ready for search engines.
-   * Default: false (noindex). Launch phase sets this to true.
-   * This is the ONLY place indexing is controlled — never set noindex in pages or components.
-   */
   indexable: false,
 } as const
 
 export const BRAND = {
-  primaryColor: '#2563eb',   // Update per client brand
-  accentColor: '#f59e0b',
+  primaryColor: '#1B0D2A',
+  accentColor: '#FF5C35',
 } as const
 
-// Error code registry — add project-specific codes as needed
 export const ERRORS = {
   VALIDATION_ERROR: { status: 400, message: 'Validation failed' },
   NOT_FOUND: { status: 404, message: 'Resource not found' },

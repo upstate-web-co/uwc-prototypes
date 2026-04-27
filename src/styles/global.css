@@ -1,1 +1,83 @@
 @import "tailwindcss";
+
+@theme {
+  /* Deep Plum Signal palette */
+  --color-plum-950: #0C0617;
+  --color-plum-900: #1B0D2A;
+  --color-plum-800: #271040;
+  --color-plum-700: #3B1859;
+  --color-plum-600: #522877;
+
+  --color-coral: #FF5C35;
+  --color-coral-600: #E64D2A;
+
+  --color-cream: #FAF7F4;
+  --color-cream-200: #EEE7DE;
+
+  --color-gold: #D4A853;
+
+  /* Typography — Bold Studio pairing */
+  --font-sans: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+/* ── Kinetic text reveal ── */
+@keyframes revealUp {
+  from { transform: translateY(110%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+.reveal-line {
+  overflow: hidden;
+  display: block;
+}
+
+.reveal-line > span {
+  display: inline-block;
+  animation: revealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-marquee {
+  animation: marqueeScroll 50s linear infinite;
+  will-change: transform;
+}
+
+/* ── Scroll-triggered reveals ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Custom scrollbar ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #FF5C35 #1B0D2A;
+}
+
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: #1B0D2A; }
+::-webkit-scrollbar-thumb  { background: #FF5C35; border-radius: 2px; }
+
+/* ── Mobile menu hidden state ── */
+#mobile-menu[aria-hidden="true"] { display: none; }

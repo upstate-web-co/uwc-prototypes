@@ -1,0 +1,367 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Services"
+  description="Brand identity, campaign management, product launch packages, and 1-on-1 strategy consultations. Built for digital-first businesses ready to grow."
+>
+
+  <!-- ====================================================
+       PAGE HEADER
+  ===================================================== -->
+  <section class="bg-plum-900 pt-32 pb-16 md:pb-20 px-6 md:px-10 lg:px-16">
+    <div class="max-w-[1400px] mx-auto">
+      <span class="text-coral font-bold text-xs uppercase tracking-[0.35em] block mb-6">What We Offer</span>
+      <h1 class="font-black text-white uppercase leading-[0.88]" style="font-size: clamp(3rem, 9vw, 8rem)">
+        Packages<br/><em class="font-serif not-italic text-coral">Built to Perform.</em>
+      </h1>
+      <p class="mt-8 text-white/50 font-serif text-xl leading-relaxed max-w-2xl">
+        Every package is built for digital-first businesses — from solo creators launching their first product to SMBs ready for a complete brand overhaul.
+      </p>
+    </div>
+  </section>
+
+  <!-- Divider with marquee -->
+  <div class="bg-coral py-3 overflow-hidden">
+    <div class="flex whitespace-nowrap">
+      <div class="animate-marquee flex gap-10 items-center pr-10">
+        {Array(20).fill(0).map((_, i) => (
+          <span class={`font-black text-xs uppercase tracking-[0.2em] ${i % 2 === 0 ? 'text-plum-900' : 'text-plum-900/30'}`}>
+            {i % 2 === 0 ? 'Growfar Services' : '✦'}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================
+       SERVICE 1 — Brand Identity
+  ===================================================== -->
+  <section id="brand-identity" class="bg-plum-950 py-20 md:py-28 scroll-mt-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+        <div class="scroll-reveal">
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">Package 01</span>
+          <h2 class="font-black text-white uppercase leading-tight mb-6" style="font-size: clamp(2rem, 4vw, 3.5rem)">
+            Brand Identity
+          </h2>
+          <p class="text-white/55 font-serif text-base leading-relaxed mb-8">
+            Your brand is more than a logo — it's the full system of signals that tells people who you are before you speak a word. We build that system from scratch or refresh what you have.
+          </p>
+          <div class="space-y-3">
+            {[
+              'Logo design or complete refresh',
+              'Full color system with HEX/RGB codes',
+              'Typography pairing and usage rules',
+              'Brand voice and messaging framework',
+              'Brand guidelines PDF document',
+              '2 rounds of revisions included',
+            ].map(item => (
+              <div class="flex items-start gap-3">
+                <span class="text-coral mt-0.5 shrink-0">&#x25C6;</span>
+                <span class="text-white/70 font-serif text-sm">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div class="mt-10 flex flex-wrap items-center gap-6">
+            <div>
+              <span class="text-white/30 font-sans text-xs uppercase tracking-wider block mb-1">Starting from</span>
+              <span class="text-white font-black text-3xl">$1,200 <span class="text-white/40 text-base font-normal">CAD</span></span>
+            </div>
+            <a href="/booking"
+               class="inline-flex items-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.15em] text-xs px-7 py-3.5 rounded-full transition-all duration-200 hover:scale-105">
+              Get Started &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="scroll-reveal aspect-square bg-plum-800 flex items-center justify-center relative overflow-hidden" style="transition-delay: 0.15s">
+          <span class="font-black text-plum-700 select-none leading-none" style="font-size: 20rem">B</span>
+          <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-plum-800 to-transparent"></div>
+          <div class="absolute top-6 left-6">
+            <div class="w-4 h-4 bg-coral"></div>
+          </div>
+          <div class="absolute top-6 right-6">
+            <div class="w-4 h-4 border-2 border-white/20"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       SERVICE 2 — Campaign Management
+  ===================================================== -->
+  <section id="campaign" class="bg-plum-900 py-20 md:py-28 scroll-mt-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+        <div class="scroll-reveal order-2 lg:order-1 aspect-square bg-plum-800 flex items-center justify-center relative overflow-hidden">
+          <div class="grid grid-cols-2 gap-3 p-8 w-full">
+            {['TikTok', 'Instagram', 'Facebook', 'Strategy'].map((platform, i) => (
+              <div class={`aspect-square flex flex-col items-center justify-center border ${i === 0 ? 'bg-coral border-coral' : 'border-plum-700 bg-plum-900'}`}>
+                <span class={`font-black text-xs uppercase tracking-wider ${i === 0 ? 'text-white' : 'text-white/40'}`}>{platform}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="scroll-reveal order-1 lg:order-2" style="transition-delay: 0.15s">
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">Package 02</span>
+          <h2 class="font-black text-white uppercase leading-tight mb-6" style="font-size: clamp(2rem, 4vw, 3.5rem)">
+            Campaign Management
+          </h2>
+          <p class="text-white/55 font-serif text-base leading-relaxed mb-8">
+            Consistent presence across social media is what separates growing brands from stagnant ones. We run your content machine so you can stay focused on what you do best.
+          </p>
+          <div class="space-y-3">
+            {[
+              'Monthly social media strategy session',
+              'Content calendar (30 days planned ahead)',
+              'Post creation and copywriting',
+              'Scheduling and publishing management',
+              'Platform performance reporting',
+              'Audience engagement monitoring',
+              'TikTok, Instagram, and Facebook coverage',
+            ].map(item => (
+              <div class="flex items-start gap-3">
+                <span class="text-coral mt-0.5 shrink-0">&#x25C6;</span>
+                <span class="text-white/70 font-serif text-sm">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div class="mt-10 flex flex-wrap items-center gap-6">
+            <div>
+              <span class="text-white/30 font-sans text-xs uppercase tracking-wider block mb-1">Monthly retainer from</span>
+              <span class="text-white font-black text-3xl">$800 <span class="text-white/40 text-base font-normal">CAD/mo</span></span>
+            </div>
+            <a href="/booking"
+               class="inline-flex items-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.15em] text-xs px-7 py-3.5 rounded-full transition-all duration-200 hover:scale-105">
+              Get Started &rarr;
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       SERVICE 3 — Product Launch
+  ===================================================== -->
+  <section id="launch" class="bg-plum-800 py-20 md:py-28 scroll-mt-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+        <div class="scroll-reveal">
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">Package 03</span>
+          <h2 class="font-black text-white uppercase leading-tight mb-6" style="font-size: clamp(2rem, 4vw, 3.5rem)">
+            Product Launch Package
+          </h2>
+          <p class="text-white/55 font-serif text-base leading-relaxed mb-8">
+            You've built the product. Now you need the launch to match. We create the full campaign — from pre-launch buzz to post-launch amplification — designed to drive sales from day one.
+          </p>
+          <div class="space-y-3">
+            {[
+              'Launch strategy and positioning document',
+              'Pre-launch hype campaign (2 weeks)',
+              'Launch day content package',
+              'Multi-platform coordination (TikTok + Instagram + Facebook)',
+              'Email campaign sequence',
+              'Performance tracking for 30 days post-launch',
+              'Post-mortem and recommendations report',
+            ].map(item => (
+              <div class="flex items-start gap-3">
+                <span class="text-coral mt-0.5 shrink-0">&#x25C6;</span>
+                <span class="text-white/70 font-serif text-sm">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div class="mt-10 flex flex-wrap items-center gap-6">
+            <div>
+              <span class="text-white/30 font-sans text-xs uppercase tracking-wider block mb-1">Starting from</span>
+              <span class="text-white font-black text-3xl">$2,500 <span class="text-white/40 text-base font-normal">CAD</span></span>
+            </div>
+            <a href="/booking"
+               class="inline-flex items-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.15em] text-xs px-7 py-3.5 rounded-full transition-all duration-200 hover:scale-105">
+              Get Started &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="scroll-reveal bg-plum-900 p-8 md:p-10 flex flex-col justify-between min-h-[400px]" style="transition-delay: 0.15s">
+          <div>
+            <p class="text-white/30 font-bold text-xs uppercase tracking-wider mb-6">Launch Timeline</p>
+            <div class="space-y-4">
+              {[
+                { week: 'Week 1–2', label: 'Strategy & Asset Creation',  active: false },
+                { week: 'Week 3',   label: 'Pre-Launch Hype Campaign',   active: false },
+                { week: 'Week 4',   label: 'Launch Day Execution',       active: true  },
+                { week: 'Post-30',  label: 'Tracking & Optimisation',    active: false },
+              ].map(phase => (
+                <div class={`flex items-center gap-4 p-4 border-l-4 ${phase.active ? 'border-coral bg-coral/10' : 'border-plum-700 bg-plum-800/50'}`}>
+                  <span class="text-white/40 font-sans text-xs uppercase tracking-wider w-20 shrink-0">{phase.week}</span>
+                  <span class={`font-serif text-sm ${phase.active ? 'text-white' : 'text-white/50'}`}>{phase.label}</span>
+                  {phase.active && <span class="ml-auto text-coral font-bold text-xs">LIVE</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+          <p class="mt-8 text-white/30 font-serif text-xs">
+            Timeline adjusted for each project. Expedited launches available.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       SERVICE 4 — Bundle
+  ===================================================== -->
+  <section class="bg-plum-950 py-20 md:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="border border-coral/30 p-8 md:p-12 relative scroll-reveal">
+        <div class="absolute -top-3 left-8">
+          <span class="bg-coral text-white font-bold text-xs uppercase tracking-[0.2em] px-4 py-1">Best Value</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">Package 04</span>
+            <h2 class="font-black text-white uppercase leading-tight mb-6" style="font-size: clamp(2rem, 4vw, 3rem)">
+              Brand + Campaign Bundle
+            </h2>
+            <p class="text-white/55 font-serif text-base leading-relaxed">
+              The complete package for businesses starting fresh or starting over. Get your brand identity built right, then immediately feed it into an ongoing campaign — for less than buying them separately.
+            </p>
+            <div class="mt-8 grid grid-cols-2 gap-4">
+              <div class="bg-plum-800 p-4">
+                <p class="text-coral font-bold text-xs uppercase tracking-wider mb-1">Includes</p>
+                <p class="text-white/60 font-serif text-sm">Full Brand Identity</p>
+              </div>
+              <div class="bg-plum-800 p-4">
+                <p class="text-coral font-bold text-xs uppercase tracking-wider mb-1">Includes</p>
+                <p class="text-white/60 font-serif text-sm">Monthly Campaign Mgmt</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="space-y-2 mb-8">
+              <div class="flex justify-between items-center py-3 border-b border-plum-800">
+                <span class="text-white/60 font-serif text-sm">Brand Identity (one-time)</span>
+                <span class="text-white/40 text-sm line-through">$1,200</span>
+              </div>
+              <div class="flex justify-between items-center py-3 border-b border-plum-800">
+                <span class="text-white/60 font-serif text-sm">Campaign Management (monthly)</span>
+                <span class="text-white/40 text-sm line-through">$800/mo</span>
+              </div>
+              <div class="flex justify-between items-center py-4 bg-coral/10 px-4 -mx-4">
+                <span class="text-white font-bold font-serif">Bundle price</span>
+                <span class="text-coral font-black text-xl">$2,000 + $700/mo <span class="text-white/40 text-xs font-normal">CAD</span></span>
+              </div>
+            </div>
+            <a href="/booking"
+               class="w-full flex items-center justify-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.2em] text-xs px-7 py-4 rounded-full transition-all duration-200 hover:scale-105">
+              Get the Bundle &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       SERVICE 5 — Strategy Consultation
+  ===================================================== -->
+  <section id="consultation" class="bg-plum-900 py-20 md:py-28 scroll-mt-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+        <div class="scroll-reveal">
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">Package 05</span>
+          <h2 class="font-black text-white uppercase leading-tight mb-6" style="font-size: clamp(2rem, 4vw, 3.5rem)">
+            30-Minute Strategy Call
+          </h2>
+          <p class="text-white/55 font-serif text-base leading-relaxed mb-8">
+            Not ready for a full package? Or maybe you just need focused, expert feedback on a specific challenge. Book a direct call with Joshua — come with your question, leave with a roadmap.
+          </p>
+          <div class="space-y-3 mb-10">
+            {[
+              'Direct access to Joshua (no intermediaries)',
+              'Brand strategy, positioning, or naming feedback',
+              'Campaign planning and platform advice',
+              'Digital product launch guidance',
+              'Recorded session available on request',
+            ].map(item => (
+              <div class="flex items-start gap-3">
+                <span class="text-coral mt-0.5 shrink-0">&#x25C6;</span>
+                <span class="text-white/70 font-serif text-sm">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div class="flex flex-wrap items-center gap-6">
+            <div>
+              <span class="text-white/30 font-sans text-xs uppercase tracking-wider block mb-1">Per session</span>
+              <span class="text-white font-black text-3xl">$150 <span class="text-white/40 text-base font-normal">CAD</span></span>
+            </div>
+            <a href="/booking"
+               class="inline-flex items-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.15em] text-xs px-7 py-3.5 rounded-full transition-all duration-200 hover:scale-105">
+              Book Now &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="scroll-reveal bg-plum-800 p-8 md:p-10" style="transition-delay: 0.15s">
+          <p class="text-white/40 font-bold text-xs uppercase tracking-wider mb-6">How it works</p>
+          <div class="space-y-6">
+            {[
+              { step: '1', title: 'Book a time', body: 'Choose a 30-minute slot from Joshua\'s live availability.' },
+              { step: '2', title: 'Share your challenge', body: 'Fill in a short pre-call form so Joshua comes prepared.' },
+              { step: '3', title: 'Join the call', body: 'Zoom video call. Focused, direct, and actionable.' },
+              { step: '4', title: 'Take your plan', body: 'Leave with clear next steps you can act on immediately.' },
+            ].map(s => (
+              <div class="flex gap-5">
+                <span class="w-8 h-8 bg-coral text-white font-black text-sm flex items-center justify-center shrink-0">{s.step}</span>
+                <div>
+                  <p class="text-white font-bold text-sm">{s.title}</p>
+                  <p class="text-white/50 font-serif text-sm mt-1">{s.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       CTA — not sure which?
+  ===================================================== -->
+  <section class="bg-coral py-16 md:py-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-8 scroll-reveal">
+      <div>
+        <h3 class="font-black text-plum-900 uppercase leading-tight" style="font-size: clamp(1.75rem, 3vw, 2.5rem)">
+          Not sure which package fits?
+        </h3>
+        <p class="mt-2 text-plum-900/60 font-serif">
+          Book a free 15-minute discovery call. Zero pressure.
+        </p>
+      </div>
+      <a href="/booking"
+         class="shrink-0 inline-flex items-center bg-plum-900 hover:bg-plum-800 text-white font-bold uppercase tracking-[0.2em] text-sm px-8 py-4 rounded-full transition-all duration-200 hover:scale-105">
+        Book a Free Discovery Call &rarr;
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>

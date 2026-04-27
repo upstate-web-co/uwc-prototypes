@@ -4,120 +4,374 @@ import { SITE } from '../lib/config'
 ---
 
 <BaseLayout title={SITE.name} description={SITE.tagline}>
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-blue-50 to-white px-4 py-20 text-center">
-    <div class="mx-auto max-w-3xl">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-        {SITE.name}
+
+  <!-- ====================================================
+       HERO — Breakout kinetic text + service card grid
+  ===================================================== -->
+  <section class="relative min-h-screen bg-plum-900 flex flex-col justify-between pt-24 pb-0 overflow-hidden">
+
+    <!-- Background decorative element -->
+    <div class="absolute inset-0 pointer-events-none select-none overflow-hidden">
+      <span class="absolute right-[-0.1em] top-[5%] font-black text-[45vw] leading-none text-plum-800/30 font-sans select-none">
+        G
+      </span>
+    </div>
+
+    <!-- Hero content -->
+    <div class="relative z-10 px-6 md:px-10 lg:px-16 pt-12 md:pt-20 flex-1 flex flex-col justify-center">
+
+      <!-- Eyebrow -->
+      <div class="reveal-line mb-6 md:mb-8">
+        <span class="text-coral font-bold text-xs uppercase tracking-[0.35em]"
+              style="animation-delay: 0.05s">
+          Brand Management &nbsp;&middot;&nbsp; Digital Products &nbsp;&middot;&nbsp; Campaign Strategy
+        </span>
+      </div>
+
+      <!-- Display headline -->
+      <h1 class="font-sans font-black leading-[0.88] uppercase">
+        <span class="reveal-line block">
+          <span class="text-white" style="font-size: clamp(3.25rem, 10vw, 9.5rem); animation-delay: 0.15s">
+            Build Bold.
+          </span>
+        </span>
+        <span class="reveal-line block">
+          <span class="text-coral font-serif italic" style="font-size: clamp(3.25rem, 10vw, 9.5rem); animation-delay: 0.3s">
+            Grow Far.
+          </span>
+        </span>
       </h1>
-      <p class="mt-4 text-lg text-gray-600">
-        {SITE.tagline}
-      </p>
-      <div class="mt-8">
-        <a href="#contact" class="rounded-lg bg-blue-600 px-6 py-3 text-lg font-medium text-white hover:bg-blue-700">
-          Get in Touch
+
+      <!-- Sub-headline -->
+      <div class="reveal-line mt-8 md:mt-10 max-w-xl">
+        <span class="text-white/55 font-serif text-lg md:text-xl leading-relaxed block" style="animation-delay: 0.45s">
+          We help ambitious creators and businesses build brands that demand attention — and campaigns that actually convert.
+        </span>
+      </div>
+
+      <!-- CTAs -->
+      <div class="mt-10 flex flex-wrap gap-4" style="animation: fadeInUp 0.6s ease 0.6s both">
+        <a href="/booking"
+           class="inline-flex items-center bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.15em] text-sm px-8 py-4 rounded-full transition-all duration-200 hover:scale-105">
+          Book a Strategy Call
+        </a>
+        <a href="/services"
+           class="inline-flex items-center border border-white/25 hover:border-white/60 text-white font-bold uppercase tracking-[0.15em] text-sm px-8 py-4 rounded-full transition-all duration-200">
+          View Services
         </a>
       </div>
     </div>
-  </section>
 
-  <!-- Services Section -->
-  <section id="services" class="mx-auto max-w-6xl px-4 py-16">
-    <h2 class="text-center text-3xl font-bold text-gray-900">Our Services</h2>
-    <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- Replace with client's actual services -->
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service One</h3>
-        <p class="mt-2 text-gray-600">Description of the first service offering.</p>
-      </div>
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service Two</h3>
-        <p class="mt-2 text-gray-600">Description of the second service offering.</p>
-      </div>
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service Three</h3>
-        <p class="mt-2 text-gray-600">Description of the third service offering.</p>
+    <!-- Service card grid (desktop) / scroll strip (mobile) -->
+    <div class="relative z-10 mt-16 md:mt-20">
+      <div class="flex gap-px overflow-x-auto md:overflow-visible md:grid md:grid-cols-4 scrollbar-none">
+
+        <a href="/services#brand-identity"
+           class="group block min-w-[78vw] sm:min-w-[60vw] md:min-w-0 flex-shrink-0 md:flex-shrink bg-plum-800/60 border-t border-plum-700/50 p-6 md:p-8 hover:bg-coral transition-all duration-300 cursor-pointer">
+          <span class="text-coral group-hover:text-white/60 font-bold text-xs tracking-[0.3em]">01</span>
+          <h3 class="mt-4 text-white font-bold text-lg md:text-xl leading-tight">Brand Identity</h3>
+          <p class="mt-3 text-white/50 group-hover:text-white/80 font-serif text-sm leading-relaxed">
+            Logos, color systems, typography, and brand guidelines that make you impossible to ignore.
+          </p>
+          <div class="mt-6 text-coral group-hover:text-white font-bold text-xs uppercase tracking-[0.2em] flex items-center gap-1.5">
+            Explore <span class="transition-transform group-hover:translate-x-1 inline-block">&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/services#campaign"
+           class="group block min-w-[78vw] sm:min-w-[60vw] md:min-w-0 flex-shrink-0 md:flex-shrink bg-plum-800/40 border-t border-plum-700/50 p-6 md:p-8 hover:bg-coral transition-all duration-300 cursor-pointer">
+          <span class="text-coral group-hover:text-white/60 font-bold text-xs tracking-[0.3em]">02</span>
+          <h3 class="mt-4 text-white font-bold text-lg md:text-xl leading-tight">Campaign Management</h3>
+          <p class="mt-3 text-white/50 group-hover:text-white/80 font-serif text-sm leading-relaxed">
+            Social strategy, content calendars, post scheduling, and performance tracking — all managed for you.
+          </p>
+          <div class="mt-6 text-coral group-hover:text-white font-bold text-xs uppercase tracking-[0.2em] flex items-center gap-1.5">
+            Explore <span class="transition-transform group-hover:translate-x-1 inline-block">&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/services#launch"
+           class="group block min-w-[78vw] sm:min-w-[60vw] md:min-w-0 flex-shrink-0 md:flex-shrink bg-plum-800/60 border-t border-plum-700/50 p-6 md:p-8 hover:bg-coral transition-all duration-300 cursor-pointer">
+          <span class="text-coral group-hover:text-white/60 font-bold text-xs tracking-[0.3em]">03</span>
+          <h3 class="mt-4 text-white font-bold text-lg md:text-xl leading-tight">Product Launches</h3>
+          <p class="mt-3 text-white/50 group-hover:text-white/80 font-serif text-sm leading-relaxed">
+            Full launch campaigns for digital products and brand debuts — from TikTok to global markets.
+          </p>
+          <div class="mt-6 text-coral group-hover:text-white font-bold text-xs uppercase tracking-[0.2em] flex items-center gap-1.5">
+            Explore <span class="transition-transform group-hover:translate-x-1 inline-block">&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/booking"
+           class="group block min-w-[78vw] sm:min-w-[60vw] md:min-w-0 flex-shrink-0 md:flex-shrink bg-plum-800/40 border-t border-plum-700/50 p-6 md:p-8 hover:bg-coral transition-all duration-300 cursor-pointer">
+          <span class="text-coral group-hover:text-white/60 font-bold text-xs tracking-[0.3em]">04</span>
+          <h3 class="mt-4 text-white font-bold text-lg md:text-xl leading-tight">Strategy Calls</h3>
+          <p class="mt-3 text-white/50 group-hover:text-white/80 font-serif text-sm leading-relaxed">
+            30-minute 1-on-1 sessions with Joshua. Direct, actionable guidance for your brand or campaign.
+          </p>
+          <div class="mt-6 text-coral group-hover:text-white font-bold text-xs uppercase tracking-[0.2em] flex items-center gap-1.5">
+            Book Now <span class="transition-transform group-hover:translate-x-1 inline-block">&rarr;</span>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about" class="bg-gray-50 px-4 py-16">
-    <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-3xl font-bold text-gray-900">About Us</h2>
-      <p class="mt-4 text-lg text-gray-600">
-        Replace this with the client's story.
-      </p>
+
+  <!-- ====================================================
+       MARQUEE — service keywords ticker
+  ===================================================== -->
+  <section class="bg-coral overflow-hidden py-4 border-y border-coral-600">
+    <div class="flex whitespace-nowrap">
+      <div class="animate-marquee flex gap-12 items-center pr-12">
+        {[
+          'Brand Identity', 'Campaign Management', 'Digital Products',
+          'TikTok Strategy', 'Product Launches', 'Consultation Calls',
+          'Brand Refresh', 'Social Growth', 'Content Strategy',
+          'Brand Identity', 'Campaign Management', 'Digital Products',
+          'TikTok Strategy', 'Product Launches', 'Consultation Calls',
+          'Brand Refresh', 'Social Growth', 'Content Strategy',
+        ].map((item, i) => (
+          <span class={`font-black text-sm uppercase tracking-[0.2em] ${i % 2 === 1 ? 'text-plum-900/40' : 'text-plum-900'}`}>
+            {i % 2 === 1 ? '✦' : item}
+          </span>
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="mx-auto max-w-2xl px-4 py-16">
-    <h2 class="text-center text-3xl font-bold text-gray-900">Contact Us</h2>
-    <form id="contact-form" class="mt-8 space-y-6" method="POST">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-        <input type="text" id="name" name="name" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
+
+  <!-- ====================================================
+       ABOUT TEASER — light section for contrast
+  ===================================================== -->
+  <section class="bg-cream py-20 md:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+        <!-- Left: large statement -->
+        <div class="scroll-reveal">
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-6">About Growfar</span>
+          <h2 class="font-black text-plum-900 leading-[0.9] uppercase" style="font-size: clamp(3rem, 7vw, 6rem)">
+            We Live<br/>
+            <em class="font-serif not-italic text-coral">For This.</em>
+          </h2>
+          <p class="mt-8 text-plum-900/60 font-serif text-lg leading-relaxed max-w-lg">
+            Started in 2024, Growfar was built on one belief: great brands don't happen by accident. Joshua and his team bring the same energy to every client that they bring to their own work — relentless, creative, and results-obsessed.
+          </p>
+          <a href="/about"
+             class="mt-8 inline-flex items-center gap-2 bg-plum-900 text-white font-bold uppercase tracking-[0.2em] text-xs px-7 py-3.5 rounded-full hover:bg-coral transition-all duration-200">
+            Meet Joshua &rarr;
+          </a>
+        </div>
+
+        <!-- Right: stats -->
+        <div class="scroll-reveal grid grid-cols-2 gap-6" style="transition-delay: 0.15s">
+          <div class="border border-plum-900/10 p-8">
+            <span class="font-black text-plum-900 block leading-none" style="font-size: clamp(2.5rem, 5vw, 4rem)">100%</span>
+            <span class="mt-2 text-plum-900/50 font-serif text-sm block">Online delivery — work with clients anywhere on earth</span>
+          </div>
+          <div class="border border-plum-900/10 p-8 bg-plum-900">
+            <span class="font-black text-coral block leading-none" style="font-size: clamp(2.5rem, 5vw, 4rem)">2024</span>
+            <span class="mt-2 text-white/50 font-serif text-sm block">Founded — built on years of hands-on brand experience</span>
+          </div>
+          <div class="border border-plum-900/10 p-8 bg-plum-900">
+            <span class="font-black text-coral block leading-none" style="font-size: clamp(2.5rem, 5vw, 4rem)">3+</span>
+            <span class="mt-2 text-white/50 font-serif text-sm block">Service packages — from one-time to full retainer</span>
+          </div>
+          <div class="border border-plum-900/10 p-8">
+            <span class="font-black text-plum-900 block leading-none" style="font-size: clamp(2.5rem, 5vw, 4rem)">CAD</span>
+            <span class="mt-2 text-plum-900/50 font-serif text-sm block">Canada-based team with a global client reach</span>
+          </div>
+        </div>
+
       </div>
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" id="email" name="email" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
-      </div>
-      <div>
-        <label for="phone" class="block text-sm font-medium text-gray-700">Phone (optional)</label>
-        <input type="tel" id="phone" name="phone"
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
-      </div>
-      <div>
-        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-        <textarea id="message" name="message" rows="4" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500"></textarea>
-      </div>
-      <button type="submit"
-        class="w-full rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700">
-        Send Message
-      </button>
-      <div id="form-status" class="hidden rounded-lg p-4 text-center text-sm"></div>
-    </form>
+    </div>
   </section>
 
-  <script>
-    const form = document.getElementById('contact-form') as HTMLFormElement
-    const status = document.getElementById('form-status') as HTMLElement
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault()
-      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement
-      btn.disabled = true
-      btn.textContent = 'Sending...'
-      status.classList.add('hidden')
+  <!-- ====================================================
+       SERVICES DEEP-DIVE — plum-800 section
+  ===================================================== -->
+  <section class="bg-plum-800 py-20 md:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
 
-      try {
-        const data = Object.fromEntries(new FormData(form))
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        })
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-14 scroll-reveal">
+        <div>
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">What We Do</span>
+          <h2 class="font-black text-white leading-[0.9] uppercase" style="font-size: clamp(2.5rem, 5vw, 4.5rem)">
+            Every brand is<br/>a story.<br/>
+            <em class="font-serif not-italic text-coral">We write yours.</em>
+          </h2>
+        </div>
+        <a href="/services"
+           class="shrink-0 self-start md:self-auto border border-white/20 hover:border-white text-white font-bold uppercase tracking-[0.2em] text-xs px-7 py-3.5 rounded-full transition-all duration-200">
+          All Services &rarr;
+        </a>
+      </div>
 
-        if (res.ok) {
-          status.textContent = 'Message sent! We\'ll be in touch soon.'
-          status.className = 'rounded-lg bg-green-50 p-4 text-center text-sm text-green-700'
-          form.reset()
-        } else {
-          const err = await res.json()
-          status.textContent = err.error || 'Something went wrong. Please try again.'
-          status.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
-        }
-      } catch {
-        status.textContent = 'Network error. Please try again.'
-        status.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
-      } finally {
-        btn.disabled = false
-        btn.textContent = 'Send Message'
-      }
-    })
-  </script>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-plum-700/40">
+
+        <div class="bg-plum-800 p-8 md:p-10 scroll-reveal group hover:bg-plum-700 transition-colors duration-300">
+          <div class="w-10 h-10 bg-coral/10 flex items-center justify-center mb-6">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2L12.5 7.5H18L13.5 11L15.5 17L10 13.5L4.5 17L6.5 11L2 7.5H7.5L10 2Z" fill="#FF5C35"/>
+            </svg>
+          </div>
+          <h3 class="text-white font-bold text-xl mb-3">Brand Identity Package</h3>
+          <p class="text-white/50 font-serif text-sm leading-relaxed mb-6">
+            Logo design or refresh, complete color system, typography selection, and a brand guidelines document your whole team can use.
+          </p>
+          <span class="text-coral font-bold text-xs uppercase tracking-wider">Starting from $1,200 CAD</span>
+        </div>
+
+        <div class="bg-plum-800 p-8 md:p-10 scroll-reveal group hover:bg-plum-700 transition-colors duration-300" style="transition-delay: 0.1s">
+          <div class="w-10 h-10 bg-coral/10 flex items-center justify-center mb-6">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="6" height="6" fill="#FF5C35"/>
+              <rect x="12" y="2" width="6" height="6" fill="#FF5C35" opacity="0.5"/>
+              <rect x="2" y="12" width="6" height="6" fill="#FF5C35" opacity="0.5"/>
+              <rect x="12" y="12" width="6" height="6" fill="#FF5C35"/>
+            </svg>
+          </div>
+          <h3 class="text-white font-bold text-xl mb-3">Campaign Management</h3>
+          <p class="text-white/50 font-serif text-sm leading-relaxed mb-6">
+            Monthly retainer covering your full social strategy — content calendar, post creation, scheduling, and platform performance tracking.
+          </p>
+          <span class="text-coral font-bold text-xs uppercase tracking-wider">Starting from $800/month CAD</span>
+        </div>
+
+        <div class="bg-plum-800 p-8 md:p-10 scroll-reveal group hover:bg-plum-700 transition-colors duration-300" style="transition-delay: 0.2s">
+          <div class="w-10 h-10 bg-coral/10 flex items-center justify-center mb-6">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2V12M10 2L6 6M10 2L14 6" stroke="#FF5C35" stroke-width="2" stroke-linecap="round"/>
+              <path d="M3 14H17V17H3V14Z" fill="#FF5C35" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3 class="text-white font-bold text-xl mb-3">Product Launch Package</h3>
+          <p class="text-white/50 font-serif text-sm leading-relaxed mb-6">
+            End-to-end launch campaign for your digital products or new business — from strategy and asset creation to multi-platform amplification.
+          </p>
+          <span class="text-coral font-bold text-xs uppercase tracking-wider">Starting from $2,500 CAD</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       BLOG TEASER
+  ===================================================== -->
+  <section class="bg-plum-950 py-20 md:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 scroll-reveal">
+        <div>
+          <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-4">From the Blog</span>
+          <h2 class="font-black text-white uppercase leading-tight" style="font-size: clamp(2rem, 4vw, 3.5rem)">
+            Insight. Strategy.<br/><em class="font-serif not-italic text-white/50">Straight from the field.</em>
+          </h2>
+        </div>
+        <a href="/blog"
+           class="shrink-0 self-start md:self-auto text-coral hover:text-white font-bold uppercase tracking-[0.2em] text-xs transition-colors">
+          All Articles &rarr;
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <article class="scroll-reveal group border border-plum-800 hover:border-coral transition-colors duration-300">
+          <div class="h-48 bg-plum-800 overflow-hidden">
+            <div class="w-full h-full bg-gradient-to-br from-plum-700 to-plum-900 flex items-end p-6 group-hover:from-coral/20 transition-all duration-500">
+              <span class="text-coral font-bold text-xs uppercase tracking-wider">Brand Strategy</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-white/30 font-sans text-xs mb-3">April 15, 2026</p>
+            <h3 class="text-white font-bold text-lg leading-snug mb-3 group-hover:text-coral transition-colors">
+              5 Brand Identity Mistakes That Are Costing You Clients
+            </h3>
+            <p class="text-white/50 font-serif text-sm leading-relaxed">
+              Your logo is not your brand. Your colors are not your brand. Here's what actually builds the identity that converts.
+            </p>
+            <a href="/blog" class="mt-5 inline-flex items-center gap-1.5 text-coral font-bold text-xs uppercase tracking-wider">
+              Read <span>&rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="scroll-reveal group border border-plum-800 hover:border-coral transition-colors duration-300" style="transition-delay: 0.1s">
+          <div class="h-48 bg-plum-800 overflow-hidden">
+            <div class="w-full h-full bg-gradient-to-br from-coral/20 to-plum-800 flex items-end p-6">
+              <span class="text-coral font-bold text-xs uppercase tracking-wider">Social Media</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-white/30 font-sans text-xs mb-3">April 10, 2026</p>
+            <h3 class="text-white font-bold text-lg leading-snug mb-3 group-hover:text-coral transition-colors">
+              Why TikTok Is Still the #1 Platform for Digital Product Launches
+            </h3>
+            <p class="text-white/50 font-serif text-sm leading-relaxed">
+              In 2026, TikTok's algorithm continues to reward authentic creators. Here's how to leverage that for your next launch.
+            </p>
+            <a href="/blog" class="mt-5 inline-flex items-center gap-1.5 text-coral font-bold text-xs uppercase tracking-wider">
+              Read <span>&rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="scroll-reveal group border border-plum-800 hover:border-coral transition-colors duration-300" style="transition-delay: 0.2s">
+          <div class="h-48 bg-plum-800 overflow-hidden">
+            <div class="w-full h-full bg-gradient-to-br from-plum-700 to-plum-950 flex items-end p-6">
+              <span class="text-coral font-bold text-xs uppercase tracking-wider">Behind the Scenes</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-white/30 font-sans text-xs mb-3">April 3, 2026</p>
+            <h3 class="text-white font-bold text-lg leading-snug mb-3 group-hover:text-coral transition-colors">
+              From Concept to Campaign in 21 Days: The Growfar Process
+            </h3>
+            <p class="text-white/50 font-serif text-sm leading-relaxed">
+              We don't believe in slow. Here's exactly how our team takes a brand from raw concept to fully launched campaign.
+            </p>
+            <a href="/blog" class="mt-5 inline-flex items-center gap-1.5 text-coral font-bold text-xs uppercase tracking-wider">
+              Read <span>&rarr;</span>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       CTA BANNER — coral
+  ===================================================== -->
+  <section class="bg-coral py-20 md:py-24">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 text-center">
+      <div class="scroll-reveal">
+        <span class="text-plum-900/50 font-bold text-xs uppercase tracking-[0.35em] block mb-6">Ready to Grow Far?</span>
+        <h2 class="font-black text-plum-900 leading-[0.9] uppercase" style="font-size: clamp(2.5rem, 7vw, 7rem)">
+          Let's Build<br/>
+          <em class="font-serif not-italic">Something Bold.</em>
+        </h2>
+        <p class="mt-8 text-plum-900/60 font-serif text-lg max-w-xl mx-auto leading-relaxed">
+          Book a 30-minute strategy call with Joshua. Come with your challenge — leave with a plan.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a href="/booking"
+             class="inline-flex items-center bg-plum-900 hover:bg-plum-800 text-white font-bold uppercase tracking-[0.2em] text-sm px-8 py-4 rounded-full transition-all duration-200 hover:scale-105">
+            Book a Strategy Call &rarr;
+          </a>
+          <a href="/services"
+             class="inline-flex items-center border-2 border-plum-900/30 hover:border-plum-900 text-plum-900 font-bold uppercase tracking-[0.15em] text-sm px-8 py-4 rounded-full transition-all duration-200">
+            See Packages
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>

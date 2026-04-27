@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+
+const posts = [
+  {
+    slug: '#',
+    category: 'Brand Strategy',
+    date: 'April 15, 2026',
+    title: '5 Brand Identity Mistakes That Are Costing You Clients',
+    excerpt: "Your logo is not your brand. Your colors are not your brand. Here's what actually builds the identity that converts prospects into loyal buyers — and how to fix what's broken.",
+    featured: true,
+  },
+  {
+    slug: '#',
+    category: 'Social Media',
+    date: 'April 10, 2026',
+    title: 'Why TikTok Is Still the #1 Platform for Digital Product Launches',
+    excerpt: "In 2026, TikTok's algorithm continues to reward authentic creators. Here's how to leverage that momentum for your next digital product launch — even if you're starting from zero.",
+    featured: false,
+  },
+  {
+    slug: '#',
+    category: 'Behind the Scenes',
+    date: 'April 3, 2026',
+    title: 'From Concept to Campaign in 21 Days: The Growfar Process',
+    excerpt: "We don't believe in slow. Here's exactly how our team takes a brand from raw concept to fully launched campaign in three weeks.",
+    featured: false,
+  },
+  {
+    slug: '#',
+    category: 'Digital Products',
+    date: 'March 28, 2026',
+    title: 'How to Price Your Digital Products for Maximum Conversions',
+    excerpt: "Pricing digital products is part strategy, part psychology. Get it wrong and you leave money on the table. Get it right and your product sells while you sleep.",
+    featured: false,
+  },
+  {
+    slug: '#',
+    category: 'Brand Strategy',
+    date: 'March 20, 2026',
+    title: "What \"Brand Refresh\" Actually Means (And When You Need One)",
+    excerpt: "A rebrand isn't always the answer. But a targeted brand refresh? That can be the thing that unlocks a whole new level of perception — without starting over.",
+    featured: false,
+  },
+  {
+    slug: '#',
+    category: 'Campaign Management',
+    date: 'March 12, 2026',
+    title: 'The Content Calendar System We Use for Every Client',
+    excerpt: "Ad-hoc posting is the enemy of consistent growth. Here's the exact content calendar system we use internally — and how to adapt it for your business.",
+    featured: false,
+  },
+]
+
+const featuredPost = posts.find(p => p.featured)!
+const otherPosts   = posts.filter(p => !p.featured)
+---
+
+<BaseLayout
+  title="Blog"
+  description="Brand strategy, social media insights, and behind-the-scenes posts from the Growfar team."
+>
+
+  <!-- ====================================================
+       PAGE HEADER
+  ===================================================== -->
+  <section class="bg-plum-900 pt-32 pb-16 px-6 md:px-10 lg:px-16">
+    <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
+      <div>
+        <span class="text-coral font-bold text-xs uppercase tracking-[0.35em] block mb-6">Growfar Blog</span>
+        <h1 class="font-black text-white uppercase leading-[0.88]" style="font-size: clamp(3rem, 8vw, 7rem)">
+          Insight.<br/><em class="font-serif not-italic text-coral">Strategy.</em>
+        </h1>
+      </div>
+      <p class="text-white/40 font-serif text-base max-w-xs leading-relaxed">
+        Brand intelligence, social media tactics, and behind-the-scenes from the Growfar team.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       FEATURED POST
+  ===================================================== -->
+  <section class="bg-plum-950 py-16 md:py-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <a href={featuredPost.slug}
+         class="group grid grid-cols-1 lg:grid-cols-2 gap-0 border border-plum-800 hover:border-coral transition-colors duration-300">
+        <div class="aspect-video lg:aspect-auto bg-plum-800 flex items-end p-8 relative overflow-hidden min-h-[280px]">
+          <div class="absolute inset-0 bg-gradient-to-br from-coral/10 to-plum-950"></div>
+          <div class="absolute top-0 right-0 w-1/2 h-full flex items-center justify-center">
+            <span class="font-black text-plum-700 select-none leading-none" style="font-size: 12rem">5</span>
+          </div>
+          <div class="relative z-10">
+            <span class="bg-coral text-white font-bold text-xs uppercase tracking-[0.2em] px-3 py-1">Featured</span>
+          </div>
+        </div>
+        <div class="bg-plum-900 p-8 md:p-10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-4 mb-4">
+              <span class="text-coral font-bold text-xs uppercase tracking-wider">{featuredPost.category}</span>
+              <span class="text-white/25 text-xs">{featuredPost.date}</span>
+            </div>
+            <h2 class="text-white font-black text-2xl md:text-3xl leading-tight group-hover:text-coral transition-colors">
+              {featuredPost.title}
+            </h2>
+            <p class="mt-4 text-white/50 font-serif text-base leading-relaxed">
+              {featuredPost.excerpt}
+            </p>
+          </div>
+          <div class="mt-8 flex items-center gap-2 text-coral font-bold text-xs uppercase tracking-wider">
+            Read Article <span class="transition-transform group-hover:translate-x-1 inline-block">&rarr;</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       POST GRID
+  ===================================================== -->
+  <section class="bg-plum-900 py-16 md:py-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {otherPosts.map((post, i) => (
+          <article class="scroll-reveal group border border-plum-800 hover:border-coral transition-colors duration-300 flex flex-col"
+                   style={`transition-delay: ${i * 0.08}s`}>
+            <div class="h-44 bg-plum-800 relative overflow-hidden flex-shrink-0">
+              <div class={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${
+                i % 3 === 0 ? 'from-plum-700 to-plum-950'   :
+                i % 3 === 1 ? 'from-coral/15 to-plum-900'   :
+                              'from-plum-800 to-plum-950'
+              }`}>
+                <span class="font-black text-plum-700/40 select-none leading-none" style="font-size: 8rem">{(i + 2)}</span>
+              </div>
+              <div class="absolute bottom-4 left-4">
+                <span class="text-coral font-bold text-xs uppercase tracking-wider">{post.category}</span>
+              </div>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <p class="text-white/30 font-sans text-xs mb-3">{post.date}</p>
+              <h3 class="text-white font-bold text-base leading-snug mb-3 group-hover:text-coral transition-colors flex-1">
+                {post.title}
+              </h3>
+              <p class="text-white/50 font-serif text-sm leading-relaxed line-clamp-3">
+                {post.excerpt}
+              </p>
+              <a href={post.slug}
+                 class="mt-5 inline-flex items-center gap-1.5 text-coral font-bold text-xs uppercase tracking-wider">
+                Read <span class="transition-transform group-hover:translate-x-1 inline-block">&rarr;</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Newsletter signup -->
+      <div class="mt-16 bg-plum-800 p-8 md:p-12 scroll-reveal">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <span class="text-coral font-bold text-xs uppercase tracking-[0.3em] block mb-3">Stay Sharp</span>
+            <h3 class="text-white font-black text-2xl uppercase">Get brand insights<br/>straight to your inbox.</h3>
+            <p class="mt-3 text-white/40 font-serif text-sm">No fluff. Just actionable brand and marketing strategy from the Growfar team.</p>
+          </div>
+          <form class="flex gap-3">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              class="flex-1 bg-plum-900 border border-plum-700 focus:border-coral text-white font-serif text-sm px-4 py-3 outline-none placeholder-white/25 transition-colors"
+            />
+            <button
+              type="submit"
+              class="shrink-0 bg-coral hover:bg-coral-600 text-white font-bold text-xs uppercase tracking-[0.2em] px-6 py-3 transition-colors">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>

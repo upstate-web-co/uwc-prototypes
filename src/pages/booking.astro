@@ -1,0 +1,237 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Book a Call"
+  description="Book a 30-minute strategy call with Joshua Mukui. Direct, focused, and actionable guidance for your brand or campaign."
+>
+
+  <!-- ====================================================
+       PAGE HEADER
+  ===================================================== -->
+  <section class="bg-plum-900 pt-32 pb-16 px-6 md:px-10 lg:px-16">
+    <div class="max-w-[1400px] mx-auto">
+      <span class="text-coral font-bold text-xs uppercase tracking-[0.35em] block mb-6">Book a Session</span>
+      <h1 class="font-black text-white uppercase leading-[0.88]" style="font-size: clamp(3rem, 9vw, 8rem)">
+        Let's Talk<br/><em class="font-serif not-italic text-coral">Strategy.</em>
+      </h1>
+      <p class="mt-8 text-white/50 font-serif text-xl leading-relaxed max-w-2xl">
+        A 30-minute call with Joshua. Come with your challenge. Leave with a plan you can act on today.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       WHAT TO EXPECT
+  ===================================================== -->
+  <section class="bg-plum-950 py-16 md:py-20">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-plum-800/50">
+        {[
+          { label: 'Duration',  value: '30 min', sub: 'Focused and efficient' },
+          { label: 'Format',    value: 'Zoom',   sub: 'Video call, recorded on request' },
+          { label: 'Prep',      value: '5 min',  sub: 'Short pre-call form' },
+          { label: 'Rate',      value: '$150',   sub: 'CAD per session' },
+        ].map(item => (
+          <div class="bg-plum-950 p-6 md:p-8">
+            <p class="text-coral font-bold text-xs uppercase tracking-[0.25em] mb-2">{item.label}</p>
+            <p class="text-white font-black text-2xl md:text-3xl">{item.value}</p>
+            <p class="text-white/35 font-serif text-xs mt-1">{item.sub}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       CALENDAR + FORM
+  ===================================================== -->
+  <section class="bg-plum-900 py-16 md:py-24">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
+
+        <!-- Calendar placeholder (left) -->
+        <div class="lg:col-span-3 scroll-reveal">
+          <h2 class="font-black text-white uppercase text-2xl mb-8">Choose a Time</h2>
+
+          <!-- Calendar UI placeholder -->
+          <div class="bg-plum-800 border border-plum-700">
+            <!-- Month header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-plum-700">
+              <button class="text-white/40 hover:text-white transition-colors font-bold text-sm">&larr;</button>
+              <span class="text-white font-bold uppercase tracking-wider text-sm">May 2026</span>
+              <button class="text-white/40 hover:text-white transition-colors font-bold text-sm">&rarr;</button>
+            </div>
+            <!-- Day labels -->
+            <div class="grid grid-cols-7 border-b border-plum-700">
+              {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
+                <div class="text-center py-3 text-white/30 font-bold text-xs uppercase tracking-wider">{d}</div>
+              ))}
+            </div>
+            <!-- Calendar grid -->
+            <div class="grid grid-cols-7">
+              {/* Empty cells for first week offset (May 2026 starts on Friday) */}
+              {[...Array(5)].map(() => <div class="aspect-square border border-plum-700/30"></div>)}
+              {[...Array(31)].map((_, i) => {
+                const day = i + 1
+                const isAvailable = [2,5,6,8,9,12,13,15,16,19,20,22,23].includes(day)
+                const isSelected  = day === 8
+                return (
+                  <button
+                    class={`aspect-square border border-plum-700/30 text-sm font-bold flex items-center justify-center transition-all duration-150
+                      ${isSelected  ? 'bg-coral text-white border-coral'        :
+                        isAvailable ? 'text-white hover:bg-coral/20 hover:border-coral/50 cursor-pointer' :
+                                      'text-white/20 cursor-not-allowed'}`}
+                  >
+                    {day}
+                  </button>
+                )
+              })}
+            </div>
+            <!-- Time slots -->
+            <div class="border-t border-plum-700 p-6">
+              <p class="text-white/40 font-bold text-xs uppercase tracking-wider mb-4">Available Times — Friday, May 8</p>
+              <div class="grid grid-cols-3 gap-2">
+                {['9:00 AM','9:30 AM','10:00 AM','10:30 AM','2:00 PM','2:30 PM','3:00 PM','4:00 PM','4:30 PM'].map((time, i) => (
+                  <button
+                    class={`py-2.5 text-xs font-bold uppercase tracking-wider border transition-all duration-150 ${
+                      i === 2
+                        ? 'bg-coral border-coral text-white'
+                        : 'border-plum-700 text-white/60 hover:border-coral hover:text-white'
+                    }`}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+              <p class="mt-4 text-white/25 font-serif text-xs">All times in Eastern Time (ET). Adjust for your timezone.</p>
+            </div>
+          </div>
+
+          <p class="mt-4 text-white/25 font-serif text-xs">
+            * Live scheduling powered by Calendly — integration active on launch.
+          </p>
+        </div>
+
+        <!-- Booking form (right) -->
+        <div class="lg:col-span-2 scroll-reveal" style="transition-delay: 0.15s">
+          <h2 class="font-black text-white uppercase text-2xl mb-8">Your Details</h2>
+
+          <form id="booking-form" class="space-y-4">
+            <div>
+              <label for="name" class="block text-white/50 font-bold text-xs uppercase tracking-[0.2em] mb-2">Full Name</label>
+              <input
+                type="text" id="name" name="name" required
+                placeholder="Your name"
+                class="w-full bg-plum-800 border border-plum-700 focus:border-coral text-white font-serif text-sm px-4 py-3.5 outline-none placeholder-white/20 transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block text-white/50 font-bold text-xs uppercase tracking-[0.2em] mb-2">Email</label>
+              <input
+                type="email" id="email" name="email" required
+                placeholder="your@email.com"
+                class="w-full bg-plum-800 border border-plum-700 focus:border-coral text-white font-serif text-sm px-4 py-3.5 outline-none placeholder-white/20 transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="business" class="block text-white/50 font-bold text-xs uppercase tracking-[0.2em] mb-2">Business / Project Name</label>
+              <input
+                type="text" id="business" name="business"
+                placeholder="Optional"
+                class="w-full bg-plum-800 border border-plum-700 focus:border-coral text-white font-serif text-sm px-4 py-3.5 outline-none placeholder-white/20 transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="service" class="block text-white/50 font-bold text-xs uppercase tracking-[0.2em] mb-2">What do you need help with?</label>
+              <select
+                id="service" name="service"
+                class="w-full bg-plum-800 border border-plum-700 focus:border-coral text-white font-serif text-sm px-4 py-3.5 outline-none transition-colors appearance-none cursor-pointer"
+              >
+                <option value="" class="bg-plum-800">Select an area...</option>
+                <option value="brand-identity" class="bg-plum-800">Brand Identity / Refresh</option>
+                <option value="campaign" class="bg-plum-800">Campaign Management</option>
+                <option value="launch" class="bg-plum-800">Product Launch</option>
+                <option value="bundle" class="bg-plum-800">Brand + Campaign Bundle</option>
+                <option value="general" class="bg-plum-800">General Strategy</option>
+                <option value="other" class="bg-plum-800">Other / Not Sure Yet</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="challenge" class="block text-white/50 font-bold text-xs uppercase tracking-[0.2em] mb-2">
+                Describe your challenge <span class="text-white/25 normal-case tracking-normal">(optional but helps Joshua prep)</span>
+              </label>
+              <textarea
+                id="challenge" name="challenge" rows="4"
+                placeholder="What's the main thing you want to walk away with from this call?"
+                class="w-full bg-plum-800 border border-plum-700 focus:border-coral text-white font-serif text-sm px-4 py-3.5 outline-none placeholder-white/20 transition-colors resize-none"
+              ></textarea>
+            </div>
+
+            <div class="pt-2">
+              <button
+                type="submit"
+                class="w-full bg-coral hover:bg-coral-600 text-white font-bold uppercase tracking-[0.2em] text-sm py-4 rounded-full transition-all duration-200 hover:scale-[1.02]"
+              >
+                Confirm Booking — $150 CAD
+              </button>
+              <p class="mt-3 text-white/25 font-serif text-xs text-center">
+                You'll receive a confirmation email with Zoom link and payment instructions.
+              </p>
+            </div>
+
+            <div id="form-status" class="hidden"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       TRUST SIGNALS
+  ===================================================== -->
+  <section class="bg-plum-800 py-12">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          { title: 'No Sales Pitch',     body: "This is a strategy session, not a discovery call dressed up as one. You'll get real, actionable insight regardless of whether you hire us." },
+          { title: 'Direct Access',      body: "You're speaking directly with Joshua — not an account manager or junior team member. Every call is personal." },
+          { title: 'Cancel Anytime',     body: "Life happens. Cancel or reschedule up to 24 hours before your slot at no charge." },
+        ].map((item, i) => (
+          <div class="scroll-reveal" style={`transition-delay: ${i * 0.1}s`}>
+            <span class="text-coral font-bold text-xs uppercase tracking-[0.25em] block mb-3">{item.title}</span>
+            <p class="text-white/45 font-serif text-sm leading-relaxed">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script>
+  const form   = document.getElementById('booking-form') as HTMLFormElement
+  const status = document.getElementById('form-status') as HTMLElement
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement
+    btn.disabled = true
+    btn.textContent = 'Processing...'
+
+    // Simulate booking confirmation for prototype
+    await new Promise(r => setTimeout(r, 1200))
+    btn.textContent = 'Booking Confirmed!'
+    status.innerHTML = '<p class="mt-2 text-sm font-serif text-center" style="color: #FF5C35">You\'re booked! Check your email for the Zoom link and payment details.</p>'
+    status.classList.remove('hidden')
+  })
+</script>
