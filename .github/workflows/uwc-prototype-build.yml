@@ -57,7 +57,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: ${{ inputs.prompt }}
-          claude_args: --max-turns 30 --dangerously-skip-permissions
+          claude_args: --max-turns 60 --dangerously-skip-permissions
 
       - name: Commit Claude's changes
         run: |
