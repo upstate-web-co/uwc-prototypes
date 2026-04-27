@@ -161,10 +161,19 @@ jobs:
               --arg status "$STATUS" \
               '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status}')
           fi
-          # HMAC-SHA256 over body using shared secret
-          SIG=$(printf '%s' "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.PROTOTYPE_BUILD_WEBHOOK_SECRET }}" | awk '{print $2}')
+          # 2026-04-27 audit F3 Phase 2: HMAC-SHA256 now signs over
+          # `${PAYLOAD}.${TS}.${NONCE}` and sends X-UWC-Ts + X-UWC-Nonce
+          # alongside x-uwc-prototype-sig. Admin (verifyWebhookHmac scope=
+          # 'prototype-build') atomically records the nonce in
+          # portal_request_nonces (10-min TTL), rejecting replays.
+          # Admin still accepts legacy body-only sigs during rollout.
+          TS=$(($(date +%s%N) / 1000000))
+          NONCE=$(openssl rand -hex 16)
+          SIG=$(printf '%s.%s.%s' "$PAYLOAD" "$TS" "$NONCE" | openssl dgst -sha256 -hmac "${{ secrets.PROTOTYPE_BUILD_WEBHOOK_SECRET }}" | awk '{print $2}')
           curl -sS -X POST \
             -H "content-type: application/json" \
             -H "x-uwc-prototype-sig: $SIG" \
+            -H "X-UWC-Ts: $TS" \
+            -H "X-UWC-Nonce: $NONCE" \
             -d "$PAYLOAD" \
             https://agency.upstate-web.com/api/webhooks/prototype-build
