@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE } from '../lib/config'
+---
+
+<BaseLayout title="Contact — The Tech Shop" description="Email, phone, or come by The Tech Shop in Charlestown." active="contact">
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-10">
+      <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Contact</p>
+      <h1 class="mt-1 font-display text-4xl font-bold tracking-tight">Get in touch.</h1>
+      <p class="mt-2 max-w-2xl text-slate-600">For repair bookings, use the booking page so we can hold a bench. For everything else, drop a note here.</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
+      <!-- Contact form -->
+      <form id="contact-form" class="ts-card space-y-5 p-6">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="c-name" class="ts-label">Name</label>
+            <input id="c-name" name="name" type="text" required class="ts-input" />
+          </div>
+          <div>
+            <label for="c-email" class="ts-label">Email</label>
+            <input id="c-email" name="email" type="email" required class="ts-input" />
+          </div>
+        </div>
+        <div>
+          <label for="c-subject" class="ts-label">Topic</label>
+          <select id="c-subject" name="subject" class="ts-input">
+            <option value="general">General question</option>
+            <option value="wishlist">Wishlist / restock request</option>
+            <option value="business">Small business / fleet</option>
+            <option value="custom">Custom PC build</option>
+            <option value="hiring">Hiring</option>
+          </select>
+        </div>
+        <div>
+          <label for="c-message" class="ts-label">Message</label>
+          <textarea id="c-message" name="message" rows="5" required class="ts-input" placeholder="Tell us what you need…"></textarea>
+        </div>
+        <button type="submit" class="ts-btn w-full">Send message →</button>
+        <div id="c-status" class="hidden rounded-lg p-3 text-center text-sm"></div>
+      </form>
+
+      <!-- Sidebar -->
+      <aside class="space-y-4">
+        <div class="ts-card p-5">
+          <h3 class="font-display text-lg font-bold">Visit</h3>
+          <p class="mt-2 text-sm text-slate-700">{SITE.address}</p>
+          <p class="mt-1 text-sm text-slate-700">{SITE.hours}</p>
+        </div>
+        <div class="ts-card p-5">
+          <h3 class="font-display text-lg font-bold">Call or write</h3>
+          <p class="mt-2 text-sm text-slate-700">
+            <a href={`tel:+15550102233`} class="underline">{SITE.phone}</a>
+          </p>
+          <p class="mt-1 text-sm text-slate-700">
+            <a href={`mailto:${SITE.email}`} class="underline">{SITE.email}</a>
+          </p>
+        </div>
+        <div class="ts-card p-5">
+          <h3 class="font-display text-lg font-bold">Social</h3>
+          <ul class="mt-2 space-y-1 text-sm">
+            <li><a href="https://facebook.com/TheTechShop" class="underline hover:text-slate-900" rel="noopener">Facebook · TheTechShop</a></li>
+            <li><a href="https://instagram.com/TheTechShop" class="underline hover:text-slate-900" rel="noopener">Instagram · @TheTechShop</a></li>
+            <li><a href="https://tiktok.com/@TheTechShop" class="underline hover:text-slate-900" rel="noopener">TikTok · @TheTechShop</a></li>
+          </ul>
+        </div>
+        <div class="ts-card bg-[var(--color-ink)] p-5 text-white">
+          <p class="text-xs uppercase tracking-wide text-slate-300">Reminder</p>
+          <p class="mt-1 font-display text-base font-bold">Repairs and trade-ins go through <a href="/booking" class="underline">Booking</a> so we can hold a slot.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement
+    const status = document.getElementById('c-status') as HTMLElement
+    const params = new URLSearchParams(location.search)
+    const subject = params.get('subject')
+    if (subject) {
+      const sel = document.getElementById('c-subject') as HTMLSelectElement | null
+      if (sel) sel.value = subject
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement
+      btn.disabled = true
+      btn.textContent = 'Sending…'
+      setTimeout(() => {
+        status.classList.remove('hidden')
+        status.textContent = "Thanks — we'll respond within a business day."
+        status.className = 'rounded-lg bg-lime-50 p-3 text-center text-sm text-lime-800'
+        form.reset()
+        btn.disabled = false
+        btn.textContent = 'Send another →'
+      }, 700)
+    })
+  </script>
+</BaseLayout>

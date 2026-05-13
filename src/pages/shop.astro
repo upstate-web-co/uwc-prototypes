@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ProductCard from '../components/ProductCard.astro'
+import { PRODUCTS, CATEGORIES } from '../lib/products'
+
+const counts = Object.fromEntries(
+  CATEGORIES.map((c) => [c.key, PRODUCTS.filter((p) => p.category === c.key).length])
+)
+---
+
+<BaseLayout title="Shop the Floor — The Tech Shop" description="Browse refurbished laptops, phones, consoles, accessories, and limited merch." active="shop">
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-10">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Shop</p>
+          <h1 class="mt-1 font-display text-4xl font-bold tracking-tight">Everything on the floor</h1>
+          <p class="mt-2 max-w-2xl text-slate-600">
+            We keep around 50 unique products in store. What's online matches what's in the case — if it shows out of
+            stock, it's not in the back either.
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="ts-label mb-0">Sort</label>
+          <select id="sort" class="ts-input w-44">
+            <option value="featured">Featured</option>
+            <option value="low">Price: low → high</option>
+            <option value="high">Price: high → low</option>
+            <option value="stock">Most in stock</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category pills -->
+      <div class="mt-6 flex flex-wrap gap-2">
+        <button data-cat="all" class="ts-cat-btn rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-slate-400">
+          All <span class="text-slate-400">({PRODUCTS.length})</span>
+        </button>
+        {CATEGORIES.map((c) => (
+          <button data-cat={c.key} class="ts-cat-btn rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-slate-400">
+            {c.label} <span class="text-slate-400">({counts[c.key]})</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <p id="shop-result-count" class="mb-4 text-sm text-slate-600">Showing {PRODUCTS.length} items</p>
+    <div id="shop-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {PRODUCTS.map((p) => (
+        <div data-product data-cat={p.category} data-price={p.price} data-stock={p.stock}>
+          <ProductCard product={p} />
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 ts-card flex flex-wrap items-center justify-between gap-4 bg-slate-50 p-5 text-sm">
+      <div>
+        <p class="font-semibold text-slate-900">Don't see what you want?</p>
+        <p class="text-slate-600">We restock weekly. Tell us what to look for and we'll text you when one lands.</p>
+      </div>
+      <a href="/contact?subject=wishlist" class="ts-btn-ghost">Add to wishlist →</a>
+    </div>
+  </section>
+
+  <script>
+    const params = new URLSearchParams(location.search)
+    const initial = params.get('cat') || 'all'
+
+    function applyFilter(cat: string) {
+      const grid = document.getElementById('shop-grid')!
+      const tiles = Array.from(grid.querySelectorAll<HTMLElement>('[data-product]'))
+      let visible = 0
+      tiles.forEach((t) => {
+        const show = cat === 'all' || t.dataset.cat === cat
+        t.style.display = show ? '' : 'none'
+        if (show) visible++
+      })
+      const count = document.getElementById('shop-result-count')
+      if (count) count.textContent = `Showing ${visible} item${visible === 1 ? '' : 's'}${cat === 'all' ? '' : ' in this category'}`
+
+      document.querySelectorAll<HTMLButtonElement>('[data-cat]').forEach((btn) => {
+        const active = btn.dataset.cat === cat
+        btn.classList.toggle('bg-[var(--color-ink)]', active)
+        btn.classList.toggle('text-white', active)
+        btn.classList.toggle('border-[var(--color-ink)]', active)
+      })
+      const url = new URL(location.href)
+      if (cat === 'all') url.searchParams.delete('cat')
+      else url.searchParams.set('cat', cat)
+      history.replaceState(null, '', url.toString())
+    }
+
+    function applySort(mode: string) {
+      const grid = document.getElementById('shop-grid')!
+      const tiles = Array.from(grid.querySelectorAll<HTMLElement>('[data-product]'))
+      tiles.sort((a, b) => {
+        const pa = Number(a.dataset.price), pb = Number(b.dataset.price)
+        const sa = Number(a.dataset.stock), sb = Number(b.dataset.stock)
+        if (mode === 'low') return pa - pb
+        if (mode === 'high') return pb - pa
+        if (mode === 'stock') return sb - sa
+        return 0
+      })
+      tiles.forEach((t) => grid.appendChild(t))
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('[data-cat]').forEach((btn) => {
+      btn.addEventListener('click', () => applyFilter(btn.dataset.cat!))
+    })
+    document.getElementById('sort')?.addEventListener('change', (e) => {
+      applySort((e.target as HTMLSelectElement).value)
+    })
+
+    applyFilter(initial)
+
+    // Add to cart
+    document.querySelectorAll<HTMLButtonElement>('[data-add-to-cart]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const TTS = (window as any).TTS
+        TTS?.addToCart({
+          id: btn.dataset.id!,
+          name: btn.dataset.name!,
+          price: Number(btn.dataset.price!),
+        })
+      })
+    })
+  </script>
+</BaseLayout>

@@ -1,0 +1,274 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Staff Portal — The Tech Shop" description="Clock in/out, repair queue, and daily summary for The Tech Shop staff." active="">
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Staff Portal</p>
+          <h1 class="mt-0.5 font-display text-2xl font-bold tracking-tight">Today, in the shop.</h1>
+        </div>
+        <div class="text-right">
+          <p id="now-time" class="font-mono text-2xl font-bold text-slate-900">—</p>
+          <p id="now-date" class="text-xs text-slate-500">—</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-8">
+    <!-- Staff selector -->
+    <div class="ts-card flex flex-wrap items-center justify-between gap-3 p-4">
+      <div class="flex items-center gap-3">
+        <span class="ts-label mb-0">Signed in as</span>
+        <select id="staff-select" class="ts-input w-56">
+          <option value="josh">Joshua Mukui — Owner</option>
+          <option value="mia">Mia Rodriguez — Repair tech</option>
+          <option value="aj">A.J. Cole — Floor</option>
+          <option value="dev">Devon Park — Repair tech</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="clock-status" class="ts-chip">⚪ Off the clock</span>
+        <button id="clock-btn" class="ts-btn-glow text-sm">Clock in</button>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="ts-card p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Repairs open</p>
+        <p class="mt-1 font-mono text-3xl font-bold">7</p>
+        <p class="mt-1 text-xs text-slate-500">3 waiting on parts</p>
+      </div>
+      <div class="ts-card p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Sales today</p>
+        <p class="mt-1 font-mono text-3xl font-bold">$1,243</p>
+        <p class="mt-1 text-xs text-slate-500">8 transactions · syncs to QuickBooks 6pm</p>
+      </div>
+      <div class="ts-card p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Bookings today</p>
+        <p class="mt-1 font-mono text-3xl font-bold">12</p>
+        <p class="mt-1 text-xs text-slate-500">5 repairs · 4 trade-ins · 3 walk-ins</p>
+      </div>
+      <div class="ts-card p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Your hours this week</p>
+        <p class="mt-1 font-mono text-3xl font-bold" id="weekly-hours">22.5h</p>
+        <p class="mt-1 text-xs text-slate-500">Owner will write check Friday</p>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-3">
+      <!-- Repair queue (spans 2 cols) -->
+      <div class="ts-card lg:col-span-2">
+        <header class="flex items-center justify-between border-b border-slate-200 px-5 py-3">
+          <h2 class="font-display text-lg font-bold">Repair queue</h2>
+          <div class="flex gap-2 text-xs">
+            <button class="rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">All (7)</button>
+            <button class="rounded-full px-3 py-1 text-slate-500 hover:bg-slate-100">Mine</button>
+            <button class="rounded-full px-3 py-1 text-slate-500 hover:bg-slate-100">Waiting on parts</button>
+          </div>
+        </header>
+        <div class="divide-y divide-slate-100">
+          {[
+            { id: 'TS-7HQ24', dev: 'iPhone 13 Pro · screen', cust: 'Maya L.', stage: 'Quoted', stageColor: 'bg-amber-100 text-amber-800', eta: 'Awaiting approval', who: 'Mia' },
+            { id: 'TS-K8P19', dev: 'MacBook Pro 2021 · battery', cust: 'Theo F.', stage: 'In progress', stageColor: 'bg-cyan-100 text-cyan-800', eta: '~2 hrs left', who: 'Devon' },
+            { id: 'TS-3LM07', dev: 'PS5 Slim · HDMI port', cust: 'Curtis B.', stage: 'Parts ordered', stageColor: 'bg-slate-100 text-slate-700', eta: 'ETA Wed', who: 'Mia' },
+            { id: 'TS-9YR11', dev: 'Switch OLED · joycon drift', cust: 'Priya R.', stage: 'Ready for pickup', stageColor: 'bg-lime-100 text-lime-800', eta: 'Notify customer', who: 'Devon' },
+            { id: 'TS-W2C45', dev: 'Custom PC · won\'t boot', cust: 'Linda H.', stage: 'Diagnosing', stageColor: 'bg-amber-100 text-amber-800', eta: '— ', who: 'Josh' },
+            { id: 'TS-Q5E73', dev: 'iPhone 14 · battery', cust: 'Sam K.', stage: 'In progress', stageColor: 'bg-cyan-100 text-cyan-800', eta: '~30 min', who: 'Mia' },
+            { id: 'TS-V8B33', dev: 'Galaxy S22 · charging port', cust: 'Aisha P.', stage: 'Quoted', stageColor: 'bg-amber-100 text-amber-800', eta: 'Awaiting approval', who: 'Devon' },
+          ].map((r) => (
+            <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3 px-5 py-3 text-sm hover:bg-slate-50">
+              <span class="font-mono text-xs text-slate-500">{r.id}</span>
+              <div>
+                <p class="font-semibold text-slate-900">{r.dev}</p>
+                <p class="text-xs text-slate-500">{r.cust} · assigned: {r.who} · {r.eta}</p>
+              </div>
+              <span class={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${r.stageColor}`}>{r.stage}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Time clock + sales -->
+      <div class="space-y-6">
+        <div class="ts-card p-5">
+          <h2 class="font-display text-lg font-bold">Your timecard</h2>
+          <p class="mt-1 text-xs text-slate-500">All hours sum into the owner's Friday check run.</p>
+          <ul id="timecard-list" class="mt-3 space-y-2 text-sm">
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="text-slate-700">Mon · 10:02a → 5:31p</span>
+              <span class="font-mono font-semibold">7.5h</span>
+            </li>
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="text-slate-700">Tue · 12:00p → 6:55p</span>
+              <span class="font-mono font-semibold">6.9h</span>
+            </li>
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="text-slate-700">Wed · 10:14a → 6:24p</span>
+              <span class="font-mono font-semibold">8.1h</span>
+            </li>
+            <li id="active-shift" class="flex items-center justify-between hidden">
+              <span class="text-slate-700">Today · <span id="shift-start">—</span> → now</span>
+              <span class="font-mono font-semibold text-cyan-700" id="shift-elapsed">0.0h</span>
+            </li>
+          </ul>
+          <div class="mt-3 flex items-center justify-between border-t border-slate-200 pt-3 text-sm">
+            <span class="font-semibold">This week</span>
+            <span class="font-mono text-base font-bold" id="weekly-hours-2">22.5h</span>
+          </div>
+        </div>
+
+        <div class="ts-card p-5">
+          <h2 class="font-display text-lg font-bold">Today's sales</h2>
+          <p class="mt-1 text-xs text-slate-500">Auto-syncs to QuickBooks at 6pm.</p>
+          <ul class="mt-3 space-y-2 text-sm">
+            {[
+              { t: '10:42a', what: 'iPhone 13 · 256GB', amt: 499 },
+              { t: '11:18a', what: 'Repair · Switch drift', amt: 59 },
+              { t: '12:05p', what: 'AirPods Pro 2', amt: 179 },
+              { t: '1:31p',  what: 'Tech Shop Hoodie (May)', amt: 59 },
+              { t: '2:14p',  what: 'Trade-in · iPad Air', amt: -180 },
+              { t: '3:00p',  what: 'MacBook Air M2', amt: 849 },
+              { t: '4:22p',  what: 'Cable triple pack', amt: 24 },
+              { t: '5:07p',  what: 'Repair · MacBook battery', amt: 199 },
+            ].map((s) => (
+              <li class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="text-slate-700">
+                  <span class="font-mono text-xs text-slate-500">{s.t}</span>
+                  <span class="ml-2">{s.what}</span>
+                </span>
+                <span class={`font-mono text-sm font-semibold ${s.amt < 0 ? 'text-amber-700' : 'text-slate-900'}`}>
+                  {s.amt < 0 ? '−' : ''}${Math.abs(s.amt)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-3 flex items-center justify-between border-t border-slate-200 pt-3 text-sm">
+            <span class="font-semibold">Total</span>
+            <span class="font-mono text-base font-bold">$1,688</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today's bookings -->
+    <div class="mt-8 ts-card">
+      <header class="border-b border-slate-200 px-5 py-3">
+        <h2 class="font-display text-lg font-bold">Today's bookings</h2>
+      </header>
+      <div class="grid gap-px bg-slate-100 sm:grid-cols-3 lg:grid-cols-4">
+        {[
+          { time: '10:00a', who: 'Maya L.', type: 'Repair · iPhone screen', tag: 'repair' },
+          { time: '10:30a', who: 'Curtis B.', type: 'Drop-off · PS5', tag: 'repair' },
+          { time: '11:15a', who: 'Theo F.', type: 'Pick-up · MacBook battery', tag: 'pickup' },
+          { time: '12:00p', who: 'Priya R.', type: 'Pick-up · Switch', tag: 'pickup' },
+          { time: '1:00p',  who: 'Sam K.', type: 'Trade-in · iPad Air', tag: 'tradein' },
+          { time: '2:15p',  who: 'Aisha P.', type: 'Repair · Galaxy charging port', tag: 'repair' },
+          { time: '3:00p',  who: 'Linda H.', type: 'Custom build consult', tag: 'custom' },
+          { time: '4:30p',  who: 'Marcus T.', type: 'Trade-in · gaming PC', tag: 'tradein' },
+        ].map((b) => {
+          const color = b.tag === 'pickup' ? 'bg-lime-50 text-lime-900'
+                      : b.tag === 'tradein' ? 'bg-cyan-50 text-cyan-900'
+                      : b.tag === 'custom' ? 'bg-amber-50 text-amber-900'
+                      : 'bg-white'
+          return (
+            <div class={`p-4 ${color}`}>
+              <p class="font-mono text-xs text-slate-500">{b.time}</p>
+              <p class="mt-1 text-sm font-semibold text-slate-900">{b.who}</p>
+              <p class="mt-0.5 text-xs text-slate-600">{b.type}</p>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+
+    <p class="mt-6 text-center text-xs text-slate-500">
+      Prototype preview · Real portal uses Cloudflare Access SSO, syncs hours to QuickBooks Time, and prints Friday cheque batches.
+    </p>
+  </section>
+
+  <script>
+    // Time clock state — localStorage-backed per-staff
+    const $ = (s: string) => document.querySelector(s) as HTMLElement | null
+
+    function key(staff: string) { return `tts:clock:${staff}` }
+    function getState(staff: string): { in: boolean; since?: number } {
+      try {
+        const raw = localStorage.getItem(key(staff))
+        return raw ? JSON.parse(raw) : { in: false }
+      } catch { return { in: false } }
+    }
+    function setState(staff: string, state: { in: boolean; since?: number }) {
+      localStorage.setItem(key(staff), JSON.stringify(state))
+    }
+
+    function fmtElapsed(ms: number): string {
+      const h = ms / 3600000
+      return h.toFixed(1) + 'h'
+    }
+    function fmtTime(d: Date) {
+      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).toLowerCase()
+    }
+    function fmtDate(d: Date) {
+      return d.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })
+    }
+
+    function render() {
+      const staff = (document.getElementById('staff-select') as HTMLSelectElement).value
+      const s = getState(staff)
+      const status = document.getElementById('clock-status')!
+      const btn = document.getElementById('clock-btn') as HTMLButtonElement
+      const activeShift = document.getElementById('active-shift')!
+      const shiftStart = document.getElementById('shift-start')!
+      const shiftElapsed = document.getElementById('shift-elapsed')!
+      const weeklyEls = [document.getElementById('weekly-hours'), document.getElementById('weekly-hours-2')]
+
+      if (s.in && s.since) {
+        status.textContent = '🟢 On the clock'
+        status.className = 'ts-chip-lime'
+        btn.textContent = 'Clock out'
+        btn.classList.remove('ts-btn-glow')
+        btn.classList.add('ts-btn')
+        activeShift.classList.remove('hidden')
+        shiftStart.textContent = fmtTime(new Date(s.since))
+        const elapsed = Date.now() - s.since
+        shiftElapsed.textContent = fmtElapsed(elapsed)
+        const totalH = 22.5 + elapsed / 3600000
+        weeklyEls.forEach((el) => { if (el) el.textContent = totalH.toFixed(1) + 'h' })
+      } else {
+        status.textContent = '⚪ Off the clock'
+        status.className = 'ts-chip'
+        btn.textContent = 'Clock in'
+        btn.classList.add('ts-btn-glow')
+        btn.classList.remove('ts-btn')
+        activeShift.classList.add('hidden')
+        weeklyEls.forEach((el) => { if (el) el.textContent = '22.5h' })
+      }
+    }
+
+    document.getElementById('clock-btn')?.addEventListener('click', () => {
+      const staff = (document.getElementById('staff-select') as HTMLSelectElement).value
+      const s = getState(staff)
+      if (s.in) setState(staff, { in: false })
+      else setState(staff, { in: true, since: Date.now() })
+      render()
+    })
+
+    document.getElementById('staff-select')?.addEventListener('change', render)
+
+    function tick() {
+      const now = new Date()
+      const t = document.getElementById('now-time')
+      const d = document.getElementById('now-date')
+      if (t) t.textContent = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' })
+      if (d) d.textContent = fmtDate(now)
+      render()
+    }
+    setInterval(tick, 1000)
+    tick()
+  </script>
+</BaseLayout>

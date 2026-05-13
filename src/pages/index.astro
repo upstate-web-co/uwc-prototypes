@@ -1,123 +1,247 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import ProductCard from '../components/ProductCard.astro'
 import { SITE } from '../lib/config'
+import { PRODUCTS, FEATURED_IDS } from '../lib/products'
+
+const featured = FEATURED_IDS.map((id) => PRODUCTS.find((p) => p.id === id)!).filter(Boolean)
+const totalInStock = PRODUCTS.reduce((s, p) => s + p.stock, 0)
 ---
 
-<BaseLayout title={SITE.name} description={SITE.tagline}>
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-blue-50 to-white px-4 py-20 text-center">
-    <div class="mx-auto max-w-3xl">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-        {SITE.name}
-      </h1>
-      <p class="mt-4 text-lg text-gray-600">
-        {SITE.tagline}
-      </p>
-      <div class="mt-8">
-        <a href="#contact" class="rounded-lg bg-blue-600 px-6 py-3 text-lg font-medium text-white hover:bg-blue-700">
-          Get in Touch
+<BaseLayout title="The Tech Shop — Charlestown" description={SITE.tagline} active="home">
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-[var(--color-ink)] text-white">
+    <div class="ts-grid-bg absolute inset-0 opacity-30"></div>
+    <div class="relative mx-auto grid max-w-6xl gap-12 px-4 py-20 lg:grid-cols-[1.2fr_1fr] lg:py-28">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-200">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-cyan-glow)]"></span>
+          Now open · Charlestown, MA
+        </span>
+        <h1 class="mt-5 font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+          Refurbished tech, <span class="text-[var(--color-cyan-glow)]">honest repairs.</span>
+        </h1>
+        <p class="mt-5 max-w-xl text-lg text-slate-300">
+          Laptops, phones, and consoles — tested by hand, warrantied, and priced for students and pros. Need a fix? We
+          quote it on the spot.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/shop" class="ts-btn-glow">
+            Shop the floor
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="/booking" class="rounded-lg border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10">
+            Book a repair →
+          </a>
+        </div>
+        <dl class="mt-10 grid max-w-md grid-cols-3 gap-6 text-sm">
+          <div>
+            <dt class="text-slate-400">In stock</dt>
+            <dd class="mt-1 font-mono text-2xl font-bold text-white">{totalInStock}</dd>
+          </div>
+          <div>
+            <dt class="text-slate-400">Repairs / wk</dt>
+            <dd class="mt-1 font-mono text-2xl font-bold text-white">~35</dd>
+          </div>
+          <div>
+            <dt class="text-slate-400">Years on the floor</dt>
+            <dd class="mt-1 font-mono text-2xl font-bold text-white">15+</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Repair quote teaser card -->
+      <div class="relative">
+        <div class="ts-card relative z-10 mx-auto max-w-md p-6 text-slate-900">
+          <div class="flex items-center justify-between">
+            <span class="ts-chip-cyan">AI helper</span>
+            <span class="font-mono text-xs text-slate-500">est. quote</span>
+          </div>
+          <h3 class="mt-3 font-display text-xl font-bold">Get a repair quote in 30 seconds</h3>
+          <p class="mt-1 text-sm text-slate-600">
+            Tell us what's wrong — we'll estimate parts + labor before you walk in.
+          </p>
+
+          <form id="hero-quote" class="mt-4 space-y-3">
+            <div>
+              <label class="ts-label">Device</label>
+              <select class="ts-input" name="device">
+                <option>iPhone screen</option>
+                <option>MacBook battery</option>
+                <option>Switch joycon drift</option>
+                <option>PS5 HDMI port</option>
+                <option>Custom PC won't boot</option>
+              </select>
+            </div>
+            <button class="ts-btn w-full" type="submit">Estimate →</button>
+          </form>
+
+          <div id="hero-quote-out" class="mt-4 hidden rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm">
+            <p class="text-slate-500">Estimated range</p>
+            <p id="hero-quote-range" class="font-mono text-2xl font-bold text-slate-900">—</p>
+            <p id="hero-quote-eta" class="mt-1 text-xs text-slate-500">—</p>
+            <a href="/booking" class="mt-3 inline-flex text-xs font-semibold text-[var(--color-ink)] underline">Book this repair →</a>
+          </div>
+        </div>
+        <!-- glow -->
+        <div class="absolute -inset-6 -z-0 rounded-3xl bg-gradient-to-br from-cyan-400/20 via-lime-300/10 to-transparent blur-2xl"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Friday banner / monthly drop -->
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="ts-card flex items-center justify-between gap-4 bg-lime-50 p-5">
+        <div>
+          <p class="font-display text-lg font-bold text-lime-900">Friday 10% off — every week</p>
+          <p class="text-sm text-lime-900/80">Auto-applied at checkout. No code, no minimum.</p>
+        </div>
+        <span class="font-mono text-3xl font-extrabold text-lime-900">−10%</span>
+      </div>
+      <div class="ts-card flex items-center justify-between gap-4 bg-cyan-50 p-5">
+        <div>
+          <p class="font-display text-lg font-bold text-cyan-900">May "Reboot" drop is live</p>
+          <p class="text-sm text-cyan-900/80">40 hoodies, 60 tees, sticker pack vol. 4. Once they're gone, they're gone.</p>
+        </div>
+        <a href="/shop?cat=merch" class="ts-btn text-xs">Shop drop</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured products -->
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <div class="flex items-end justify-between gap-3">
+      <div>
+        <h2 class="font-display text-3xl font-bold">On the floor right now</h2>
+        <p class="mt-1 text-sm text-slate-600">Hand-tested. Each piece has a real warranty.</p>
+      </div>
+      <a href="/shop" class="hidden text-sm font-semibold text-slate-700 underline-offset-4 hover:underline sm:inline">View all {PRODUCTS.length} items →</a>
+    </div>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((p) => <ProductCard product={p} />)}
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section class="bg-slate-50 py-16">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="font-display text-3xl font-bold">What we do</h2>
+      <p class="mt-1 max-w-2xl text-sm text-slate-600">Four lanes: buying refurbished, getting a repair, trading something in, or grabbing limited-edition merch.</p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <a href="/shop" class="ts-card group p-5 transition hover:-translate-y-0.5 hover:border-[var(--color-cyan-glow)]">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700"><span class="text-xl">🛒</span></div>
+          <h3 class="mt-4 font-display text-lg font-bold">Buy refurbished</h3>
+          <p class="mt-1 text-sm text-slate-600">Tested, warrantied laptops, phones, and consoles. Stripe checkout.</p>
+          <p class="mt-3 text-xs font-semibold text-slate-900 group-hover:text-cyan-700">Browse the shop →</p>
+        </a>
+        <a href="/booking" class="ts-card group p-5 transition hover:-translate-y-0.5 hover:border-[var(--color-cyan-glow)]">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700"><span class="text-xl">🔧</span></div>
+          <h3 class="mt-4 font-display text-lg font-bold">Book a repair</h3>
+          <p class="mt-1 text-sm text-slate-600">Cracked screen, dying battery, weird PC issue. Custom quote, real diagnosis.</p>
+          <p class="mt-3 text-xs font-semibold text-slate-900 group-hover:text-cyan-700">Start a ticket →</p>
+        </a>
+        <a href="/services#tradein" class="ts-card group p-5 transition hover:-translate-y-0.5 hover:border-[var(--color-cyan-glow)]">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-lime-100 text-lime-700"><span class="text-xl">🔁</span></div>
+          <h3 class="mt-4 font-display text-lg font-bold">Sell or trade in</h3>
+          <p class="mt-1 text-sm text-slate-600">Bring it in, we inspect it in-store, you walk out with cash or store credit.</p>
+          <p class="mt-3 text-xs font-semibold text-slate-900 group-hover:text-cyan-700">How it works →</p>
+        </a>
+        <a href="/shop?cat=merch" class="ts-card group p-5 transition hover:-translate-y-0.5 hover:border-[var(--color-cyan-glow)]">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-[var(--color-cyan-glow)]"><span class="text-xl">⚡</span></div>
+          <h3 class="mt-4 font-display text-lg font-bold">Monthly drop</h3>
+          <p class="mt-1 text-sm text-slate-600">Limited tees, hoodies, and stickers. New design every month.</p>
+          <p class="mt-3 text-xs font-semibold text-slate-900 group-hover:text-cyan-700">See the drop →</p>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section id="services" class="mx-auto max-w-6xl px-4 py-16">
-    <h2 class="text-center text-3xl font-bold text-gray-900">Our Services</h2>
-    <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- Replace with client's actual services -->
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service One</h3>
-        <p class="mt-2 text-gray-600">Description of the first service offering.</p>
+  <!-- Trust / about strip -->
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div>
+        <h2 class="font-display text-3xl font-bold">Local, on the floor for 15+ years.</h2>
+        <p class="mt-3 text-slate-700">
+          I'm Joshua — I built my chops at Best Buy and a couple of indie shops before opening The Tech Shop here in
+          Charlestown. Every device in the case has been hand-checked. Every repair gets a written quote before we
+          touch a screwdriver.
+        </p>
+        <p class="mt-3 text-slate-700">
+          We're small on purpose. About 50 unique products live on the floor at any time — refreshed weekly. If you
+          want trustworthy refurbished gear without the big-box fluorescent light experience, we're your spot.
+        </p>
+        <a href="/about" class="mt-5 inline-flex text-sm font-semibold underline underline-offset-4">More about the shop →</a>
       </div>
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service Two</h3>
-        <p class="mt-2 text-gray-600">Description of the second service offering.</p>
-      </div>
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service Three</h3>
-        <p class="mt-2 text-gray-600">Description of the third service offering.</p>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="ts-card p-5">
+          <p class="font-mono text-3xl font-extrabold text-slate-900">96<span class="text-cyan-500">%</span></p>
+          <p class="mt-1 text-sm text-slate-600">Same-day repair turnaround on common jobs</p>
+        </div>
+        <div class="ts-card p-5">
+          <p class="font-mono text-3xl font-extrabold text-slate-900">90<span class="text-cyan-500">d</span></p>
+          <p class="mt-1 text-sm text-slate-600">Warranty on every refurbished item</p>
+        </div>
+        <div class="ts-card p-5">
+          <p class="font-mono text-3xl font-extrabold text-slate-900">0<span class="text-cyan-500">.</span></p>
+          <p class="mt-1 text-sm text-slate-600">Pushy upsells. We hate those too.</p>
+        </div>
+        <div class="ts-card p-5">
+          <p class="font-mono text-3xl font-extrabold text-slate-900">5<span class="text-cyan-500">★</span></p>
+          <p class="mt-1 text-sm text-slate-600">189 Google reviews and counting</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about" class="bg-gray-50 px-4 py-16">
-    <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-3xl font-bold text-gray-900">About Us</h2>
-      <p class="mt-4 text-lg text-gray-600">
-        Replace this with the client's story.
-      </p>
+  <!-- CTA strip -->
+  <section class="mx-auto mb-16 max-w-6xl px-4">
+    <div class="ts-grid-bg rounded-2xl bg-[var(--color-ink)] p-8 text-white sm:p-12">
+      <div class="grid gap-6 sm:grid-cols-[2fr_1fr] sm:items-center">
+        <div>
+          <h2 class="font-display text-3xl font-bold">Not sure what you need?</h2>
+          <p class="mt-2 max-w-xl text-slate-300">Ask the FAQ assistant — it knows our pricing, hours, warranty, and repair turnaround times.</p>
+        </div>
+        <a href="/faq" class="ts-btn-glow justify-self-start sm:justify-self-end">Ask the assistant →</a>
+      </div>
     </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="mx-auto max-w-2xl px-4 py-16">
-    <h2 class="text-center text-3xl font-bold text-gray-900">Contact Us</h2>
-    <form id="contact-form" class="mt-8 space-y-6" method="POST">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-        <input type="text" id="name" name="name" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
-      </div>
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" id="email" name="email" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
-      </div>
-      <div>
-        <label for="phone" class="block text-sm font-medium text-gray-700">Phone (optional)</label>
-        <input type="tel" id="phone" name="phone"
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
-      </div>
-      <div>
-        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-        <textarea id="message" name="message" rows="4" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500"></textarea>
-      </div>
-      <button type="submit"
-        class="w-full rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700">
-        Send Message
-      </button>
-      <div id="form-status" class="hidden rounded-lg p-4 text-center text-sm"></div>
-    </form>
   </section>
 
   <script>
-    const form = document.getElementById('contact-form') as HTMLFormElement
-    const status = document.getElementById('form-status') as HTMLElement
-
-    form.addEventListener('submit', async (e) => {
+    // Hero "AI quote" demo
+    const QUOTES: Record<string, { low: number; high: number; eta: string }> = {
+      'iPhone screen':         { low: 89,  high: 269, eta: '~1 hour in-shop, parts on hand' },
+      'MacBook battery':       { low: 149, high: 229, eta: '~24 hours, including diagnostic' },
+      'Switch joycon drift':   { low: 39,  high: 79,  eta: 'Same-day, both joycons' },
+      'PS5 HDMI port':         { low: 129, high: 189, eta: '2-3 day turnaround' },
+      "Custom PC won't boot":  { low: 79,  high: 249, eta: '1-2 days after drop-off' },
+    }
+    const form = document.getElementById('hero-quote') as HTMLFormElement | null
+    const out = document.getElementById('hero-quote-out')
+    const range = document.getElementById('hero-quote-range')
+    const eta = document.getElementById('hero-quote-eta')
+    form?.addEventListener('submit', (e) => {
       e.preventDefault()
-      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement
-      btn.disabled = true
-      btn.textContent = 'Sending...'
-      status.classList.add('hidden')
+      const select = form.querySelector<HTMLSelectElement>('select[name="device"]')!
+      const q = QUOTES[select.value]
+      if (!q || !out || !range || !eta) return
+      out.classList.remove('hidden')
+      range.textContent = `$${q.low}–$${q.high}`
+      eta.textContent = q.eta
+    })
 
-      try {
-        const data = Object.fromEntries(new FormData(form))
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
+    // Wire "Add to cart" on featured cards
+    document.querySelectorAll<HTMLButtonElement>('[data-add-to-cart]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const TTS = (window as any).TTS
+        TTS?.addToCart({
+          id: btn.dataset.id!,
+          name: btn.dataset.name!,
+          price: Number(btn.dataset.price!),
         })
-
-        if (res.ok) {
-          status.textContent = 'Message sent! We\'ll be in touch soon.'
-          status.className = 'rounded-lg bg-green-50 p-4 text-center text-sm text-green-700'
-          form.reset()
-        } else {
-          const err = await res.json()
-          status.textContent = err.error || 'Something went wrong. Please try again.'
-          status.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
-        }
-      } catch {
-        status.textContent = 'Network error. Please try again.'
-        status.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
-      } finally {
-        btn.disabled = false
-        btn.textContent = 'Send Message'
-      }
+      })
     })
   </script>
 </BaseLayout>

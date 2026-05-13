@@ -1,29 +1,24 @@
 /**
- * Project constants and branding.
- * Single source of truth for values used across pages and routes.
- * Update these for each client project.
+ * Project constants and branding for The Tech Shop.
  */
 
 export const SITE = {
-  name: 'PROJECT_NAME',
-  tagline: 'PROJECT_TAGLINE',
-  url: 'https://PROJECT_DOMAIN',
-  email: 'hello@PROJECT_DOMAIN',
-  phone: '',
-  /**
-   * Set to true when the site is ready for search engines.
-   * Default: false (noindex). Launch phase sets this to true.
-   * This is the ONLY place indexing is controlled — never set noindex in pages or components.
-   */
+  name: 'The Tech Shop',
+  tagline: 'Refurbished tech, expert repairs, fair trade-ins — right here in Charlestown.',
+  url: 'https://thetechshop.example',
+  email: 'hello@thetechshop.example',
+  phone: '(555) 010-2233',
+  address: '218 Bunker Hill St, Charlestown, MA',
+  hours: 'Mon–Sat 10a–7p · Sun 12p–5p',
   indexable: false,
 } as const
 
 export const BRAND = {
-  primaryColor: '#2563eb',   // Update per client brand
-  accentColor: '#f59e0b',
+  primaryColor: '#0b1a2b',
+  accentColor: '#22d3ee',
+  highlightColor: '#a3e635',
 } as const
 
-// Error code registry — add project-specific codes as needed
 export const ERRORS = {
   VALIDATION_ERROR: { status: 400, message: 'Validation failed' },
   NOT_FOUND: { status: 404, message: 'Resource not found' },

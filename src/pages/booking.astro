@@ -1,0 +1,314 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Book a Repair — The Tech Shop" description="Book a repair, trade-in inspection, or custom build at The Tech Shop." active="booking">
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-10">
+      <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Booking</p>
+      <h1 class="mt-1 font-display text-4xl font-bold tracking-tight">Get on the bench.</h1>
+      <p class="mt-2 max-w-2xl text-slate-600">
+        Describe the device and what's wrong. Our AI helper pulls a price range from our actual job history. You'll get
+        a written quote within 1 business hour after we see the device.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+      <!-- Form -->
+      <form id="booking-form" class="ts-card space-y-6 p-6">
+        <!-- Type -->
+        <div>
+          <label class="ts-label">What do you need?</label>
+          <div role="radiogroup" class="grid grid-cols-3 gap-2">
+            {[
+              { v: 'repair', label: 'Repair', icon: '🔧' },
+              { v: 'tradein', label: 'Trade-in', icon: '🔁' },
+              { v: 'custom', label: 'Custom build', icon: '🛠️' },
+            ].map((opt, i) => (
+              <label class="ts-type-opt flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-3 text-sm font-semibold text-slate-700 has-[:checked]:border-[var(--color-ink)] has-[:checked]:bg-[var(--color-ink)] has-[:checked]:text-white">
+                <input type="radio" name="type" value={opt.v} class="sr-only" checked={i === 0} />
+                <span>{opt.icon}</span>
+                <span>{opt.label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <!-- Device -->
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="device" class="ts-label">Device type</label>
+            <select id="device" name="device" class="ts-input">
+              <option>iPhone</option>
+              <option>iPad</option>
+              <option>Android phone</option>
+              <option>MacBook</option>
+              <option>Windows laptop</option>
+              <option>Custom PC / desktop</option>
+              <option>PlayStation 5</option>
+              <option>Xbox Series X / S</option>
+              <option>Nintendo Switch</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="model" class="ts-label">Model (if known)</label>
+            <input id="model" name="model" type="text" class="ts-input" placeholder="e.g. iPhone 13 Pro" />
+          </div>
+        </div>
+
+        <!-- Issue -->
+        <div>
+          <label for="issue" class="ts-label">What's going on?</label>
+          <textarea id="issue" name="issue" rows="4" class="ts-input" placeholder="e.g. Dropped it, screen is cracked. Touch still works."></textarea>
+          <p class="mt-1 text-xs text-slate-500">The more detail, the better. Photos can be added when you drop it off.</p>
+        </div>
+
+        <!-- AI quote button -->
+        <div class="rounded-lg bg-slate-50 p-4 ring-1 ring-slate-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-[var(--color-ink)] text-[10px] text-[var(--color-cyan-glow)]">AI</span>
+                Get instant ballpark
+              </p>
+              <p class="mt-1 text-xs text-slate-500">No commitment. Final price after in-store inspection.</p>
+            </div>
+            <button id="estimate-btn" type="button" class="ts-btn-glow text-xs">
+              Estimate →
+            </button>
+          </div>
+          <div id="estimate-out" class="mt-3 hidden rounded-md border border-cyan-200 bg-white p-3 text-sm">
+            <div class="flex items-start gap-3">
+              <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded bg-cyan-100 text-cyan-700">🤖</span>
+              <div class="flex-1">
+                <p id="estimate-text" class="text-slate-700">—</p>
+                <div class="mt-2 flex items-baseline gap-4">
+                  <span class="font-mono text-2xl font-bold text-slate-900" id="estimate-range">—</span>
+                  <span class="text-xs text-slate-500" id="estimate-parts">parts: —</span>
+                  <span class="text-xs text-slate-500" id="estimate-hours">labor: —</span>
+                </div>
+                <p class="mt-2 text-[11px] text-slate-400">
+                  Range is an estimate from 200+ similar jobs. Confirmed quote follows in-store diagnostic.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="name" class="ts-label">Your name</label>
+            <input id="name" name="name" type="text" required class="ts-input" />
+          </div>
+          <div>
+            <label for="email" class="ts-label">Email</label>
+            <input id="email" name="email" type="email" required class="ts-input" />
+          </div>
+          <div>
+            <label for="phone" class="ts-label">Phone</label>
+            <input id="phone" name="phone" type="tel" class="ts-input" placeholder="(617) 555-0000" />
+          </div>
+          <div>
+            <label for="contact-pref" class="ts-label">Preferred contact</label>
+            <select id="contact-pref" name="contact_pref" class="ts-input">
+              <option>Text message</option>
+              <option>Email</option>
+              <option>Phone call</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Date -->
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="date" class="ts-label">Drop-off date</label>
+            <input id="date" name="date" type="date" required class="ts-input" />
+          </div>
+          <div>
+            <label for="time" class="ts-label">Window</label>
+            <select id="time" name="time" class="ts-input">
+              <option>10:00 – 11:00 AM</option>
+              <option>11:00 – 12:00 PM</option>
+              <option>12:00 – 1:00 PM</option>
+              <option>1:00 – 2:00 PM</option>
+              <option>2:00 – 3:00 PM</option>
+              <option>3:00 – 4:00 PM</option>
+              <option>4:00 – 5:00 PM</option>
+              <option>5:00 – 6:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2 text-xs text-slate-500">
+          <input id="consent" type="checkbox" required class="mt-0.5" />
+          <label for="consent">I authorize The Tech Shop to inspect the device. I understand the AI estimate isn't a final quote.</label>
+        </div>
+
+        <button type="submit" class="ts-btn w-full text-base">
+          Book my slot →
+        </button>
+      </form>
+
+      <!-- Sidebar -->
+      <aside class="space-y-4">
+        <div class="ts-card p-5">
+          <h3 class="font-display text-lg font-bold">What happens next</h3>
+          <ol class="mt-3 space-y-3 text-sm text-slate-700">
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-ink)] font-mono text-[10px] font-bold text-[var(--color-cyan-glow)]">1</span> You'll get a confirmation text or email with directions.</li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-ink)] font-mono text-[10px] font-bold text-[var(--color-cyan-glow)]">2</span> Drop off in your window. Diagnostic is free.</li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-ink)] font-mono text-[10px] font-bold text-[var(--color-cyan-glow)]">3</span> We send a written quote — parts + labor hours.</li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-ink)] font-mono text-[10px] font-bold text-[var(--color-cyan-glow)]">4</span> Approve & pay (Stripe). We fix it. We text when ready.</li>
+          </ol>
+        </div>
+        <div class="ts-card p-5">
+          <h3 class="font-display text-base font-bold">Heads up</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-700">
+            <li class="flex gap-2"><span>📅</span> Repairs booked on Friday get the 10% discount on labor.</li>
+            <li class="flex gap-2"><span>🧾</span> Every quote and invoice syncs to QuickBooks automatically.</li>
+            <li class="flex gap-2"><span>🎒</span> Need a loaner? Free Chromebook with repairs over $99.</li>
+          </ul>
+        </div>
+        <div class="ts-card bg-[var(--color-ink)] p-5 text-white">
+          <p class="text-xs uppercase tracking-wide text-slate-300">Need it today?</p>
+          <p class="mt-1 font-display text-lg font-bold">Walk-in slots open at 10am.</p>
+          <p class="mt-1 text-sm text-slate-300">Or call <a href="tel:+15550102233" class="underline">(555) 010-2233</a> — we usually pick up.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Confirmation modal -->
+  <div id="booking-confirm" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4">
+    <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-lime-100">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-6 w-6 text-lime-700"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 class="mt-4 font-display text-xl font-bold">You're booked.</h3>
+      <p class="mt-1 text-sm text-slate-600">Ticket <span id="ticket-id" class="font-mono font-semibold text-slate-900">—</span> · we'll text you a confirmation shortly.</p>
+      <div id="booking-summary" class="mt-4 rounded-lg bg-slate-50 p-4 text-sm text-slate-700"></div>
+      <button id="booking-close" class="mt-5 ts-btn w-full">Got it</button>
+    </div>
+  </div>
+
+  <script>
+    // --- AI mock quote engine ---
+    type Quote = { low: number; high: number; partsLow: number; partsHigh: number; labor: number; text: string }
+    const QUOTES: Record<string, Quote> = {
+      'iPhone:screen':       { low: 89, high: 269, partsLow: 45, partsHigh: 180, labor: 0.5, text: "Screen replacement — depending on model. We use OEM glass on Pro models." },
+      'iPhone:battery':      { low: 59, high: 99,  partsLow: 25, partsHigh: 49,  labor: 0.5, text: "Battery swap — restores 95%+ capacity. Same-day turnaround." },
+      'iPhone:water':        { low: 79, high: 299, partsLow: 0,  partsHigh: 220, labor: 2,   text: "Water damage repairs vary — we clean the board first, then quote." },
+      'iPhone:charging':     { low: 79, high: 139, partsLow: 25, partsHigh: 60,  labor: 1,   text: "Charging port replacement, often a same-day fix." },
+      'MacBook:battery':     { low: 149,high: 229, partsLow: 89, partsHigh: 139, labor: 1,   text: "MacBook battery — genuine OEM cells. Includes calibration." },
+      'MacBook:screen':      { low: 299,high: 599, partsLow: 219,partsHigh: 449, labor: 2,   text: "Display assembly replacement. Sometimes only the panel needs swapping." },
+      'MacBook:keyboard':    { low: 199,high: 399, partsLow: 89, partsHigh: 199, labor: 2.5, text: "Keyboard repair — model-specific. Butterfly models take longer." },
+      'MacBook:slow':        { low: 79, high: 199, partsLow: 0,  partsHigh: 99,  labor: 1.5, text: "Tune-up: clean install + SSD health check. Often resolves slowness." },
+      'Windows laptop:slow': { low: 79, high: 159, partsLow: 0,  partsHigh: 79,  labor: 1.5, text: "Tune-up + SSD upgrade if needed. We back up your files first." },
+      'Windows laptop:screen':{ low: 119,high: 279, partsLow:59, partsHigh: 179, labor: 1,   text: "Screen replacement — depends on whether it's a touchscreen." },
+      'Windows laptop:keyboard':{ low: 99,high: 199, partsLow:39, partsHigh: 119, labor: 1.5, text: "Keyboard replacement. Some models we can swap individual keys." },
+      'Windows laptop:water':{ low: 99, high: 349, partsLow: 0,  partsHigh: 269, labor: 2,   text: "Water-damaged laptops — we clean and triage, then quote firm." },
+      'Custom PC / desktop:slow': { low: 79, high: 199, partsLow: 0, partsHigh: 99, labor: 1.5, text: "Diagnostic + cleanup. Often a thermal paste + dust job." },
+      'Custom PC / desktop:wont_boot':{ low: 79, high: 249, partsLow: 0, partsHigh: 159, labor: 2, text: "No-boot diagnostic — could be PSU, RAM, or motherboard." },
+      'PlayStation 5:hdmi':  { low: 129,high: 189, partsLow: 35, partsHigh: 79,  labor: 2,   text: "HDMI port replacement — bench-soldered. 2-3 day turnaround." },
+      'PlayStation 5:disc':  { low: 89, high: 179, partsLow: 39, partsHigh: 119, labor: 1.5, text: "Disc drive repair — laser swap or full mech replacement." },
+      'PlayStation 5:fan':   { low: 69, high: 119, partsLow: 19, partsHigh: 59,  labor: 1,   text: "Clean + repaste. Often resolves loud fan / overheating." },
+      'Xbox Series X / S:hdmi':{ low: 119,high: 169, partsLow: 35, partsHigh: 69, labor: 2, text: "HDMI replacement — same process as PS5." },
+      'Nintendo Switch:drift':{ low: 39, high: 79,  partsLow: 9,  partsHigh: 29,  labor: 0.75,text: "Joycon drift fix — replace stick(s). Same-day." },
+      'Nintendo Switch:screen':{ low: 99, high: 159, partsLow: 49, partsHigh: 99, labor: 1, text: "Switch screen replacement (LCD or OLED)." },
+      'Nintendo Switch:water':{ low: 69, high: 249, partsLow: 0, partsHigh: 179, labor: 2,   text: "Liquid damage — we clean the board first, then firm-quote." },
+    }
+
+    function detectIssue(text: string): string {
+      const t = text.toLowerCase()
+      if (/screen|crack|glass|display|broken/.test(t)) return 'screen'
+      if (/battery|drain|won.?t hold|charge.{0,10}fast/.test(t)) return 'battery'
+      if (/water|liquid|spill|wet/.test(t)) return 'water'
+      if (/charg(e|ing) port|won.?t charge/.test(t)) return 'charging'
+      if (/keyboard|key.?stuck|keys/.test(t)) return 'keyboard'
+      if (/slow|laggy|crash|freezing|virus/.test(t)) return 'slow'
+      if (/won.?t boot|no boot|black screen|won.?t turn on/.test(t)) return 'wont_boot'
+      if (/hdmi|no video|tv/.test(t)) return 'hdmi'
+      if (/disc|disk|won.?t read|grinding/.test(t)) return 'disc'
+      if (/drift|joycon|stick/.test(t)) return 'drift'
+      if (/fan|loud|overheat|hot/.test(t)) return 'fan'
+      return 'slow'
+    }
+
+    function pickQuote(device: string, issueKey: string): Quote | null {
+      const k1 = `${device}:${issueKey}`
+      if (QUOTES[k1]) return QUOTES[k1]
+      // Fallbacks per device family
+      const fallback: Record<string, string> = {
+        'iPhone': 'screen', 'iPad': 'screen', 'Android phone': 'screen',
+        'MacBook': 'slow', 'Windows laptop': 'slow',
+        'Custom PC / desktop': 'slow',
+        'PlayStation 5': 'hdmi', 'Xbox Series X / S': 'hdmi',
+        'Nintendo Switch': 'drift',
+        'Other': 'slow',
+      }
+      const fb = fallback[device]
+      return fb ? QUOTES[`${device}:${fb}`] || null : null
+    }
+
+    const estimateBtn = document.getElementById('estimate-btn')
+    const estimateOut = document.getElementById('estimate-out')
+    const estimateText = document.getElementById('estimate-text')
+    const estimateRange = document.getElementById('estimate-range')
+    const estimateParts = document.getElementById('estimate-parts')
+    const estimateHours = document.getElementById('estimate-hours')
+
+    estimateBtn?.addEventListener('click', () => {
+      const device = (document.getElementById('device') as HTMLSelectElement).value
+      const issue = (document.getElementById('issue') as HTMLTextAreaElement).value || ''
+      const issueKey = detectIssue(issue)
+      const q = pickQuote(device, issueKey)
+      if (!q || !estimateOut || !estimateRange || !estimateText || !estimateParts || !estimateHours) return
+      estimateOut.classList.remove('hidden')
+      estimateRange.textContent = `$${q.low} – $${q.high}`
+      estimateText.textContent = q.text
+      estimateParts.textContent = `parts: $${q.partsLow}–$${q.partsHigh}`
+      estimateHours.textContent = `labor: ${q.labor} hr @ $80/hr`
+    })
+
+    // Booking submit
+    const form = document.getElementById('booking-form') as HTMLFormElement
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const data = Object.fromEntries(new FormData(form))
+      const ticket = 'TS-' + Math.random().toString(36).slice(2, 8).toUpperCase()
+      const ticketEl = document.getElementById('ticket-id')
+      const summaryEl = document.getElementById('booking-summary')
+      if (ticketEl) ticketEl.textContent = ticket
+      if (summaryEl) summaryEl.innerHTML = `
+        <p><strong>${data.type}</strong> · ${data.device} ${data.model ? `· ${data.model}` : ''}</p>
+        <p class="mt-1 text-slate-600">${data.date} · ${data.time}</p>
+        <p class="mt-1 text-slate-600">${data.name} · ${data.email}</p>
+      `
+      const modal = document.getElementById('booking-confirm')
+      modal?.classList.remove('hidden')
+      modal?.classList.add('flex')
+    })
+    document.getElementById('booking-close')?.addEventListener('click', () => {
+      const modal = document.getElementById('booking-confirm')
+      modal?.classList.add('hidden')
+      modal?.classList.remove('flex')
+      form.reset()
+      document.getElementById('estimate-out')?.classList.add('hidden')
+    })
+
+    // Min date today
+    const dateEl = document.getElementById('date') as HTMLInputElement
+    if (dateEl) dateEl.min = new Date().toISOString().slice(0, 10)
+
+    // Pre-select type from query
+    const params = new URLSearchParams(location.search)
+    const t = params.get('type')
+    if (t) {
+      const radio = document.querySelector<HTMLInputElement>(`input[name="type"][value="${t}"]`)
+      if (radio) radio.checked = true
+    }
+  </script>
+</BaseLayout>

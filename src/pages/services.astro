@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Services — Repairs, Trade-ins & More" description="Repair, sell, or trade in your device at The Tech Shop in Charlestown." active="services">
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-10">
+      <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Services</p>
+      <h1 class="mt-1 font-display text-4xl font-bold tracking-tight">Three things we do, all day, every day.</h1>
+      <p class="mt-2 max-w-2xl text-slate-600">
+        Repairs with written quotes. In-store inspection on every trade-in. Custom builds and one-off jobs by appointment.
+      </p>
+    </div>
+  </section>
+
+  <!-- Repairs -->
+  <section id="repairs" class="mx-auto max-w-6xl px-4 py-14">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
+      <div>
+        <span class="ts-chip-cyan">Repairs</span>
+        <h2 class="mt-3 font-display text-3xl font-bold">Quote first. Fix second.</h2>
+        <p class="mt-3 text-slate-700">
+          Every repair starts with a free diagnostic. You'll see <strong>parts</strong>, <strong>labor hours</strong>,
+          and a fixed total <em>before</em> we open anything up. If we can't fix it, you don't pay.
+        </p>
+        <ul class="mt-4 space-y-2 text-sm text-slate-700">
+          <li class="flex gap-2"><span class="text-cyan-600">✓</span> Phone screens, batteries, charging ports, cameras</li>
+          <li class="flex gap-2"><span class="text-cyan-600">✓</span> MacBook & PC laptop repairs (keyboards, SSDs, fans, repaste)</li>
+          <li class="flex gap-2"><span class="text-cyan-600">✓</span> Console HDMI port, controller drift, disc drive jobs</li>
+          <li class="flex gap-2"><span class="text-cyan-600">✓</span> Data recovery, virus removal, OS reinstalls</li>
+          <li class="flex gap-2"><span class="text-cyan-600">✓</span> Custom PC builds & upgrades</li>
+        </ul>
+        <a href="/booking" class="mt-6 ts-btn">Book a repair →</a>
+      </div>
+
+      <div class="ts-card divide-y divide-slate-100">
+        <header class="flex items-center justify-between p-5">
+          <h3 class="font-display text-lg font-bold">Common jobs · typical pricing</h3>
+          <span class="ts-chip">+10% Fridays apply</span>
+        </header>
+        {[
+          { name: 'iPhone screen replacement', range: '$89 – $269', eta: '~1 hr' },
+          { name: 'iPhone battery replacement', range: '$59 – $99', eta: '~45 min' },
+          { name: 'MacBook battery replacement', range: '$149 – $229', eta: '24 hr' },
+          { name: 'Laptop SSD upgrade + clone', range: '$99 + part', eta: '24 hr' },
+          { name: 'Switch joycon drift (both)', range: '$39 – $79', eta: 'Same day' },
+          { name: 'PS5 HDMI port repair', range: '$129 – $189', eta: '2–3 days' },
+          { name: 'Custom PC won\'t boot diagnostic', range: 'Free → $249', eta: '1–2 days' },
+          { name: 'Data recovery (working drive)', range: '$79 – $199', eta: '1–3 days' },
+        ].map((row) => (
+          <div class="flex items-center justify-between gap-3 p-4 text-sm">
+            <span class="font-medium text-slate-900">{row.name}</span>
+            <span class="flex items-center gap-3">
+              <span class="font-mono text-slate-900">{row.range}</span>
+              <span class="ts-chip">{row.eta}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Trade in -->
+  <section id="tradein" class="bg-slate-50 py-14">
+    <div class="mx-auto max-w-6xl px-4 grid gap-10 lg:grid-cols-[1.2fr_1fr]">
+      <div>
+        <span class="ts-chip-lime">Sell / Trade-in</span>
+        <h2 class="mt-3 font-display text-3xl font-bold">Bring it in. We inspect. You walk out paid.</h2>
+        <p class="mt-3 text-slate-700">
+          We don't quote sight-unseen — too many bait-and-switch stories. Book a trade-in appointment, drop by, and
+          we'll inspect, test, and offer in 15 minutes. Pick cash, store credit (we add 10%), or a credit toward
+          something on the floor.
+        </p>
+        <ol class="mt-5 space-y-3 text-sm text-slate-700">
+          <li class="flex gap-3">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-ink)] font-mono text-xs font-bold text-[var(--color-cyan-glow)]">1</span>
+            <span><strong>Book a slot.</strong> 15-minute window. We hold a bench for you.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-ink)] font-mono text-xs font-bold text-[var(--color-cyan-glow)]">2</span>
+            <span><strong>We inspect.</strong> Power, battery health, ports, screen, accessories.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-ink)] font-mono text-xs font-bold text-[var(--color-cyan-glow)]">3</span>
+            <span><strong>Pick your payout.</strong> Cash, Zelle, or +10% in store credit.</span>
+          </li>
+        </ol>
+        <a href="/booking?type=tradein" class="mt-6 ts-btn">Book an inspection →</a>
+      </div>
+
+      <div class="ts-card p-5">
+        <h3 class="font-display text-lg font-bold">Indicative trade-in values</h3>
+        <p class="mt-1 text-xs text-slate-500">Real offer requires in-store inspection.</p>
+        <div class="mt-4 space-y-3 text-sm">
+          {[
+            { name: 'iPhone 13 (unlocked, 90%+ battery)', val: '$220 – $300' },
+            { name: 'MacBook Air M1 (working, no dents)', val: '$420 – $560' },
+            { name: 'PS5 disc (with controller, all cables)', val: '$250 – $330' },
+            { name: 'Switch OLED (good screen)', val: '$160 – $210' },
+            { name: 'Gaming PC tower (mid-range)', val: '$300 – $700' },
+          ].map((r) => (
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="text-slate-700">{r.name}</span>
+              <span class="font-mono font-semibold text-slate-900">{r.val}</span>
+            </div>
+          ))}
+        </div>
+        <p class="mt-4 text-xs text-slate-500">Store credit option adds <strong class="text-lime-700">+10%</strong> to the offer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom / business -->
+  <section id="custom" class="mx-auto max-w-6xl px-4 py-14">
+    <div class="grid gap-6 lg:grid-cols-3">
+      <article class="ts-card p-6">
+        <div class="text-2xl">🛠️</div>
+        <h3 class="mt-3 font-display text-lg font-bold">Custom PC builds</h3>
+        <p class="mt-2 text-sm text-slate-600">Tell us your budget and use case. We spec, source, build, and stress-test before handoff. 1-year build warranty.</p>
+        <p class="mt-3 font-mono text-sm font-semibold text-slate-900">From $799</p>
+      </article>
+      <article class="ts-card p-6">
+        <div class="text-2xl">🏫</div>
+        <h3 class="mt-3 font-display text-lg font-bold">Student loaners</h3>
+        <p class="mt-2 text-sm text-slate-600">Laptop in the shop? We'll lend you a Chromebook so you don't miss class. Free with any repair over $99.</p>
+        <p class="mt-3 font-mono text-sm font-semibold text-slate-900">Included</p>
+      </article>
+      <article class="ts-card p-6">
+        <div class="text-2xl">💼</div>
+        <h3 class="mt-3 font-display text-lg font-bold">Small business support</h3>
+        <p class="mt-2 text-sm text-slate-600">Refurbished fleet laptops, on-site setup, and quarterly maintenance plans for shops & cafés in Charlestown.</p>
+        <p class="mt-3 font-mono text-sm font-semibold text-slate-900">From $39/mo per device</p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

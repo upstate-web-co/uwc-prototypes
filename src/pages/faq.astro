@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+const faqs = [
+  {
+    cat: 'Buying',
+    qs: [
+      { q: 'Are your refurbished devices reliable?', a: 'Every device is bench-tested by hand — power, battery, ports, screen, software. Refurbished items come with a 90-day shop warranty. Used items get 60 days.' },
+      { q: 'Do you accept returns?', a: 'Yes — 14 days, original condition, original receipt. Special-order custom builds are non-refundable but warrantied for 1 year.' },
+      { q: 'How does the Friday 10% off work?', a: 'Visit the shop or our site any Friday — discount auto-applies at checkout. No code needed. Stacks with monthly merch drops.' },
+      { q: 'What payment methods do you accept?', a: 'Stripe (credit, Apple Pay, Google Pay) online and in-store. Cash and Zelle in-store. We do not do financing or split-pay yet.' },
+    ],
+  },
+  {
+    cat: 'Repairs',
+    qs: [
+      { q: 'How does a repair quote work?', a: 'Free 15-minute diagnostic when you drop off. You\'ll get a written quote (parts + labor hours @ $80/hr) before any work begins. No surprise costs.' },
+      { q: 'How long do repairs take?', a: 'Phone screens and Switch joycons are usually same-day. Console board work runs 2-3 days. Custom PC diagnostics 1-2 days.' },
+      { q: 'Do you offer a warranty on repairs?', a: 'Yes — 90 days on parts and labor for any repair we perform. If the same issue comes back, we fix it free.' },
+      { q: 'What if you can\'t fix it?', a: 'You don\'t pay. We\'ll suggest trade-in value or salvage parts if you want to recoup something.' },
+    ],
+  },
+  {
+    cat: 'Trade-in / Resell',
+    qs: [
+      { q: 'Why do I need to come in person?', a: 'Trade-in values depend on real condition — battery health, screen wear, port function. Inspections take 15 minutes and you get an offer on the spot.' },
+      { q: 'Cash or store credit — which is better?', a: 'Store credit pays 10% more than cash. If you\'re planning to buy something from us anyway, take the credit.' },
+      { q: 'Can you erase my data?', a: 'Yes. We do a full secure wipe before resale and you can watch us do it. Bring your iCloud/Google password to disable Find My / FRP.' },
+    ],
+  },
+  {
+    cat: 'Visit / Other',
+    qs: [
+      { q: 'Where are you?', a: '218 Bunker Hill St, Charlestown, MA. Open Mon-Sat 10a-7p, Sun 12p-5p.' },
+      { q: 'Do you do business / fleet support?', a: 'Yes — refurbished fleets, on-site setup, quarterly maintenance plans. From $39/mo per device. Contact us for a quote.' },
+      { q: 'Are you hiring?', a: 'We do hire seasonally. Email josh@thetechshop.example with your repair experience.' },
+    ],
+  },
+]
+---
+
+<BaseLayout title="FAQ & AI Helper — The Tech Shop" description="Common questions about repairs, refurbished devices, trade-ins, and shop hours." active="faq">
+  <section class="border-b border-slate-200 bg-slate-50">
+    <div class="mx-auto max-w-6xl px-4 py-10">
+      <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">FAQ</p>
+      <h1 class="mt-1 font-display text-4xl font-bold tracking-tight">Have a question? Just ask.</h1>
+      <p class="mt-2 max-w-2xl text-slate-600">
+        Type below and our shop assistant will answer instantly. Or browse the common questions further down.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
+      <!-- Chat -->
+      <div class="ts-card flex flex-col overflow-hidden">
+        <header class="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-5 py-3">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-ink)] text-xs font-bold text-[var(--color-cyan-glow)]">AI</span>
+            <div>
+              <p class="text-sm font-semibold text-slate-900">Shop assistant</p>
+              <p class="text-[11px] text-slate-500">Trained on our hours, pricing, warranty, and repair history</p>
+            </div>
+          </div>
+          <span class="ts-chip-cyan">online</span>
+        </header>
+        <div id="chat-log" class="h-96 space-y-3 overflow-y-auto p-5 text-sm">
+          <div class="flex gap-2">
+            <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-cyan-700">🤖</span>
+            <div class="rounded-lg rounded-tl-none bg-slate-100 px-3 py-2 text-slate-800">
+              Hi — I'm the shop assistant. Ask me about hours, repair quotes, trade-in offers, warranty, or what's in stock.
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                <button class="chat-suggest rounded-full bg-white px-2.5 py-1 text-xs ring-1 ring-slate-200 hover:bg-cyan-50" data-q="How much is a Switch joycon drift fix?">Switch joycon drift price?</button>
+                <button class="chat-suggest rounded-full bg-white px-2.5 py-1 text-xs ring-1 ring-slate-200 hover:bg-cyan-50" data-q="What hours are you open today?">Are you open today?</button>
+                <button class="chat-suggest rounded-full bg-white px-2.5 py-1 text-xs ring-1 ring-slate-200 hover:bg-cyan-50" data-q="Do you have any iPhones in stock?">Got iPhones in stock?</button>
+                <button class="chat-suggest rounded-full bg-white px-2.5 py-1 text-xs ring-1 ring-slate-200 hover:bg-cyan-50" data-q="How does Friday discount work?">Friday discount?</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form id="chat-form" class="flex items-center gap-2 border-t border-slate-200 bg-white px-3 py-3">
+          <input id="chat-input" type="text" required class="ts-input flex-1" placeholder="Ask anything…" />
+          <button class="ts-btn px-4 py-2 text-xs" type="submit">Send</button>
+        </form>
+      </div>
+
+      <!-- FAQ accordion -->
+      <div class="space-y-6">
+        {faqs.map((group) => (
+          <div>
+            <h2 class="font-display text-lg font-bold">{group.cat}</h2>
+            <div class="mt-2 ts-card divide-y divide-slate-100">
+              {group.qs.map((item, idx) => (
+                <details class="group p-4">
+                  <summary class="flex cursor-pointer items-center justify-between gap-3 text-sm font-semibold text-slate-900 list-none">
+                    <span>{item.q}</span>
+                    <span class="text-slate-400 transition group-open:rotate-180">▾</span>
+                  </summary>
+                  <p class="mt-2 text-sm text-slate-700">{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-12 ts-card flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-5 text-sm">
+      <p class="text-slate-700">Didn't find it? Email <a href="mailto:hello@thetechshop.example" class="font-semibold underline">hello@thetechshop.example</a> — Josh personally answers within a business day.</p>
+      <a href="/contact" class="ts-btn-ghost">Send a message →</a>
+    </div>
+  </section>
+
+  <script>
+    // --- Mock AI assistant ---
+    const KB: Array<{ match: RegExp; reply: string; suggest?: string[] }> = [
+      {
+        match: /open|hours|today|when.*open/i,
+        reply: "We're open <strong>Mon–Sat 10am to 7pm</strong> and <strong>Sun 12–5pm</strong>. If today is Friday, everything in-store is 10% off automatically.",
+        suggest: ['How do I book a repair?', 'Got any PS5 in stock?'],
+      },
+      {
+        match: /address|where|location|directions/i,
+        reply: "We're at <strong>218 Bunker Hill St, Charlestown, MA</strong>. Two blocks from the Bunker Hill Monument. Bike rack out front.",
+      },
+      {
+        match: /friday|10%|discount|sale|deal/i,
+        reply: "Every <strong>Friday</strong> is 10% off everything — in-store and online. Auto-applies at checkout. Also: we drop a limited merch design each month.",
+        suggest: ['Show me the latest merch drop'],
+      },
+      {
+        match: /(joycon|joy.con|drift|switch.*stick)/i,
+        reply: "Joycon drift fix is <strong>$39–$79</strong> for both controllers, usually <strong>same-day</strong>. We replace the stick module, not just clean it.",
+        suggest: ['Book me a repair'],
+      },
+      {
+        match: /(iphone|ios).*screen|screen.*iphone/i,
+        reply: "iPhone screen replacement runs <strong>$89–$269</strong> depending on model. Pro models get OEM glass. About a <strong>1-hour</strong> turnaround.",
+        suggest: ['How much for iPhone battery?'],
+      },
+      {
+        match: /(iphone|ios).*battery|battery.*iphone/i,
+        reply: "iPhone battery swap is <strong>$59–$99</strong> with same-day turnaround. We use OEM-spec cells and run a calibration cycle.",
+      },
+      {
+        match: /macbook.*battery|battery.*macbook/i,
+        reply: "MacBook batteries run <strong>$149–$229</strong> depending on year. ~24 hour turnaround including diagnostic & calibration.",
+      },
+      {
+        match: /macbook|mac.*air|mac.*pro/i,
+        reply: "We carry refurbished MacBook Air (M2) starting at <strong>$849</strong> and MacBook Pro 14\" (M1 Pro) at <strong>$1,299</strong> — both 90-day warranty.",
+        suggest: ['Show me all MacBooks'],
+      },
+      {
+        match: /ps5|playstation/i,
+        reply: "We have a <strong>PS5 Slim Disc</strong> ($449) and a <strong>PS5 Digital</strong> ($399) in stock right now. Both with 60-day warranty. PS5 HDMI repair is $129–$189.",
+        suggest: ['Show consoles'],
+      },
+      {
+        match: /xbox/i,
+        reply: "We've got an <strong>Xbox Series X</strong> ($429) and a <strong>Series S</strong> ($229) in stock. HDMI port repairs are $119–$169.",
+      },
+      {
+        match: /(stock|inventory|got any|have any).*phone/i,
+        reply: "Phones on the floor right now: iPhone 15, 13, SE 2022, Galaxy S23, Pixel 8, Pixel 7a, OnePlus 11, iPhone 12 mini. All warrantied.",
+        suggest: ['Show me all phones'],
+      },
+      {
+        match: /trade.?in|sell.*you|resell|how much.*get/i,
+        reply: "Trade-in works in person — we inspect in 15 min and offer cash, Zelle, or <strong>+10% store credit</strong>. Book a slot under <a class='underline' href='/booking?type=tradein'>Booking</a>.",
+        suggest: ['What\'s my iPhone 13 worth?'],
+      },
+      {
+        match: /warranty|guarantee/i,
+        reply: "Refurbished items: <strong>90-day shop warranty</strong>. Used items: 60 days. Repairs: 90 days on parts + labor. Custom builds: 1 year.",
+      },
+      {
+        match: /book|repair|appointment|schedule/i,
+        reply: "You can <a class='underline font-semibold' href='/booking'>book a repair here</a> — pick a 1-hour window, drop off, and we'll send a written quote within an hour.",
+      },
+      {
+        match: /payment|stripe|card|cash|apple ?pay/i,
+        reply: "Online: Stripe (card, Apple Pay, Google Pay). In-store: same + cash + Zelle. No financing yet.",
+      },
+      {
+        match: /water|spill|liquid/i,
+        reply: "Water damage repairs vary a lot — usually <strong>$79–$349</strong>. We clean and triage first, then give a firm quote. Don't try to charge it before bringing it in.",
+      },
+      {
+        match: /(hire|hiring|job|employment)/i,
+        reply: "We hire seasonally — email <strong>josh@thetechshop.example</strong> with your repair experience.",
+      },
+      {
+        match: /merch|hoodie|tee|t.?shirt|sticker|drop/i,
+        reply: "This month's drop is <strong>\"Reboot\"</strong> — 40 hoodies, 60 tees, and a sticker pack. Limited and won't restock.",
+        suggest: ['Take me to the drop'],
+      },
+    ]
+
+    const DEFAULT = "Good question — I'm not totally sure on that one. Try asking about repair prices, hours, what's in stock, trade-ins, or our Friday discount. Or shoot Josh an email at <strong>hello@thetechshop.example</strong>."
+
+    function answer(q: string): { reply: string; suggest?: string[] } {
+      for (const rule of KB) {
+        if (rule.match.test(q)) return { reply: rule.reply, suggest: rule.suggest }
+      }
+      return { reply: DEFAULT }
+    }
+
+    const log = document.getElementById('chat-log')!
+    const form = document.getElementById('chat-form') as HTMLFormElement
+    const input = document.getElementById('chat-input') as HTMLInputElement
+
+    function bubble(html: string, side: 'user' | 'bot') {
+      const wrap = document.createElement('div')
+      wrap.className = `flex gap-2 ${side === 'user' ? 'justify-end' : ''}`
+      const avatar = side === 'bot'
+        ? '<span class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-cyan-700">🤖</span>'
+        : ''
+      const bub = side === 'bot'
+        ? `<div class="rounded-lg rounded-tl-none bg-slate-100 px-3 py-2 text-slate-800">${html}</div>`
+        : `<div class="rounded-lg rounded-tr-none bg-[var(--color-ink)] px-3 py-2 text-white">${html}</div>`
+      wrap.innerHTML = avatar + bub
+      log.appendChild(wrap)
+      log.scrollTop = log.scrollHeight
+    }
+
+    function escapeHtml(s: string) {
+      return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!))
+    }
+
+    function ask(q: string) {
+      bubble(escapeHtml(q), 'user')
+      const { reply, suggest } = answer(q)
+      setTimeout(() => {
+        let html = reply
+        if (suggest && suggest.length) {
+          html += `<div class="mt-2 flex flex-wrap gap-1.5">${suggest.map(s => `<button class='chat-suggest rounded-full bg-white px-2.5 py-1 text-xs ring-1 ring-slate-200 hover:bg-cyan-50' data-q="${escapeHtml(s)}">${escapeHtml(s)}</button>`).join('')}</div>`
+        }
+        bubble(html, 'bot')
+        wireSuggestions()
+      }, 350)
+    }
+
+    function wireSuggestions() {
+      log.querySelectorAll<HTMLButtonElement>('.chat-suggest').forEach((b) => {
+        if ((b as any).__wired) return
+        ;(b as any).__wired = true
+        b.addEventListener('click', () => ask(b.dataset.q!))
+      })
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const q = input.value.trim()
+      if (!q) return
+      input.value = ''
+      ask(q)
+    })
+
+    wireSuggestions()
+  </script>
+</BaseLayout>
