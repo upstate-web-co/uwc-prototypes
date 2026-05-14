@@ -1,0 +1,223 @@
+name: UWC Prototype Build (Aider + DeepSeek)
+
+# Companion to uwc-prototype-build.yml — same dispatch contract, different
+# harness. Admin dispatches this workflow when env LLM_CODEGEN_PROVIDER='aider'
+# is set on the agency-admin CF Pages project; otherwise admin dispatches the
+# Claude variant. Webhook callback shape is IDENTICAL so admin's prototype-build
+# webhook routes either substrate uniformly.
+#
+# Authored 2026-05-14 per Phase A4 of the pure-DeepSeek migration. Mirror of
+# uwc-aider-phase-build.yml's substitution pattern. Same default flags hardened
+# from the 2026-05-13 P&T smoke (--edit-format whole, --no-gitignore, strip
+# .aider* cache files before commit).
+#
+# Required repo secrets:
+#   DEEPSEEK_API_KEY                  — DeepSeek API key (replaces ANTHROPIC_API_KEY)
+#   CLOUDFLARE_API_TOKEN              — Pages:Edit scope (same as Claude variant)
+#   CLOUDFLARE_ACCOUNT_ID             — useshiira@gmail.com account id
+#   PROTOTYPE_BUILD_WEBHOOK_SECRET    — HMAC shared with admin
+#
+# Rule 72 + Rule 56. See agency-admin CLAUDE.md for the full contract.
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: 'UWC project_id this prototype is for'
+        required: true
+      job_id:
+        description: 'Short correlation id (matches phase_build_jobs.id)'
+        required: true
+      prompt:
+        description: 'Phase-build prompt (admin pre-generates via phasePromptHeadless)'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout or create prototype branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create / checkout prototype branch
+        run: |
+          set -euo pipefail
+          BRANCH="prototype/${{ inputs.project_id }}"
+          git fetch origin "$BRANCH" 2>/dev/null || true
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            git checkout "$BRANCH"
+          else
+            git checkout -b "$BRANCH"
+          fi
+          git config user.name "uwc-aider[bot]"
+          git config user.email "uwc-aider@users.noreply.github.com"
+
+      - name: Set up Python (for Aider)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Aider
+        run: |
+          python -m pip install --upgrade pip
+          pip install 'aider-chat>=0.84.0,<1.0'
+          aider --version
+
+      - name: Write prompt to file (aider --message-file expects a path)
+        run: |
+          cat > /tmp/uwc-prototype-prompt.md <<'UWC_PROMPT_EOF'
+          ${{ inputs.prompt }}
+          UWC_PROMPT_EOF
+          wc -l /tmp/uwc-prototype-prompt.md
+
+      - name: Run Aider headless against DeepSeek
+        id: aider
+        continue-on-error: true
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          UWC_JOB_ID: ${{ inputs.job_id }}
+          UWC_PROJECT_ID: ${{ inputs.project_id }}
+        run: |
+          # Defaults hardened from the 2026-05-13 P&T smoke
+          # (admin uwc-aider-phase-build.yml commit b98c683):
+          # --edit-format whole works for new-file + existing-file scenarios
+          # --no-gitignore suppresses Aider's automatic .gitignore add
+          aider --model deepseek/deepseek-chat \
+                --edit-format whole \
+                --yes \
+                --no-auto-commits \
+                --no-stream \
+                --no-gitignore \
+                --message-file /tmp/uwc-prototype-prompt.md \
+                --no-show-model-warnings \
+                --no-pretty \
+                --map-tokens 8192
+
+      - name: Commit Claude's changes (preserves partial work even on Aider failure)
+        if: always()
+        id: commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AIDER_OUTCOME: ${{ steps.aider.outcome }}
+        run: |
+          set -euo pipefail
+          # Strip .aider* cache files BEFORE staging — lesson from
+          # admin uwc-aider-phase-build.yml smoke (b98c683). Even with
+          # --no-gitignore, Aider writes .aider.chat.history.md and
+          # .aider.tags.cache.v*/ to the working tree during every run.
+          rm -rf .aider.chat.history.md .aider.input.history .aider.tags.cache.v* 2>/dev/null || true
+          git add -A
+          if git diff --cached --quiet; then
+            echo "::notice::No changes from Aider — skipping commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            if [ "$AIDER_OUTCOME" != "success" ]; then
+              MSG="UWC prototype build via Aider+DeepSeek (PARTIAL — aider $AIDER_OUTCOME) — project ${{ inputs.project_id }} (job ${{ inputs.job_id }})"
+            else
+              MSG="UWC prototype build via Aider+DeepSeek — project ${{ inputs.project_id }} (job ${{ inputs.job_id }})"
+            fi
+            git commit -m "$MSG"
+            git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            git push origin "prototype/${{ inputs.project_id }}"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install deps
+        run: npm install
+
+      - name: Build Astro
+        run: npm run build
+
+      - name: Deploy to CF Pages
+        id: deploy
+        run: |
+          set -euo pipefail
+          BRANCH="prototype-${{ inputs.project_id }}"
+          npx wrangler pages deploy dist \
+            --project-name=uwc-prototypes \
+            --branch="$BRANCH" \
+            --commit-dirty=true
+          URL=$(npx wrangler pages deploy dist \
+            --project-name=uwc-prototypes \
+            --branch="$BRANCH" \
+            --commit-dirty=true 2>&1 | grep -oE 'https://[a-z0-9-]+\.uwc-prototypes\.pages\.dev' | head -1)
+          echo "deployed_url=$URL" >> "$GITHUB_OUTPUT"
+          echo "::notice::Deployed to $URL"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Capture screenshots (desktop + mobile)
+        id: screenshots
+        run: |
+          set -euo pipefail
+          URL="${{ steps.deploy.outputs.deployed_url }}"
+          if [ -z "$URL" ]; then
+            echo "::warning::No deployed URL — skipping screenshots"
+            echo "have_screenshots=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          npx --yes playwright install chromium --with-deps
+          sleep 15
+          npx playwright screenshot --viewport-size=1440,900 "$URL" home-desktop.jpg --quality=72 --type=jpeg || echo "::warning::desktop screenshot failed"
+          npx playwright screenshot --viewport-size=375,812 "$URL" home-mobile.jpg --quality=72 --type=jpeg || echo "::warning::mobile screenshot failed"
+          if [ -f home-desktop.jpg ] && [ -f home-mobile.jpg ]; then
+            echo "have_screenshots=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Captured both screenshots"
+          else
+            echo "have_screenshots=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::One or both screenshots missing"
+          fi
+
+      - name: Report back to admin
+        if: always()
+        run: |
+          set -euo pipefail
+          URL="${{ steps.deploy.outputs.deployed_url }}"
+          STATUS="${{ job.status }}"
+          HAVE_SCREENSHOTS="${{ steps.screenshots.outputs.have_screenshots || 'false' }}"
+
+          if [ "$HAVE_SCREENSHOTS" = "true" ] && [ -f home-desktop.jpg ] && [ -f home-mobile.jpg ]; then
+            DESKTOP_B64=$(base64 -w0 home-desktop.jpg)
+            MOBILE_B64=$(base64 -w0 home-mobile.jpg)
+            PAYLOAD=$(jq -cn \
+              --arg project_id "${{ inputs.project_id }}" \
+              --arg job_id "${{ inputs.job_id }}" \
+              --arg deployed_url "$URL" \
+              --arg status "$STATUS" \
+              --arg desktop "$DESKTOP_B64" \
+              --arg mobile "$MOBILE_B64" \
+              '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status, home_desktop_b64: $desktop, home_mobile_b64: $mobile}')
+          else
+            PAYLOAD=$(jq -cn \
+              --arg project_id "${{ inputs.project_id }}" \
+              --arg job_id "${{ inputs.job_id }}" \
+              --arg deployed_url "$URL" \
+              --arg status "$STATUS" \
+              '{project_id: $project_id, job_id: $job_id, deployed_url: $deployed_url, status: $status}')
+          fi
+          # Same HMAC contract as the Claude variant — admin's
+          # prototype-build webhook routes uniformly.
+          TS=$(($(date +%s%N) / 1000000))
+          NONCE=$(openssl rand -hex 16)
+          SIG=$(printf '%s.%s.%s' "$PAYLOAD" "$TS" "$NONCE" | openssl dgst -sha256 -hmac "${{ secrets.PROTOTYPE_BUILD_WEBHOOK_SECRET }}" | awk '{print $2}')
+          curl -sS -X POST \
+            -H "content-type: application/json" \
+            -H "x-uwc-prototype-sig: $SIG" \
+            -H "X-UWC-Ts: $TS" \
+            -H "X-UWC-Nonce: $NONCE" \
+            -d "$PAYLOAD" \
+            https://agency.upstate-web.com/api/webhooks/prototype-build
