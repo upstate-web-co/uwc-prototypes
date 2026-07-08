@@ -68,7 +68,7 @@ export function contactNotificationHtml(data: {
 }): string {
   return `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #1a1a1a;">New Contact Form Submission</h2>
+      <h2 style="color: #1a1a1a;">New Contact Form Submission — The Ogaden</h2>
       <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
       <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
       ${data.phone ? `<p><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>` : ''}

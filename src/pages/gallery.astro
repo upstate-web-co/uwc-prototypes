@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE } from '../lib/config'
+
+// Sample gallery data - in production, fetch from D1/R2
+const galleryItems = [
+  { id: '1', caption: 'Paris Mountain Trail', location: 'Paris Mountain State Park' },
+  { id: '2', caption: 'Axe Throwing Fun', location: 'Yee-Haw Axe Throwing' },
+  { id: '3', caption: 'Pool Tournament Night', location: 'The Local Cue' },
+  { id: '4', caption: 'Swamp Rabbit Trail', location: 'Greenville' },
+  { id: '5', caption: 'Farm-to-Table Dinner', location: 'The Anchorage' },
+  { id: '6', caption: 'Board Game Night', location: 'Boardwalk' },
+]
+---
+
+<BaseLayout title="Gallery | {SITE.name}" description="Photos from around Upstate SC">
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-900">Gallery</h1>
+    <p class="mt-2 text-gray-600">Photos shared by the community. See what people are doing in Upstate SC.</p>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {galleryItems.map(item => (
+        <div class="card">
+          <div class="flex h-48 items-center justify-center rounded-lg bg-gray-100">
+            <svg class="h-16 w-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div class="mt-4">
+            <p class="font-medium text-gray-900">{item.caption}</p>
+            <p class="text-sm text-gray-500">{item.location}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE } from '../lib/config'
+
+const posts = [
+  {
+    slug: 'top-hiking-trails-upstate-sc',
+    title: 'Top 10 Hiking Trails in Upstate SC',
+    excerpt: 'Discover the best hiking trails in the Upstate, from easy walks to challenging climbs.',
+    date: '2026-07-01',
+    author: 'The Ogaden Team',
+    category: 'hiking',
+  },
+  {
+    slug: 'best-axe-throwing-venues',
+    title: 'Best Axe Throwing Venues in Greenville',
+    excerpt: 'Looking for a unique night out? Check out these top axe throwing spots.',
+    date: '2026-06-28',
+    author: 'The Ogaden Team',
+    category: 'entertainment',
+  },
+  {
+    slug: 'game-night-guide',
+    title: 'Ultimate Guide to Game Nights in the Upstate',
+    excerpt: 'From board games to pool tables, here\'s where to find the best game nights.',
+    date: '2026-06-20',
+    author: 'The Ogaden Team',
+    category: 'entertainment',
+  },
+]
+---
+
+<BaseLayout title="Blog | {SITE.name}" description="Articles and guides about things to do in Upstate SC">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-900">Blog</h1>
+    <p class="mt-2 text-gray-600">Guides, tips, and stories about exploring Upstate SC.</p>
+
+    <div class="mt-8 space-y-8">
+      {posts.map(post => (
+        <article class="card">
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span class="inline-block rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
+              {post.category}
+            </span>
+            <span>{post.date}</span>
+          </div>
+          <h2 class="mt-3 text-xl font-semibold text-gray-900">
+            <a href={`/blog/${post.slug}`} class="hover:text-blue-600">{post.title}</a>
+          </h2>
+          <p class="mt-2 text-gray-600">{post.excerpt}</p>
+          <div class="mt-4 flex items-center justify-between">
+            <p class="text-sm text-gray-500">By {post.author}</p>
+            <a href={`/blog/${post.slug}`} class="text-sm font-medium text-blue-600 hover:text-blue-800">Read More &rarr;</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

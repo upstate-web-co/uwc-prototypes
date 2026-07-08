@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE } from '../lib/config'
+
+const products = [
+  {
+    id: '1',
+    name: 'The Ogaden T-Shirt',
+    price: 24.99,
+    description: 'Comfortable cotton t-shirt with The Ogaden logo. Available in sizes S-3XL.',
+    image: '',
+  },
+  {
+    id: '2',
+    name: 'Upstate SC Adventure Guide',
+    price: 14.99,
+    description: 'Digital guide featuring the best activities, restaurants, and events in Upstate SC.',
+    image: '',
+  },
+  {
+    id: '3',
+    name: 'The Ogaden Sticker Pack',
+    price: 5.99,
+    description: 'Set of 5 vinyl stickers featuring The Ogaden logo and Upstate landmarks.',
+    image: '',
+  },
+]
+---
+
+<BaseLayout title="Store | {SITE.name}" description="The Ogaden merchandise and guides">
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-900">Store</h1>
+    <p class="mt-2 text-gray-600">Show your love for Upstate SC with The Ogaden merchandise.</p>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {products.map(product => (
+        <div class="card">
+          <div class="flex h-48 items-center justify-center rounded-lg bg-gray-100">
+            <svg class="h-16 w-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <div class="mt-4">
+            <h3 class="text-lg font-semibold text-gray-900">{product.name}</h3>
+            <p class="mt-1 text-xl font-bold text-blue-600">${product.price.toFixed(2)}</p>
+            <p class="mt-2 text-sm text-gray-600">{product.description}</p>
+            <button class="mt-4 btn-primary w-full">Add to Cart</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

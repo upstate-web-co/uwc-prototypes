@@ -14,39 +14,92 @@ import { SITE } from '../lib/config'
         {SITE.tagline}
       </p>
       <div class="mt-8">
-        <a href="#contact" class="rounded-lg bg-blue-600 px-6 py-3 text-lg font-medium text-white hover:bg-blue-700">
-          Get in Touch
+        <a href="/activities" class="btn-primary">
+          Explore Activities
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section id="services" class="mx-auto max-w-6xl px-4 py-16">
-    <h2 class="text-center text-3xl font-bold text-gray-900">Our Services</h2>
-    <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- Replace with client's actual services -->
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service One</h3>
-        <p class="mt-2 text-gray-600">Description of the first service offering.</p>
-      </div>
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service Two</h3>
-        <p class="mt-2 text-gray-600">Description of the second service offering.</p>
-      </div>
-      <div class="rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900">Service Three</h3>
-        <p class="mt-2 text-gray-600">Description of the third service offering.</p>
-      </div>
+  <!-- Search Section -->
+  <section class="mx-auto max-w-4xl px-4 py-12">
+    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-bold text-gray-900">Find Something to Do</h2>
+      <form id="search-form" class="mt-6 space-y-4" method="GET" action="/activities">
+        <div class="flex flex-col gap-4 sm:flex-row">
+          <div class="flex-1">
+            <label for="query" class="block text-sm font-medium text-gray-700">Search</label>
+            <input type="text" id="query" name="query" placeholder="e.g., axe throwing, hiking, restaurants..."
+              class="input-field" />
+          </div>
+          <div class="sm:w-48">
+            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+            <select id="category" name="category" class="input-field">
+              <option value="">All Categories</option>
+              <option value="restaurant">Restaurants</option>
+              <option value="hiking">Hiking & Outdoors</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="sports">Sports & Recreation</option>
+              <option value="nightlife">Nightlife</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button type="submit" class="btn-primary w-full sm:w-auto">
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Featured Categories -->
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <h2 class="text-center text-3xl font-bold text-gray-900">Popular Categories</h2>
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <a href="/activities?category=restaurant" class="card hover:shadow-md transition-shadow">
+        <div class="text-4xl mb-4">🍽️</div>
+        <h3 class="text-lg font-semibold text-gray-900">Restaurants</h3>
+        <p class="mt-2 text-gray-600">Discover the best places to eat in Upstate SC.</p>
+      </a>
+      <a href="/activities?category=hiking" class="card hover:shadow-md transition-shadow">
+        <div class="text-4xl mb-4">🥾</div>
+        <h3 class="text-lg font-semibold text-gray-900">Hiking & Outdoors</h3>
+        <p class="mt-2 text-gray-600">Trails, parks, and outdoor adventures.</p>
+      </a>
+      <a href="/activities?category=entertainment" class="card hover:shadow-md transition-shadow">
+        <div class="text-4xl mb-4">🎯</div>
+        <h3 class="text-lg font-semibold text-gray-900">Entertainment</h3>
+        <p class="mt-2 text-gray-600">Axe throwing, game nights, pool tables, and more.</p>
+      </a>
+      <a href="/activities?category=sports" class="card hover:shadow-md transition-shadow">
+        <div class="text-4xl mb-4">⚽</div>
+        <h3 class="text-lg font-semibold text-gray-900">Sports & Recreation</h3>
+        <p class="mt-2 text-gray-600">Sports bars, bowling, mini golf, and activities.</p>
+      </a>
+      <a href="/activities?category=nightlife" class="card hover:shadow-md transition-shadow">
+        <div class="text-4xl mb-4">🌙</div>
+        <h3 class="text-lg font-semibold text-gray-900">Nightlife</h3>
+        <p class="mt-2 text-gray-600">Bars, clubs, live music, and evening events.</p>
+      </a>
+      <a href="/activities?category=other" class="card hover:shadow-md transition-shadow">
+        <div class="text-4xl mb-4">📍</div>
+        <h3 class="text-lg font-semibold text-gray-900">Local Events</h3>
+        <p class="mt-2 text-gray-600">Community events, festivals, and gatherings.</p>
+      </a>
     </div>
   </section>
 
   <!-- About Section -->
   <section id="about" class="bg-gray-50 px-4 py-16">
     <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-3xl font-bold text-gray-900">About Us</h2>
+      <h2 class="text-3xl font-bold text-gray-900">About The Ogaden</h2>
       <p class="mt-4 text-lg text-gray-600">
-        Replace this with the client's story.
+        We're your go-to guide for finding things to do in Upstate SC. Whether you're looking for a 
+        great restaurant, a hiking trail, a place with pool tables, axe throwing, or a fun game night, 
+        we've got you covered. Our community-driven platform lets you discover, comment, and share 
+        photos of your favorite spots.
       </p>
     </div>
   </section>
@@ -54,29 +107,25 @@ import { SITE } from '../lib/config'
   <!-- Contact Section -->
   <section id="contact" class="mx-auto max-w-2xl px-4 py-16">
     <h2 class="text-center text-3xl font-bold text-gray-900">Contact Us</h2>
+    <p class="mt-2 text-center text-gray-600">Have a suggestion or want to add a listing? Get in touch!</p>
     <form id="contact-form" class="mt-8 space-y-6" method="POST">
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-        <input type="text" id="name" name="name" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
+        <input type="text" id="name" name="name" required class="input-field" />
       </div>
       <div>
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" id="email" name="email" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
+        <input type="email" id="email" name="email" required class="input-field" />
       </div>
       <div>
         <label for="phone" class="block text-sm font-medium text-gray-700">Phone (optional)</label>
-        <input type="tel" id="phone" name="phone"
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500" />
+        <input type="tel" id="phone" name="phone" class="input-field" />
       </div>
       <div>
         <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-        <textarea id="message" name="message" rows="4" required
-          class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500"></textarea>
+        <textarea id="message" name="message" rows="4" required class="input-field"></textarea>
       </div>
-      <button type="submit"
-        class="w-full rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700">
+      <button type="submit" class="btn-primary w-full">
         Send Message
       </button>
       <div id="form-status" class="hidden rounded-lg p-4 text-center text-sm"></div>

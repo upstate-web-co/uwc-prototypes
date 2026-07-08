@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css'
 import SEOHead from '../components/SEOHead.astro'
-import { SITE } from '../lib/config'
+import { SITE, NAV_ITEMS } from '../lib/config'
 
 interface Props {
   title?: string
@@ -29,9 +29,11 @@ const { title, description, ogImage, schema } = Astro.props
           {SITE.name}
         </a>
         <div class="flex items-center gap-6">
-          <!-- Add nav links per client -->
-          <a href="/#services" class="text-sm text-gray-600 hover:text-gray-900">Services</a>
-          <a href="/#about" class="text-sm text-gray-600 hover:text-gray-900">About</a>
+          {NAV_ITEMS.filter(item => item.label !== 'Home').map(item => (
+            <a href={item.href} class="text-sm text-gray-600 hover:text-gray-900">
+              {item.label}
+            </a>
+          ))}
           <a href="/#contact" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
             Contact
           </a>

@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE } from '../lib/config'
+---
+
+<BaseLayout title="Booking | {SITE.name}" description="Book activities and events in Upstate SC">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-900">Booking</h1>
+    <p class="mt-2 text-gray-600">Reserve your spot for activities and events in Upstate SC.</p>
+
+    <div class="mt-8 rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
+      <h2 class="text-xl font-semibold text-gray-900">Request a Booking</h2>
+      <p class="mt-2 text-sm text-gray-600">Fill out the form below and we'll help you book your activity.</p>
+
+      <form id="booking-form" class="mt-6 space-y-6">
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" id="name" name="name" required class="input-field" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" name="email" required class="input-field" />
+          </div>
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+            <input type="tel" id="phone" name="phone" class="input-field" />
+          </div>
+          <div>
+            <label for="activity" class="block text-sm font-medium text-gray-700">Activity</label>
+            <select id="activity" name="activity" required class="input-field">
+              <option value="">Select an activity</option>
+              <option value="axe-throwing">Axe Throwing</option>
+              <option value="pool">Pool / Billiards</option>
+              <option value="hiking">Guided Hike</option>
+              <option value="game-night">Game Night</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="date" class="block text-sm font-medium text-gray-700">Preferred Date</label>
+            <input type="date" id="date" name="date" required class="input-field" />
+          </div>
+          <div>
+            <label for="time" class="block text-sm font-medium text-gray-700">Preferred Time</label>
+            <input type="time" id="time" name="time" class="input-field" />
+          </div>
+        </div>
+        <div>
+          <label for="notes" class="block text-sm font-medium text-gray-700">Special Requests</label>
+          <textarea id="notes" name="notes" rows="3" class="input-field"></textarea>
+        </div>
+        <button type="submit" class="btn-primary w-full">Submit Booking Request</button>
+        <div id="booking-status" class="hidden rounded-lg p-4 text-center text-sm"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const bookingForm = document.getElementById('booking-form') as HTMLFormElement
+    const bookingStatus = document.getElementById('booking-status') as HTMLElement
+
+    bookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const btn = bookingForm.querySelector('button[type="submit"]') as HTMLButtonElement
+      btn.disabled = true
+      btn.textContent = 'Submitting...'
+      bookingStatus.classList.add('hidden')
+
+      try {
+        const data = Object.fromEntries(new FormData(bookingForm))
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            message: `Booking Request:\nActivity: ${data.activity}\nDate: ${data.date}\nTime: ${data.time}\nNotes: ${data.notes}`,
+          }),
+        })
+
+        if (res.ok) {
+          bookingStatus.textContent = 'Booking request submitted! We\'ll be in touch within 24 hours.'
+          bookingStatus.className = 'rounded-lg bg-green-50 p-4 text-center text-sm text-green-700'
+          bookingForm.reset()
+        } else {
+          const err = await res.json()
+          bookingStatus.textContent = err.error || 'Something went wrong.'
+          bookingStatus.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
+        }
+      } catch {
+        bookingStatus.textContent = 'Network error. Please try again.'
+        bookingStatus.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
+      } finally {
+        btn.disabled = false
+        btn.textContent = 'Submit Booking Request'
+      }
+    })
+  </script>
+</BaseLayout>

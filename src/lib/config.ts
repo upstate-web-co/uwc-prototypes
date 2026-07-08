@@ -5,11 +5,11 @@
  */
 
 export const SITE = {
-  name: 'PROJECT_NAME',
-  tagline: 'PROJECT_TAGLINE',
-  url: 'https://PROJECT_DOMAIN',
-  email: 'hello@PROJECT_DOMAIN',
-  phone: '',
+  name: 'The Ogaden',
+  tagline: 'Your Go-To Guide for Getting Out in Upstate SC',
+  url: 'https://theogaden.com',
+  email: 'hello@theogaden.com',
+  phone: '(864) 555-0199',
   /**
    * Set to true when the site is ready for search engines.
    * Default: false (noindex). Launch phase sets this to true.
@@ -18,12 +18,21 @@ export const SITE = {
   indexable: false,
 } as const
 
+export const NAV_ITEMS = [
+  { label: 'Home', href: '/' },
+  { label: 'Activities', href: '/activities' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Testimonials', href: '/testimonials' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Booking', href: '/booking' },
+  { label: 'Store', href: '/store' },
+] as const
+
 export const BRAND = {
-  primaryColor: '#2563eb',   // Update per client brand
+  primaryColor: '#2563eb',
   accentColor: '#f59e0b',
 } as const
 
-// Error code registry — add project-specific codes as needed
 export const ERRORS = {
   VALIDATION_ERROR: { status: 400, message: 'Validation failed' },
   NOT_FOUND: { status: 404, message: 'Resource not found' },

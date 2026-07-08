@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { SITE } from '../../lib/config'
+
+export async function getStaticPaths() {
+  // In production, fetch from D1
+  const slugs = [
+    'paris-mountain-state-park',
+    'yee-haw-axe-throwing',
+    'the-local-cue',
+    'swamp-rabbit-trail',
+    'the-anchorage-restaurant',
+    'game-night-boardwalk',
+  ]
+  return slugs.map(slug => ({ params: { slug } }))
+}
+
+const { slug } = Astro.params
+
+// Sample data - in production, fetch from D1
+const activities: Record<string, {
+  title: string
+  category: string
+  description: string
+  location: string
+  website?: string
+  phone?: string
+  tags: string[]
+}> = {
+  'paris-mountain-state-park': {
+    title: 'Paris Mountain State Park',
+    category: 'hiking',
+    description: 'Beautiful hiking trails with scenic views of Greenville. Multiple trail options for all skill levels. The park features Lake Placid for fishing and swimming, picnic areas, and over 15 miles of trails.',
+    location: '2401 State Park Rd, Greenville, SC 29609',
+    website: 'https://southcarolinaparks.com/paris-mountain',
+    phone: '(864) 244-5565',
+    tags: ['hiking', 'nature', 'trails', 'outdoors', 'fishing', 'swimming'],
+  },
+  'yee-haw-axe-throwing': {
+    title: 'Yee-Haw Axe Throwing',
+    category: 'entertainment',
+    description: 'Indoor axe throwing venue with multiple lanes. Great for date nights, group outings, and team building events. Walk-ins welcome, reservations recommended for groups.',
+    location: '123 Main St, Greenville, SC 29601',
+    website: 'https://yeehawaxe.com',
+    phone: '(864) 555-1234',
+    tags: ['axe throwing', 'entertainment', 'group activities', 'date night'],
+  },
+  'the-local-cue': {
+    title: 'The Local Cue',
+    category: 'entertainment',
+    description: 'Pool hall with 12 regulation tables, darts, and a full bar. Weekly tournaments every Wednesday and Friday. Great atmosphere for casual games or competitive play.',
+    location: '456 Broad St, Greenville, SC 29601',
+    phone: '(864) 555-5678',
+    tags: ['pool', 'billiards', 'game nights', 'bar', 'tournaments'],
+  },
+  'swamp-rabbit-trail': {
+    title: 'Swamp Rabbit Trail',
+    category: 'hiking',
+    description: '22-mile multi-use trail connecting Greenville to Travelers Rest. Perfect for biking, running, walking, and rollerblading. Trailheads with parking available at multiple points.',
+    location: 'Greenville, SC',
+    website: 'https://greenvillerec.com/swamp-rabbit-trail',
+    tags: ['biking', 'running', 'walking', 'trail', 'outdoors'],
+  },
+  'the-anchorage-restaurant': {
+    title: 'The Anchorage Restaurant',
+    category: 'restaurant',
+    description: 'Farm-to-table Southern cuisine with a modern twist. Seasonal menu featuring locally sourced ingredients. Award-winning chef. Reservations recommended.',
+    location: '467 Main St, Greenville, SC 29601',
+    website: 'https://theanchoragegreenville.com',
+    phone: '(864) 555-9012',
+    tags: ['farm-to-table', 'southern', 'fine dining', 'local ingredients'],
+  },
+  'game-night-boardwalk': {
+    title: 'Game Night at Boardwalk',
+    category: 'entertainment',
+    description: 'Weekly board game nights every Thursday from 6 PM to close. Hundreds of games available to play. Food and drinks served. Bring your own games or try something new.',
+    location: '789 River St, Greenville, SC 29601',
+    phone: '(864) 555-3456',
+    tags: ['board games', 'game night', 'weekly event', 'social'],
+  },
+}
+
+const activity = activities[slug]
+
+if (!activity) {
+  return Astro.redirect('/404')
+}
+
+// Sample comments - in production, fetch from D1
+const comments = [
+  { id: '1', author: 'Sarah M.', content: 'Great place! Highly recommend the Lake Placid trail.', createdAt: '2026-06-15' },
+  { id: '2', author: 'Mike R.', content: 'Beautiful views. Parking can be tricky on weekends.', createdAt: '2026-06-10' },
+]
+
+// Sample photos - in production, fetch from R2
+const photos = [
+  { id: '1', caption: 'View from the top', imageUrl: '' },
+  { id: '2', caption: 'Lake Placid', imageUrl: '' },
+]
+---
+
+<BaseLayout title={`${activity.title} | ${SITE.name}`} description={activity.description}>
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <!-- Back link -->
+    <a href="/activities" class="text-sm text-blue-600 hover:text-blue-800">&larr; Back to Activities</a>
+
+    <!-- Activity Header -->
+    <div class="mt-6">
+      <span class="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
+        {activity.category}
+      </span>
+      <h1 class="mt-3 text-3xl font-bold text-gray-900">{activity.title}</h1>
+    </div>
+
+    <!-- Activity Details -->
+    <div class="mt-6 space-y-4">
+      <p class="text-gray-700 leading-relaxed">{activity.description}</p>
+      <div class="rounded-lg bg-gray-50 p-4">
+        <p class="text-sm text-gray-600"><strong>Location:</strong> {activity.location}</p>
+        {activity.phone && <p class="mt-1 text-sm text-gray-600"><strong>Phone:</strong> {activity.phone}</p>}
+        {activity.website && (
+          <p class="mt-1 text-sm text-gray-600">
+            <strong>Website:</strong> <a href={activity.website} target="_blank" class="text-blue-600 hover:underline">{activity.website}</a>
+          </p>
+        )}
+      </div>
+      <div class="flex flex-wrap gap-2">
+        {activity.tags.map(tag => (
+          <span class="inline-block rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">{tag}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Photos Section -->
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold text-gray-900">Photos</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {photos.length === 0 && (
+          <p class="col-span-full text-gray-500">No photos yet. Be the first to share one!</p>
+        )}
+        {photos.map(photo => (
+          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center">
+            <div class="flex h-32 items-center justify-center text-gray-400">
+              <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">{photo.caption}</p>
+          </div>
+        ))}
+      </div>
+      <!-- Upload photo form -->
+      <div class="mt-6 rounded-lg border border-dashed border-gray-300 p-6 text-center">
+        <p class="text-sm text-gray-500">Share your photos of this place</p>
+        <button class="mt-2 btn-secondary text-sm">Upload Photo</button>
+      </div>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold text-gray-900">Comments</h2>
+      <div class="mt-4 space-y-4">
+        {comments.length === 0 && (
+          <p class="text-gray-500">No comments yet. Be the first to share your experience!</p>
+        )}
+        {comments.map(comment => (`
+          <div class="rounded-lg border border-gray-200 p-4">
+            <div class="flex items-center justify-between">
+              <p class="font-medium text-gray-900">{comment.author}</p>
+              <p class="text-xs text-gray-400">{comment.createdAt}</p>
+            </div>
+            <p class="mt-2 text-gray-700">{comment.content}</p>
+          </div>
+        `))}
+      </div>
+
+      <!-- Add comment form -->
+      <form id="comment-form" class="mt-6 space-y-4">
+        <h3 class="text-lg font-semibold text-gray-900">Leave a Comment</h3>
+        <div>
+          <label for="author" class="block text-sm font-medium text-gray-700">Name</label>
+          <input type="text" id="author" name="author" required class="input-field" />
+        </div>
+        <div>
+          <label for="comment-content" class="block text-sm font-medium text-gray-700">Your Comment</label>
+          <textarea id="comment-content" name="content" rows="3" required class="input-field"></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Post Comment</button>
+        <div id="comment-status" class="hidden rounded-lg p-4 text-center text-sm"></div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    const commentForm = document.getElementById('comment-form') as HTMLFormElement
+    const commentStatus = document.getElementById('comment-status') as HTMLElement
+
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const btn = commentForm.querySelector('button[type="submit"]') as HTMLButtonElement
+      btn.disabled = true
+      btn.textContent = 'Posting...'
+      commentStatus.classList.add('hidden')
+
+      try {
+        const data = Object.fromEntries(new FormData(commentForm))
+        data.activityId = window.location.pathname.split('/').pop()
+        const res = await fetch('/api/comments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        })
+
+        if (res.ok) {
+          commentStatus.textContent = 'Comment posted! It will appear after review.'
+          commentStatus.className = 'rounded-lg bg-green-50 p-4 text-center text-sm text-green-700'
+          commentForm.reset()
+        } else {
+          const err = await res.json()
+          commentStatus.textContent = err.error || 'Something went wrong.'
+          commentStatus.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
+        }
+      } catch {
+        commentStatus.textContent = 'Network error. Please try again.'
+        commentStatus.className = 'rounded-lg bg-red-50 p-4 text-center text-sm text-red-700'
+      } finally {
+        btn.disabled = false
+        btn.textContent = 'Post Comment'
+      }
+    })
+  </script>
+</BaseLayout>
